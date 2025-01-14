@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Quizzeration</title>
+<head>
+    <meta charset="UTF-8">
+    <h1>Quizzeration</h1>
+</head>
+<script src="\static\js\main.js"></script>
+
+<body>
+    <div>
+        <input type="text" name="filename" id="filenameInput">
+        <button type="button" onclick="getData()">Load file</button>
+    </div>
+    <div>
+        <input type="text" id="name" required>
+        <div class = "termParent">
+        </div> 
+        <button type="button" onclick="addEntry()">Add Term</button>
+        
+        <button type="button" onclick="sendData()" id="teste">Save</button>
+
+        <button type="button" onclick="playQuiz()" id="playquiz">Play Quiz</button>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Quizzeration</title>
+<head>
+    <meta charset="UTF-8">
+    <h1>Quizzeration</h1>
+</head>
+
+<body>
+    {% for question_num, question in terms_dic.items() %}
+    <div id="question{{question_num}}">
+        <p>{{question}}</p>
+        <input class = "answerInput" type="text">
+    </div>
+    {% endfor %}
+</body>

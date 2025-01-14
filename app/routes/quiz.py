@@ -1,0 +1,15 @@
+from flask import redirect,request,render_template, url_for
+import json
+import functions.utils as utils
+def generate_quiz():
+    output = {}
+    if request.method == "POST":
+        entries = json.loads(request.form.get("data"))
+        print(entries)
+        terms = list(entries.keys())
+
+        #Turns entries dictionary {term: definition} into terms dictionary {question number: term}
+        for question_num in range(len(terms)):
+            output[str(question_num)] = terms[question_num]
+    return render_template("quiz.html", \
+                               terms_dic=output)
