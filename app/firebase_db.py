@@ -34,5 +34,3 @@ def download_quiz(name):
     if doc.exists:
         question_data = doc.to_dict()
         return json.dumps(question_data)
-    else:
-        return jsonify({'error': 'Quiz not found'})

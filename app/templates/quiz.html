@@ -3,14 +3,20 @@
 <title>Quizzeration</title>
 <head>
     <meta charset="UTF-8">
-    <h1>Quizzeration</h1>
+    <h1>{{quiz_name}}</h1>
 </head>
-
+<script src="\static\js\quiz.js"></script>
+<meta name="quiz-data" data-quiz_name="{{quiz_name}}" data-quiz_dic="{{terms_dic}}" data-quiz_filename = "{{file_name}}">
 <body>
     {% for question_num, question in terms_dic.items() %}
     <div id="question{{question_num}}">
+        <meta name="question-meta" data-question="{{question}}">
         <p>{{question}}</p>
-        <input class = "answerInput" type="text">
+        <input class = "answerInput" id="answerInput{{question_num}}" type="text">
+        <button type="button" onclick="registerMarkQuestion(this)" id="markQuestion{{question_num}}">Mark Question</button>
+        <label class = "answerStatus"></label>
+        <label class = "correctAnswer"></label>
     </div>
     {% endfor %}
 </body>
+

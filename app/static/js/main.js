@@ -92,9 +92,16 @@ function removeAllEntries() {
 }
 
 function playQuiz(){
+  let random_seq = (Math.random() + 1).toString(36)
+  let unique_id = random_seq.concat(String(Date.now()))
+  sendData(unique_id)
+  let filename = document.getElementById("name").value
   let entries = getEntries()
+
   post("/quiz", {
-    "data": JSON.stringify(entries)
+    "data": JSON.stringify(entries),
+    "name": filename,
+    "filename": unique_id,
   })
 }
 
@@ -113,8 +120,8 @@ function getEntries() {
   return output
 }
 
-function sendData() {
-  let filename = document.getElementById("name").value;
+function sendData(filename) {
+  
   let output = getEntries()
   fetch('/uploader', {
       method: 'POST',
@@ -129,16 +136,17 @@ function sendData() {
     });
 }
 
-function removeItem(arr, value) {
-  var index = arr.indexOf(value);
-  if (index > -1) {
-    arr.splice(index, 1);
-  }
-  return arr;
+function saveQuiz(){
+  let filename = document.getElementById("name").value;
+  sendData(filename)
 }
 
-function getData() {
+function loadQuiz() {
   let filename = document.getElementById("filenameInput").value
+  getData(filename)
+}
+
+function getData(filename) {
   
   fetch('/uploader?' + new URLSearchParams({
     filename_to_get: filename
@@ -171,4 +179,12 @@ function post(path, params, method='POST') {
 
   document.body.appendChild(form);
   form.submit();
+}
+
+function removeItem(arr, value) {
+  var index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
 }
