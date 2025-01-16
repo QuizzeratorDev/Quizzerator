@@ -8,7 +8,7 @@ def mark_question():
         print(filename)
         question = request.args.get("question")
         answer = request.args.get("answer")
-        quiz_data = json.loads(firebase_db.download_quiz(filename))
+        quiz_data = firebase_db.download_quiz(filename, "tempCollection")["quiz_data"]
         if quiz_data[str(question)] == answer:
             return json.dumps({'Output': 'Correct'})
         else:

@@ -20,17 +20,25 @@ def setup():
 
     #print("Document ID:", doc_ref.id)
 
-def upload_quiz(name, data):
+def upload_quiz(name, data,collection):
     global db
-    doc_ref = db.collection("quizCollection").document(name)
+    doc_ref = db.collection(collection).document(name)
     doc_ref.set(data)
 
 
 
-def download_quiz(name):
+def download_quiz(name,collection):
     global db
-    doc_ref = db.collection('quizCollection').document(name)
+    doc_ref = db.collection(collection).document(name)
     doc = doc_ref.get()
     if doc.exists:
         question_data = doc.to_dict()
-        return json.dumps(question_data)
+        return question_data
+
+def clear_documents(collection, deadline):
+    print("clearing")
+    docs = db.collection(collection).stream()
+    for doc in docs:
+        doc_data = doc.to_dict()
+        time_c = doc_data['time_created']
+        print(time_c)

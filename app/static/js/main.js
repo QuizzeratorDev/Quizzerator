@@ -91,17 +91,20 @@ function removeAllEntries() {
   id_count = 0
 }
 
-function playQuiz(){
-  let random_seq = (Math.random() + 1).toString(36)
-  let unique_id = random_seq.concat(String(Date.now()))
-  sendData(unique_id)
+async function playQuiz(){
+  //let random_seq = (Math.random() + 1).toString(36)
+  //let unique_id = random_seq.concat(String(Date.now()))
+
+  let unique_id = await sendData("", "True")
   let filename = document.getElementById("name").value
+  console.log(unique_id)
   let entries = getEntries()
 
   post("/quiz", {
     "data": JSON.stringify(entries),
     "name": filename,
     "filename": unique_id,
+    "unique_id": "True",
   })
 }
 
@@ -120,20 +123,22 @@ function getEntries() {
   return output
 }
 
-function sendData(filename) {
+async function sendData(filename, unique_id="False") {
   
   let output = getEntries()
-  fetch('/uploader', {
+  let final_filename = ""
+  final_filename = await fetch('/uploader', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({name: filename, data: output})
+      body: JSON.stringify({name: filename, data: output, temporary: unique_id})
     })
     .then(response => response.text())
     .catch(error => {
       console.error('Error:', error);
     });
+  return final_filename
 }
 
 function saveQuiz(){
@@ -149,7 +154,8 @@ function loadQuiz() {
 function getData(filename) {
   
   fetch('/uploader?' + new URLSearchParams({
-    filename_to_get: filename
+    filename_to_get: filename,
+    file_is_temporary: "False"
   }).toString())
   .then(response => response.json())
   .then(data => {
