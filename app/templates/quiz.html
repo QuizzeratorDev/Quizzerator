@@ -8,6 +8,7 @@
 <script src="\static\js\quiz.js"></script>
 <meta name="quiz-data" data-quiz_name="{{quiz_name}}" data-quiz_dic="{{terms_dic}}" data-quiz_filename = "{{file_name}}">
 <body>
+    <a href="{{ url_for('index') }}">Back</a>
     {% for question_num, question in terms_dic.items() %}
     <div id="question{{question_num}}">
         <meta name="question-meta" data-question="{{question}}">

@@ -1,7 +1,6 @@
 async function markQuestion(question_attempt, answer_attempt) {
   let quiz_data = document.querySelector("meta[name='quiz-data']")
   
-  let quiz_dic = quiz_data.dataset.quiz_dic
   let quiz_name_ = quiz_data.dataset.quiz_filename
 
   const output = await fetch('/quiz_master?' + new URLSearchParams({
@@ -38,4 +37,21 @@ async function registerMarkQuestion(buttonPressed) {
   }
   
   
+}
+
+//This code does not work
+window.onbeforeunload = function(){
+
+  //This deletes the temporary quiz session file on window unload
+  fetch('/quiz_master', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({filename: quiz_data.dataset.quiz_filename})
+  })
+  .then(response => response.text())
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }

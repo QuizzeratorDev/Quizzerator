@@ -8,16 +8,16 @@ def uploader():
         filename = ""
         file_is_temporary = request.json["temporary"] == "True"
         if not file_is_temporary:
-            filename = request.json["name"]
+            filename = str(firebase_db.get_number_of_quizzes())
             collection = "quizCollection"
         else:
             filename = str(uuid.uuid1())
             collection = "tempCollection"
         
-            
         #print(term)
         #utils.save_json(term, filename)
         quiz_to_save = {
+            "quiz_name": request.json["name"],
             "user": "0",
             "time_created": str(time.time()),
             "quiz_data": quiz_data
@@ -33,5 +33,5 @@ def uploader():
             collection = "tempCollection"
         #print(filename)
         #new_json = utils.load_json(filename)
-        quiz_data = firebase_db.download_quiz(filename,collection)["quiz_data"]
+        quiz_data = firebase_db.download_quiz(filename,collection)
         return str(json.dumps(quiz_data))

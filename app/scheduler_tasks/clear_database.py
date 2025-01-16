@@ -1,4 +1,4 @@
 import firebase_db
 
 def clear():
-    firebase_db.clear_documents("tempCollection", 10)
+    firebase_db.clear_documents("tempCollection", 80000)

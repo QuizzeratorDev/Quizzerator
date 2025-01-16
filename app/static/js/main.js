@@ -3,6 +3,13 @@ var question_id_count = 0;
 var entry_divs = []
 var question_divs = []
 var currentQuiz = {}
+
+function onPageLoad() {
+  let url_quiz_name = document.querySelector("meta[name='url-params']").dataset.url_quiz_name
+  if (url_quiz_name != "*") {
+    getData(url_quiz_name)
+  }
+}
 function addEntry(term_text="", def_text="") {
   const termParent = document.querySelector(".termParent");
 
@@ -95,15 +102,14 @@ async function playQuiz(){
   //let random_seq = (Math.random() + 1).toString(36)
   //let unique_id = random_seq.concat(String(Date.now()))
 
-  let unique_id = await sendData("", "True")
-  let filename = document.getElementById("name").value
-  console.log(unique_id)
+  let filename = await sendData("", "True")
+  let quiz_name = document.getElementById("name").value
   let entries = getEntries()
 
   post("/quiz", {
     "data": JSON.stringify(entries),
-    "name": filename,
-    "filename": unique_id,
+    "name": quiz_name,
+    "filename": filename,
     "unique_id": "True",
   })
 }
@@ -151,16 +157,17 @@ function loadQuiz() {
   getData(filename)
 }
 
+
 function getData(filename) {
-  
   fetch('/uploader?' + new URLSearchParams({
     filename_to_get: filename,
+    
     file_is_temporary: "False"
   }).toString())
   .then(response => response.json())
   .then(data => {
-    document.getElementById("name").value = filename
-    loadEntries(data)
+    document.getElementById("name").value = data["quiz_name"]
+    loadEntries(data["quiz_data"])
   })
   .catch(error => {
     console.error('Error:', error);

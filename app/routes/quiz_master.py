@@ -13,3 +13,7 @@ def mark_question():
             return json.dumps({'Output': 'Correct'})
         else:
             return json.dumps({'Output': 'Incorrect', "Answer" : quiz_data[str(question)]})
+    if request.method == "POST":
+        filename = request.json["filename"]
+        print("Deleting quiz: " + filename)
+        firebase_db.delete_quiz(filename, "tempCollection")
