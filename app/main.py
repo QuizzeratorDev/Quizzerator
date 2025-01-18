@@ -33,6 +33,6 @@ def clear_database_task():
 
 if __name__ == "__main__":
     
-    scheduler.add_job(clear_database_task, 'interval', seconds=300)
+    scheduler.add_job(clear_database_task, 'interval', seconds=15)
     scheduler.start()
     app.run(debug=True)

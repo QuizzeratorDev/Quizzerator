@@ -1,0 +1,174 @@
+html {
+    font-family: Segoe UI;
+}
+
+textarea {
+    resize: none;
+    overflow: hidden;
+    text-align: center;
+}
+
+.quiz-title {
+    position:relative;
+    
+}
+
+.sidebar {
+    height: 100%;
+    width: 20%;
+    z-index: 1;
+    left:0;
+}
+
+.main {
+    border: none;
+    border-radius: 15px;
+    padding: 30px 30px;
+    box-shadow: 0 0 0 1px gray;
+    width: 50%;
+    max-width: 640px;
+}
+
+.master {
+
+    display: flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: left;
+    height: 640px;
+    width: 100%;
+    align-items: stretch;
+    padding: 10px 20px;
+}
+
+.quiz-title {
+    width: 80%;
+    text-align: center;
+    padding: 2px 10px;
+    border: none;
+    border-bottom: 2mm ridge rgba(156, 210, 248, 0.6);
+    outline: none;
+    font-size: 30px;
+    font-weight:500;
+}
+
+.quiz-title-div {
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+.termParent {
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
+.input-box {
+    border: none;
+    text-align: top;
+    width: 40%;
+    border-bottom: 2px solid rgb(218, 218, 218);
+    padding: 5px 5px;
+    outline-color: transparent;
+    transition: all 0.1s ease-out;
+    
+}
+
+.input-box:hover {
+    border-bottom: 2px solid rgb(218, 218, 218);
+    transition: all 0.1s ease-in;
+}
+
+.input-box:focus {
+    border-bottom: 2px solid cornflowerblue;
+    transition: all 0.2s ease-in;
+}
+
+.quiz-settings {
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.settings-button {
+    padding: 5px 5px;
+    border: none;
+    border-radius: 5px;
+
+    width: 30%;
+    transition: all 0.5s ease-out;
+}
+.play {
+    background-color: rgb(213, 255, 225);
+    transition: all 0.5s ease-out;
+}
+.play:hover {
+    background-color: rgb(204, 204, 204);
+    transition: all 0.1s ease-in;
+}
+.save {
+    background-color: rgb(255, 206, 206);
+    transition: all 0.1s ease-out;
+}
+.save:hover {
+    background-color: rgb(204, 204, 204);
+    transition: all 0.1s ease-in;
+}
+
+.removebutton {
+    border: 1px solid white;
+    border-radius: 4px;
+    background-color: transparent;
+    transition: all 0.1s ease-out;
+
+}
+
+.removebutton:hover {
+    border: 1px solid rgb(209, 209, 209);
+    border-radius: 4px;
+
+    transition: all 0.1s ease-out;
+}
+
+.removebutton:focus {
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 4px;
+
+    transition: all 0.1s ease-out;
+}
+
+.term-definition-div {
+    padding-left: 20px;
+    padding-block: 10px;
+}
+
+
+
+
+.add-entry-div {
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.add-entry {
+    width: 61%;
+    background-color: transparent;
+    border: 2px dotted rgb(165, 165, 165);
+    padding: 5px 5px;
+    border-radius: 5px;
+    transition: all 0.1s ease-out;
+}
+.add-entry:hover {
+    background-color: transparent;
+    border: 2px solid rgb(24, 24, 24);
+    transition: all 0.1s ease-in;
+}
+.add-entry:active {
+    background-color: rgb(240, 240, 240);
+    border: 2px solid rgb(24, 24, 24);
+    transition: all 0.1s ease-in;
+}

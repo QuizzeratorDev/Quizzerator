@@ -16,23 +16,34 @@ function addEntry(term_text="", def_text="") {
   var entry_div = document.createElement("div");
   entry_div.style = "white-space: nowrap;";
   entry_div.id = "entry_div" + String(id_count)
+  entry_div.className="term-definition-div"
   entry_divs.push(entry_div);
 
   //Creates a term input with:
   //Type text, class term
-  var termInput = document.createElement("input");
-  termInput.type = "text";
-  termInput.className = "term";
-  termInput.required = true;
+  var termInput = document.createElement("textarea");
+  termInput.className = "term input-box";
+  termInput.autosize = true;
   termInput.value = term_text;
-
+  termInput.rows="1"
+  //This automatically resizes the input
+  
+  termInput.oninput = function() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight-10) +'px';
+    
+  }
   //Creates a definition input with:
   //Type text, class definition
-  var defInput = document.createElement("input");
-  defInput.type = "text";
-  defInput.className = "definition";
-  defInput.required = true;
+  var defInput = document.createElement("textarea");
+  defInput.className = "definition input-box";
+  defInput.autosize = true;
   defInput.value = def_text;
+  defInput.rows="1"
+  defInput.oninput =function() {
+    this.style.height = "auto"; 
+    this.style.height = (this.scrollHeight-10) +'px';
+  }
 
   //Creates a button to remove the entry, with onclick calling removeEntry and referencing the button's id, with:
   //Type button, class removebutton

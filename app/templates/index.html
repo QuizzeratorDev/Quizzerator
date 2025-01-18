@@ -3,25 +3,43 @@
 <title>Quizzeration</title>
 <head>
     <meta charset="UTF-8">
-    <h1>Quizzeration</h1>
+    
+    <link rel="stylesheet" type="text/css" href="\static\css\main.css">
 </head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="\static\js\main.js"></script>
 <meta name="url-params" data-url_quiz_name="{{url_quiz_name}}">
 <body onload="onPageLoad()">
-    <div>
-        <input type="text" name="filename" id="filenameInput">
-        <button type="button" onclick="loadQuiz()">Load file</button>
-    </div>
-    <div>
-        <input type="text" id="name" required>
-        <div class = "termParent">
-        </div> 
-        <button type="button" onclick="addEntry()">Add Term</button>
-        
-        <button type="button" onclick="saveQuiz()" id="teste">Save</button>
+    <div class="master">
+        <div class="sidebar">
+            <h1>Quizzeration</h1>
+            <input type="text" name="filename" id="filenameInput">
+            <button type="button" onclick="loadQuiz()">Load file</button>
+        </div>
+    
+        <div class="main">
+            <div class="quiz-title-div">
+                <input type="text" id="name" class="quiz-title">
+            </div>
 
-        <button type="button" onclick="playQuiz()" id="playquiz">Play Quiz</button>
+            <div class="quiz-settings">
+                <button class="save settings-button" type="button" onclick="saveQuiz()" id="teste">Save</button>
+    
+                <button class="play settings-button" type="button" onclick="playQuiz()" id="playquiz">Play Quiz</button>
+            </div>
+            
+            <div class = "termParent">
+            </div> 
+
+            <div class="add-entry-div">
+                <button class="add-entry" type="button" onclick="addEntry()">+ Add Term</button>
+            </div>
+            
+            
+            
+        </div>
     </div>
+    
     
 </body>
 </html>
