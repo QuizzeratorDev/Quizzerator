@@ -6,9 +6,9 @@
     <h1>{{quiz_name}}</h1>
 </head>
 <script src="\static\js\quiz.js"></script>
-<meta name="quiz-data" data-quiz_name="{{quiz_name}}" data-quiz_dic="{{terms_dic}}" data-quiz_filename = "{{file_name}}">
+<meta name="quiz-data" data-quiz_name="{{quiz_name}}" data-quiz_dic="{{terms_dic}}" data-quiz_filename = "{{file_name}}" data-original_filename = "{{original_filename}}">
 <body>
-    <a href="{{ url_for('index') }}">Back</a>
+    <button onclick="returnToIndex()" >Back</button>
     {% for question_num, question in terms_dic.items() %}
     <div id="question{{question_num}}">
         <meta name="question-meta" data-question="{{question}}">

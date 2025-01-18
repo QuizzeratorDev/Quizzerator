@@ -39,6 +39,23 @@ async function registerMarkQuestion(buttonPressed) {
   
 }
 
+function returnToIndex() {
+  let quiz_data = document.querySelector("meta[name='quiz-data']")
+  fetch('/quiz_master', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({filename: quiz_data.dataset.quiz_filename})
+  })
+  .then(response => response.text())
+  .catch(error => {
+    console.error('Error:', error);
+  });
+  original_filename = quiz_data.dataset.original_filename
+  window.location.replace(`/?quiz=${original_filename}`);
+}
+
 //This code does not work
 window.onbeforeunload = function(){
 

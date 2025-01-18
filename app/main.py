@@ -3,6 +3,7 @@ from routes import quiz
 from routes import uploader
 from routes import quiz_master
 from routes import main
+from routes import quiz_searcher
 from scheduler_tasks import clear_database
 import firebase_db
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -14,7 +15,7 @@ scheduler = BackgroundScheduler()
 
 @app.route('/', endpoint="index")
 def index():
-    return main.check_params()
+    return main.load_index()
 
 @app.route("/uploader", methods = ["GET", "POST"])
 def upload_file():
@@ -27,6 +28,10 @@ def gen_quiz():
 @app.route("/quiz_master", methods=["GET", "POST"])
 def mark_question():
     return quiz_master.mark_question()
+
+@app.route("/quiz_searcher", methods=["GET", "POST"])
+def quiz_search():
+    return quiz_searcher.search()
 
 def clear_database_task():
     clear_database.clear()

@@ -5,7 +5,6 @@ import firebase_db
 def mark_question():
     if request.method == "GET":
         filename = str(request.args.get("quiz_name"))
-        print(filename)
         question = request.args.get("question")
         answer = request.args.get("answer")
         quiz_data = firebase_db.download_quiz(filename, "tempCollection")["quiz_data"]

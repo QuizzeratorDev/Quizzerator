@@ -6,6 +6,8 @@ textarea {
     resize: none;
     overflow: hidden;
     text-align: center;
+    font-family: Segoe UI;
+    font-size: 14px;
 }
 
 .quiz-title {
@@ -39,7 +41,8 @@ textarea {
     height: 640px;
     width: 100%;
     align-items: stretch;
-    padding: 10px 20px;
+    padding-top: 10px;
+    padding-left: 10px;
 }
 
 .quiz-title {
@@ -95,7 +98,7 @@ textarea {
 
 .settings-button {
     padding: 5px 5px;
-    border: none;
+    border: 1px solid white;
     border-radius: 5px;
 
     width: 30%;
@@ -106,7 +109,12 @@ textarea {
     transition: all 0.5s ease-out;
 }
 .play:hover {
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(151, 255, 163);
+    transition: all 0.1s ease-in;
+}
+
+.play:active {
+    border: 1px solid black;
     transition: all 0.1s ease-in;
 }
 .save {
@@ -114,10 +122,13 @@ textarea {
     transition: all 0.1s ease-out;
 }
 .save:hover {
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(255, 173, 173);
     transition: all 0.1s ease-in;
 }
-
+.save:active {
+    border: 1px solid black;
+    transition: all 0.1s ease-in;
+}
 .removebutton {
     border: 1px solid white;
     border-radius: 4px;
@@ -133,7 +144,7 @@ textarea {
     transition: all 0.1s ease-out;
 }
 
-.removebutton:focus {
+.removebutton:active {
     border: 1px solid rgb(0, 0, 0);
     border-radius: 4px;
 

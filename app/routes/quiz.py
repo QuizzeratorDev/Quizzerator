@@ -7,7 +7,7 @@ def generate_quiz():
         entries = json.loads(request.form.get("data"))
         quizname = str(request.form.get("name"))
         filename = str(request.form.get("filename"))
-        print(entries)
+        _original_filename = str(request.form.get("original_filename"))
         terms = list(entries.keys())
 
         #Turns entries dictionary {term: definition} into terms dictionary {question number: term}
@@ -16,4 +16,5 @@ def generate_quiz():
     return render_template("quiz.html", \
                                terms_dic=output,
                                quiz_name = quizname,
-                               file_name = filename)
+                               file_name = filename,
+                               original_filename = _original_filename)

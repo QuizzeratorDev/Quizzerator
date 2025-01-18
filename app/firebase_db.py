@@ -2,6 +2,7 @@ import firebase_admin, time
 from firebase_admin import credentials
 from firebase_admin import firestore, json
 from flask import jsonify
+from rapidfuzz import fuzz
 
 db = 0
 def setup():
@@ -44,7 +45,7 @@ def clear_documents(collection, deadline):
     docs = db.collection(collection).stream()
     for doc in docs:
         doc_data = doc.to_dict()
-        time_c = doc_data['time_created']
+        time_c = doc_data["time_created"]
         #)
         if time.time()-float(time_c) >= deadline:
             delete_quiz(doc.id, collection)
@@ -55,3 +56,26 @@ def get_number_of_quizzes():
     count_query = collection_ref.count()
     count_result = count_query.get()
     return int(round(float(count_result[0][0].value)))
+
+def search_documents(collection, query):
+    docs = db.collection(collection).stream()
+    result = []
+    for doc in docs:
+        doc_data = doc.to_dict()
+        quiz_name = doc_data["quiz_name"]
+        closeness = fuzz.ratio(quiz_name, query)
+        result.append({
+            "closeness": closeness,
+            "id": doc.id,
+            "quiz_data": doc_data
+        })
+    #result.sort(key=lambda x: x["closeness"], reverse=True)
+    output = {}
+    for item in result:
+        if item["closeness"] > 0:
+            #This reverses the order of closeness, since jsons are sorted automatically
+            output[100 - item["closeness"]] = {
+                "id": item["id"],
+                "data": item["quiz_data"]
+            }
+    return output

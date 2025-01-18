@@ -4,12 +4,37 @@ var entry_divs = []
 var question_divs = []
 var currentQuiz = {}
 
+var recommendations = []
+
+var currentQuizID = -1
+
+
+
+
+
+
+
+
+
+// ON PAGE LOAD //
 function onPageLoad() {
   let url_quiz_name = document.querySelector("meta[name='url-params']").dataset.url_quiz_name
   if (url_quiz_name != "*") {
     getData(url_quiz_name)
+    
   }
+  refreshRecs()
 }
+
+
+
+
+
+
+
+
+
+// ENTRY MANIPULATION //
 function addEntry(term_text="", def_text="") {
   const termParent = document.querySelector(".termParent");
 
@@ -88,7 +113,7 @@ function removeEntry(removeid) {
   divRemove.remove();
   
   for (let div of entry_divs) {
-    let divID = Number(String(div.id).substring(3))
+    let divID = Number(String(div.id).substring(9))
     if (divID > Number(removeid)) {
       div.id = "entry_div" + String(divID - 1);
     }
@@ -108,25 +133,6 @@ function removeAllEntries() {
   entry_divs = []
   id_count = 0
 }
-
-async function playQuiz(){
-  //let random_seq = (Math.random() + 1).toString(36)
-  //let unique_id = random_seq.concat(String(Date.now()))
-
-  let filename = await sendData("", "True")
-  let quiz_name = document.getElementById("name").value
-  let entries = getEntries()
-
-  post("/quiz", {
-    "data": JSON.stringify(entries),
-    "name": quiz_name,
-    "filename": filename,
-    "unique_id": "True",
-  })
-}
-
-
-
 function getEntries() {
   let output = { };
   for (let i = 0; i < id_count; i++) {
@@ -140,7 +146,58 @@ function getEntries() {
   return output
 }
 
-async function sendData(filename, unique_id="False") {
+
+
+
+
+
+
+
+
+
+//PLAY SAVE AND LOAD QUIZZES
+
+async function playQuiz(){
+  //let random_seq = (Math.random() + 1).toString(36)
+  //let unique_id = random_seq.concat(String(Date.now()))
+
+  let filename = await sendData("", currentQuizID, "True")
+  let quiz_name = document.getElementById("name").value
+  let entries = getEntries()
+
+  post("/quiz", {
+    "data": JSON.stringify(entries),
+    "name": quiz_name,
+    "filename": filename,
+    "original_filename": currentQuizID,
+    "unique_id": "True",
+  })
+}
+function saveQuiz(){
+  let name = document.getElementById("name").value;
+  sendData(name, currentQuizID)
+}
+function loadQuiz(filename) {
+  getData(filename)
+  window.history.pushState({}, "", `/?quiz=${currentQuizID}`)
+}
+function loadQuizUsingFilenameInput() {
+  let filename = document.getElementById("filenameInput").value
+  getData(filename)
+  window.history.pushState({}, "", `/?quiz=${currentQuizID}`)
+}
+
+
+
+
+
+
+
+
+
+//DATA MANIPULATION //
+
+async function sendData(quiz_name, filename_, unique_id="False") {
   
   let output = getEntries()
   let final_filename = ""
@@ -149,27 +206,18 @@ async function sendData(filename, unique_id="False") {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({name: filename, data: output, temporary: unique_id})
+      body: JSON.stringify({name: quiz_name, filename: filename_, data: output, temporary: unique_id})
     })
     .then(response => response.text())
     .catch(error => {
       console.error('Error:', error);
     });
+  
   return final_filename
 }
 
-function saveQuiz(){
-  let filename = document.getElementById("name").value;
-  sendData(filename)
-}
-
-function loadQuiz() {
-  let filename = document.getElementById("filenameInput").value
-  getData(filename)
-}
-
-
 function getData(filename) {
+  currentQuizID = filename
   fetch('/uploader?' + new URLSearchParams({
     filename_to_get: filename,
     
@@ -183,6 +231,7 @@ function getData(filename) {
   .catch(error => {
     console.error('Error:', error);
   });
+  
 }
 
 function post(path, params, method='POST') {
@@ -211,4 +260,56 @@ function removeItem(arr, value) {
     arr.splice(index, 1);
   }
   return arr;
+}
+
+
+
+
+//SEARCH QUIZZES
+
+async function refreshRecs() {
+  let sidebar_div = document.querySelector(".sidebar")
+  let query = document.querySelector(".search_bar").value
+  let newRecommendations = await fetch('/quiz_searcher?' + new URLSearchParams({
+      search_query: query,
+    }).toString())
+    .then(response => response.json())
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  console.log(newRecommendations)
+  
+
+  for (const recElement of recommendations) {
+    recElement.remove()
+  }
+  
+  recommendations = []
+
+  for (const [closeness, rec_] of Object.entries(newRecommendations)) {
+
+    var recDiv = document.createElement("div")
+    recDiv.className = "quizRecommendationDiv"
+
+    var recButton = document.createElement("button")
+    recButton.type = "button";
+    console.log(rec_)
+    recButton.innerHTML = `${rec_["data"]["quiz_name"]}`;
+    recButton.id = `button_load${rec_["id"]}`
+    recButton.setAttribute('onclick','registerLoadQuiz(this)')
+
+
+    recommendations.push(recButton)
+
+
+    sidebar_div.appendChild(recDiv)
+    recDiv.appendChild(recButton)
+  }
+  
+  
+}
+
+function registerLoadQuiz(button) {
+  let id_to_load = button.id.substring(11)
+  loadQuiz(id_to_load)
 }

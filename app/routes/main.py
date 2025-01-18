@@ -1,7 +1,8 @@
 from flask import redirect,request,render_template, url_for
+import firebase_db
 
-def check_params():
+def load_index():
     quiz = request.args.get("quiz", default="*")
-    print(quiz)
+    
     return render_template('index.html',
                                url_quiz_name=quiz)

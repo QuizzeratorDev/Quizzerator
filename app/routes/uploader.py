@@ -8,7 +8,11 @@ def uploader():
         filename = ""
         file_is_temporary = request.json["temporary"] == "True"
         if not file_is_temporary:
-            filename = str(firebase_db.get_number_of_quizzes())
+            quiz_id = int(request.json["filename"])
+            if quiz_id == -1:
+                filename = str(firebase_db.get_number_of_quizzes())
+            else:
+                filename = str(quiz_id)
             collection = "quizCollection"
         else:
             filename = str(uuid.uuid1())
