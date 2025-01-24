@@ -4,6 +4,8 @@ from routes import uploader
 from routes import quiz_master
 from routes import main
 from routes import quiz_searcher
+from routes import authenticator
+from routes import login_page
 from scheduler_tasks import clear_database
 import firebase_db
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -32,6 +34,14 @@ def mark_question():
 @app.route("/quiz_searcher", methods=["GET", "POST"])
 def quiz_search():
     return quiz_searcher.search()
+
+@app.route("/authenticator", methods=["GET", "POST"])
+def authenticateuser():
+    return authenticator.authenticate()
+
+@app.route("/login", methods=["GET", "POST"])
+def loginpage():
+    return login_page.display_login_page()
 
 def clear_database_task():
     clear_database.clear()
