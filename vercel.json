@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "app/main.py", "use": "@vercel/python" }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/main.py" },
+      { "src": "/uploader", "dest": "/app/routes/uploader.py" },
+      { "src": "/quiz", "dest": "/app/routes/quiz.py" },
+      { "src": "/quiz_master", "dest": "/app/routes/quiz_master.py" },
+      { "src": "/quiz_searcher", "dest": "/app/routes/quiz_searcher.py" },
+      { "src": "/authenticator", "dest": "/app/routes/authenticator.py" },
+      { "src": "/login", "dest": "/app/routes/login.py" }
+    ]
+  }
