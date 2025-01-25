@@ -1,15 +1,15 @@
 {
     "version": 2,
     "builds": [
-      { "src": "app/main.py", "use": "@vercel/python" }
+      { "src": "/api/main.py", "use": "@vercel/python" }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "app/main.py" },
-      { "src": "/uploader", "dest": "/app/routes/uploader.py" },
-      { "src": "/quiz", "dest": "/app/routes/quiz.py" },
-      { "src": "/quiz_master", "dest": "/app/routes/quiz_master.py" },
-      { "src": "/quiz_searcher", "dest": "/app/routes/quiz_searcher.py" },
-      { "src": "/authenticator", "dest": "/app/routes/authenticator.py" },
-      { "src": "/login", "dest": "/app/routes/login.py" }
+      { "src": "/(.*)", "dest": "/api/main.py" },
+      { "src": "/uploader", "dest": "/api/routes/uploader.py" },
+      { "src": "/quiz", "dest": "/api/routes/quiz.py" },
+      { "src": "/quiz_master", "dest": "/api/routes/quiz_master.py" },
+      { "src": "/quiz_searcher", "dest": "/api/routes/quiz_searcher.py" },
+      { "src": "/authenticator", "dest": "/api/routes/authenticator.py" },
+      { "src": "/login", "dest": "/api/routes/login.py" }
     ]
   }
