@@ -4,7 +4,7 @@
       { "src": "app/main.py", "use": "@vercel/python" }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "/main.py" },
+      { "src": "/(.*)", "dest": "app/main.py" },
       { "src": "/uploader", "dest": "/app/routes/uploader.py" },
       { "src": "/quiz", "dest": "/app/routes/quiz.py" },
       { "src": "/quiz_master", "dest": "/app/routes/quiz_master.py" },
