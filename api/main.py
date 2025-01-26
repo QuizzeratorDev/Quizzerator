@@ -2,12 +2,12 @@ from flask import Flask, render_template,request, redirect
 import api.routes.quiz
 import api.routes.uploader
 import api.routes.quiz_master
-import api.routes.main
+import api.routes.index
 import api.routes.quiz_searcher
 import api.routes.authenticator
 import api.routes.login_page
 import api.scheduler_tasks.clear_database
-import firebase_db
+import api.firebase_db as firebase_db
 from apscheduler.schedulers.background import BackgroundScheduler
 
 firebase_db.setup()
@@ -17,7 +17,7 @@ scheduler = BackgroundScheduler()
 
 @app.route('/', endpoint="index")
 def index():
-    return api.routes.main.load_index()
+    return api.routes.index.load_index()
 
 @app.route("/uploader", methods = ["GET", "POST"])
 def upload_file():

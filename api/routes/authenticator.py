@@ -1,6 +1,5 @@
-import firebase_admin
+
 from firebase_admin import auth
-import firebase_db
 from flask import redirect,request,render_template, url_for, session, jsonify
 
 def authenticate():

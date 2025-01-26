@@ -1,6 +1,7 @@
 from flask import redirect,request
-import functions.utils as utils
-import firebase_db, uuid
+import api.functions.utils as utils
+import api.firebase_db as firebase_db
+import uuid
 import json, time
 def uploader():
     if request.method == "POST":
