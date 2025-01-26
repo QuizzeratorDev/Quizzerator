@@ -1,12 +1,12 @@
 from flask import Flask, render_template,request, redirect
-import routes.quiz
-import routes.uploader
-import routes.quiz_master
-import routes.main
-import routes.quiz_searcher
-import routes.authenticator
-import routes.login_page
-import scheduler_tasks.clear_database
+import api.routes.quiz
+import api.routes.uploader
+import api.routes.quiz_master
+import api.routes.main
+import api.routes.quiz_searcher
+import api.routes.authenticator
+import api.routes.login_page
+import api.scheduler_tasks.clear_database
 import firebase_db
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -17,34 +17,34 @@ scheduler = BackgroundScheduler()
 
 @app.route('/', endpoint="index")
 def index():
-    return routes.main.load_index()
+    return api.routes.main.load_index()
 
 @app.route("/uploader", methods = ["GET", "POST"])
 def upload_file():
-    return routes.uploader.uploader()
+    return api.routes.uploader.uploader()
 
 @app.route("/quiz", methods=["POST"])
 def gen_quiz():
-    return routes.quiz.generate_quiz()
+    return api.routes.quiz.generate_quiz()
 
 @app.route("/quiz_master", methods=["GET", "POST"])
 def mark_question():
-    return routes.quiz_master.mark_question()
+    return api.routes.quiz_master.mark_question()
 
 @app.route("/quiz_searcher", methods=["GET", "POST"])
 def quiz_search():
-    return routes.quiz_searcher.search()
+    return api.routes.quiz_searcher.search()
 
 @app.route("/authenticator", methods=["GET", "POST"])
 def authenticateuser():
-    return routes.authenticator.authenticate()
+    return api.routes.authenticator.authenticate()
 
 @app.route("/login", methods=["GET", "POST"])
 def loginpage():
-    return routes.login_page.display_login_page()
+    return api.routes.login_page.display_login_page()
 
 def clear_database_task():
-    scheduler_tasks.clear_database.clear()
+    api.scheduler_tasks.clear_database.clear()
 
 if __name__ == "__main__":
     
