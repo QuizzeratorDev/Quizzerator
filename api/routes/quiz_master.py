@@ -1,7 +1,7 @@
 from flask import redirect,request,render_template, url_for
 import json
-import api.functions.utils as utils
-import api.firebase_db as firebase_db
+import functions.utils as utils
+import firebase_db as firebase_db
 def mark_question():
     if request.method == "GET":
         filename = str(request.args.get("quiz_name"))
