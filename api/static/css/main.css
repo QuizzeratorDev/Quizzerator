@@ -61,6 +61,11 @@ textarea {
     padding-bottom: 15px;
 }
 
+.quiz-info-div {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
 .termParent {
     width: 100%;
     text-align: center;

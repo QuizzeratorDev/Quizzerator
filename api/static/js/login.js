@@ -20,16 +20,34 @@ async function login_user() {
     const auth = getAuth();
     let _email = document.querySelector(".login_emailInput").value
     let _password = document.querySelector(".login_passwordInput").value
-    signInWithEmailAndPassword(auth, _email, _password)
+    
+    let user_info = await signInWithEmailAndPassword(auth, _email, _password)
     .then((userCredential) => {
         // Signed in 
-        const user = userCredential.user;
-        console.log(user)
+        return userCredential
     })
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        return "Could not sign in"
     });
+
+    console.log(user_info)
+
+    if (user_info != "Could not sign in"){
+        fetch('/authenticator', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({mode: "signin", userinfo: user_info})
+            })
+            .then(response => response.text())
+            .catch(error => {
+            console.error('Error:', error);
+            });
+    }
+        
 }
 window.addEventListener("DOMContentLoaded", () => {
 const loginButton = document.getElementById("loginButton");

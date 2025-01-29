@@ -146,6 +146,32 @@ function getEntries() {
   return output
 }
 
+async function loadQuizData(data){
+  let email = data["user"]["email"]
+  let quiz_creator_uid = data["user"]["uid"]
+
+
+
+  let session_user_id = JSON.parse(await fetch('/authenticator', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"mode": "getsessioninfo"})
+  })
+  .then(response => response.text())
+  .catch(error => {
+    console.error('Error:', error);
+  }))
+
+  let perms = "Cannot edit"
+  if (session_user_id["uid"] == quiz_creator_uid){
+    perms = "Can edit"
+  }
+  document.querySelector(".quiz_email").innerHTML = email
+  document.querySelector(".quiz_perms").innerHTML = perms
+}
+
 
 
 
@@ -227,6 +253,7 @@ function getData(filename) {
   .then(data => {
     document.getElementById("name").value = data["quiz_name"]
     loadEntries(data["quiz_data"])
+    loadQuizData(data)
   })
   .catch(error => {
     console.error('Error:', error);

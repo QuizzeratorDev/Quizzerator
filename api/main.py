@@ -16,6 +16,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 firebase_db.setup()
 
 app = Flask(__name__)
+app.secret_key = "6BtdCaEka6xjV4DVNxZ3pZB8mXJ70sig"
 scheduler = BackgroundScheduler()
 
 @app.route('/', endpoint="index")
