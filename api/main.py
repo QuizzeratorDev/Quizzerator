@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.secret_key = "6BtdCaEka6xjV4DVNxZ3pZB8mXJ70sig"
 scheduler = BackgroundScheduler()
 
-@app.route('/', endpoint="index")
+@app.route('/', endpoint="index", methods=["GET", "POST"])
 def index_():
     return index.load_index()
 

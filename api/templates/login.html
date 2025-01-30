@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <link rel="stylesheet" type="text/css" href="\static\css\main.css">
+    <link rel="stylesheet" type="text/css" href="\static\css\login.css">
     <script src="\static\js\login.js" type="module"></script>
     <script type="module">
         
@@ -12,14 +12,30 @@
 </head>
 
 
-<body>
-    <input type="text" class="emailInput">
-    <input type="text" class="passwordInput">
-    <button type="button" id="signupButton">Sign Up</button>
+<body class="page-body">
+    <div class="main">
+        <div class="signup">
+            <input type="text" class="emailInput">
+            <br>
+            <input type="text" class="passwordInput">
+            <br>
+            <button type="button" id="signupButton">Sign Up</button>
+        </div>
+        
+        <div class="login">
+            <input type="text" class="login_emailInput">
+            <br>
+            <input type="text" class="login_passwordInput">
+            <br>
+            <button type="button" id="loginButton">Log in</button>
+        </div>
 
-    <input type="text" class="login_emailInput">
-    <input type="text" class="login_passwordInput">
-    <button type="button" id="loginButton">Log in</button>
-
+        <div class="signout"> 
+            <button type="button" id="signOutButton">Sign Out</button>
+        </div>
+    </div>
+    
+    
+    
     
 </body>

@@ -17,13 +17,30 @@ var currentQuizID = -1
 
 
 // ON PAGE LOAD //
-function onPageLoad() {
+async function onPageLoad() {
   let url_quiz_name = document.querySelector("meta[name='url-params']").dataset.url_quiz_name
   if (url_quiz_name != "*") {
     getData(url_quiz_name)
     
   }
   refreshRecs()
+
+  let session_user = JSON.parse(await fetch('/authenticator', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"mode": "getsessioninfo"})
+  })
+  .then(response => response.text())
+  .catch(error => {
+    console.error('Error:', error);
+  }))
+  console.log(session_user)
+  if (session_user["email"] == "") {
+    document.querySelector(".new_quiz_button").hidden = true;
+  }
+
 }
 
 
@@ -31,7 +48,14 @@ function onPageLoad() {
 
 
 
-
+function newQuiz() {
+  document.querySelector(".quiz_email").innerHTML = ""
+  document.querySelector(".quiz_perms").innerHTML = ""
+  removeAllEntries()
+  document.getElementById("name").value = ""
+  currentQuizID = -1
+  document.querySelector(".save").hidden = false;
+}
 
 
 // ENTRY MANIPULATION //
@@ -164,9 +188,11 @@ async function loadQuizData(data){
     console.error('Error:', error);
   }))
 
-  let perms = "Cannot edit"
+  let perms = "Cannot edit - changes will not be saved"
+  document.querySelector(".save").hidden = true;
   if (session_user_id["uid"] == quiz_creator_uid){
     perms = "Can edit"
+    document.querySelector(".save").hidden = false;
   }
   document.querySelector(".quiz_email").innerHTML = email
   document.querySelector(".quiz_perms").innerHTML = perms
@@ -295,7 +321,7 @@ function removeItem(arr, value) {
 //SEARCH QUIZZES
 
 async function refreshRecs() {
-  let sidebar_div = document.querySelector(".sidebar")
+  let search_results_div = document.querySelector(".search-results")
   let query = document.querySelector(".search_bar").value
   let newRecommendations = await fetch('/quiz_searcher?' + new URLSearchParams({
       search_query: query,
@@ -316,21 +342,32 @@ async function refreshRecs() {
   for (const [closeness, rec_] of Object.entries(newRecommendations)) {
 
     var recDiv = document.createElement("div")
-    recDiv.className = "quizRecommendationDiv"
+    recDiv.className = "search-result"
 
-    var recButton = document.createElement("button")
-    recButton.type = "button";
+    var quizName = document.createElement("p")
+    var quizCreator = document.createElement("p")
+    var quizInfo = document.createElement("p")
     console.log(rec_)
-    recButton.innerHTML = `${rec_["data"]["quiz_name"]}`;
-    recButton.id = `button_load${rec_["id"]}`
-    recButton.setAttribute('onclick','registerLoadQuiz(this)')
+    quizName.innerHTML = `${rec_["data"]["quiz_name"]}`;
+    quizCreator.innerHTML = `${rec_["data"]["user"]["email"]}`
+    quizInfo.innerHTML = `${Object.keys(rec_["data"]["quiz_data"]).length} terms`
+
+    quizName.className= "search-result-name"
+    quizCreator.className = "search-result-creator"
+    quizInfo.className = "search-result-info"
 
 
-    recommendations.push(recButton)
+    recDiv.id = `button_load${rec_["id"]}`
+    recDiv.setAttribute('onclick','registerLoadQuiz(this)')
 
 
-    sidebar_div.appendChild(recDiv)
-    recDiv.appendChild(recButton)
+    recommendations.push(recDiv)
+
+
+    search_results_div.appendChild(recDiv)
+    recDiv.appendChild(quizName)
+    recDiv.appendChild(quizCreator)
+    recDiv.appendChild(quizInfo)
   }
   
   
@@ -339,4 +376,9 @@ async function refreshRecs() {
 function registerLoadQuiz(button) {
   let id_to_load = button.id.substring(11)
   loadQuiz(id_to_load)
+}
+
+function redirect_to_login_page() {
+  post("/login", {
+  })
 }

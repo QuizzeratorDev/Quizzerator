@@ -1,0 +1,66 @@
+html {
+    font-family: Segoe UI;
+}
+
+input {
+    border: none;
+    text-align: top;
+    width: 40%;
+    border: 2px solid rgb(218, 218, 218);
+    padding: 5px 5px;
+    outline-color: transparent;
+    transition: all 0.1s ease-out;
+    width: 90%;
+    
+}
+
+input:focus {
+    border: 2px solid rgb(218, 218, 218);
+    transition: all 0.1s ease-in;
+}
+
+input:focus {
+    border: 2px solid cornflowerblue;
+    transition: all 0.2s ease-in;
+}
+
+
+.signup {
+    padding: 20px 20px;
+    border: 5px solid gray;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.login {
+    padding: 20px 20px;
+    border: 5px solid gray;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+    max-width: 400px;
+}
+
+button {
+    background-color: rgb(255, 255, 255);
+    transition: all 0.5s ease-out;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 100%;
+    padding: 10px 10px;
+}
+button:hover {
+    background-color: rgb(216, 216, 216);
+    transition: all 0.1s ease-in;
+}
+
+button:active {
+    border: 1px solid rgb(255, 255, 255);
+    transition: all 0.1s ease-in;
+}

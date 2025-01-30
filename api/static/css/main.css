@@ -10,9 +10,18 @@ textarea {
     font-size: 14px;
 }
 
-.quiz-title {
+input {
+    resize: none;
+    overflow: hidden;
+    text-align: center;
+    font-family: Segoe UI;
+    font-size: 14px;
+}
+
+.page-title {
     position:relative;
-    
+    float: center;
+    font-weight: 700;
 }
 
 .sidebar {
@@ -20,6 +29,8 @@ textarea {
     width: 20%;
     z-index: 1;
     left:0;
+    border-right: 0 0 0 5px gray;
+    padding-top: 20px;
 }
 
 .main {
@@ -30,6 +41,33 @@ textarea {
     width: 50%;
     max-width: 640px;
 }
+
+.topnav {
+    overflow: hidden;
+    box-shadow: 0 5px 8px gray;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.userinfo {
+    text-align: right;
+    width: 50%;
+    padding-right: 50px;
+    font-size: 20px;
+}
+
+
+.page-title {
+    text-align: left;
+    width: 50%;
+    padding-left: 50px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+
 
 .master {
 
@@ -70,7 +108,6 @@ textarea {
     width: 100%;
     text-align: center;
 }
-
 
 
 
@@ -186,5 +223,122 @@ textarea {
 .add-entry:active {
     background-color: rgb(240, 240, 240);
     border: 2px solid rgb(24, 24, 24);
+    transition: all 0.1s ease-in;
+}
+
+
+.search-result-name {
+    font-weight: 700;
+}
+
+.search-result-creator {
+    font-weight: 200;
+}
+
+.search-results {
+    padding-top: 10px;
+    display: flex;
+    flex-direction:column;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.search-result {
+    background-color: rgb(255, 255, 255);
+    transition: all 0.5s ease-out;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 10px;
+}
+.search-result:hover {
+    background-color: rgb(216, 216, 216);
+    transition: all 0.1s ease-in;
+}
+
+.search-result:active {
+    border: 1px solid rgb(255, 255, 255);
+    transition: all 0.1s ease-in;
+}
+
+.search_bar {
+    border: none;
+    text-align: top;
+    width: 60%;
+    border: 2px solid rgb(218, 218, 218);
+    border-radius: 5px;
+    outline-color: transparent;
+    transition: all 0.1s ease-out;
+    height: 6%;    
+}
+
+.search_bar:hover {
+    border-bottom: 2px solid rgb(218, 218, 218);
+    transition: all 0.1s ease-in;
+}
+
+.search_bar:focus {
+    border-bottom: 2px solid cornflowerblue;
+    transition: all 0.2s ease-in;
+}
+
+
+
+.search_button {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid gray;
+    border-radius: 5px;
+    height: 6%;
+    width: 33%;
+    transition: all 0.1s ease-out;
+}
+.search_button:hover {
+    background-color: rgb(255, 224, 250);
+    transition: all 0.1s ease-in;
+}
+.search_button:active {
+    border: 1px solid black;
+    transition: all 0.1s ease-in;
+}
+
+
+
+.new_quiz_button {
+    background-color: rgb(255, 211, 211);
+    border: 1px solid gray;
+    border-radius: 5px;
+    height: 6%;
+    width: 100%;
+    transition: all 0.1s ease-out;
+    font-weight: 600;
+    font-size: 15px;
+}
+.new_quiz_button:hover {
+    background-color: rgb(255, 224, 250);
+    transition: all 0.1s ease-in;
+}
+.new_quiz_button:active {
+    border: 1px solid black;
+    transition: all 0.1s ease-in;
+}
+
+
+.userinfo {
+    float:right;
+}
+.profilebutton {
+    background-color: rgb(255, 255, 255);
+    transition: all 0.5s ease-out;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 10px;
+    font-size: 15px;
+}
+.profilebutton:hover {
+    background-color: rgb(216, 216, 216);
+    transition: all 0.1s ease-in;
+}
+
+.profilebutton:active {
+    border: 1px solid rgb(255, 255, 255);
     transition: all 0.1s ease-in;
 }

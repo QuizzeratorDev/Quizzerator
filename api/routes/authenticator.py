@@ -18,9 +18,15 @@ def authenticate():
         return jsonify({"message": "success"})
     if request.json["mode"] == "signout":
         session.pop("user", None)
-    
+        return jsonify({"message": "success"})
     if request.json["mode"] == "getsessioninfo":
-        return session["user"]
+        if "user" in session:
+            return session["user"]
+        else:
+            return {
+                "email": "",
+                "uid": ""
+            }
 
 #auth.create_user_with_email_and_password(email, password)
 

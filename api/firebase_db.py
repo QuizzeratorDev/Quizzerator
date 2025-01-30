@@ -68,10 +68,14 @@ def get_number_of_quizzes():
 def search_documents(collection, query):
     docs = db.collection(collection).stream()
     result = []
+    duplicates = []
     for doc in docs:
         doc_data = doc.to_dict()
         quiz_name = doc_data["quiz_name"]
         closeness = fuzz.ratio(quiz_name, query)
+        if closeness in duplicates:
+            closeness -= 0.01
+        duplicates.append(closeness)
         result.append({
             "closeness": closeness,
             "id": doc.id,
@@ -86,4 +90,25 @@ def search_documents(collection, query):
                 "id": item["id"],
                 "data": item["quiz_data"]
             }
+    return output
+
+def get_all_documents(collection):
+    docs = db.collection(collection).stream()
+    result = []
+    i = 0
+    for doc in docs:
+        doc_data = doc.to_dict()
+        quiz_name = doc_data["quiz_name"]
+        result.append({
+            "closeness": i,
+            "id": doc.id,
+            "quiz_data": doc_data
+        })
+        i += 1
+    output = {}
+    for item in result:
+        output[100 - item["closeness"]] = {
+            "id": item["id"],
+            "data": item["quiz_data"]
+        }
     return output

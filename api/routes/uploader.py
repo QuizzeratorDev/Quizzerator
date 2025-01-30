@@ -25,19 +25,26 @@ def uploader():
         #print(term)
         #utils.save_json(term, filename)
         permitted = True
-        if not file_is_new:
+        if not file_is_new and not file_is_temporary:
             user_who_created_quiz = firebase_db.download_quiz(str(quiz_id),"quizCollection")["user"]
             permitted = session["user"]["uid"] == user_who_created_quiz["uid"]
         if permitted:
-            quiz_to_save = {
-                "quiz_name": request.json["name"],
-                "user": {
-                    "uid": session["user"]["uid"],
-                    "email": session["user"]["email"]
-                },
-                "time_created": str(time.time()),
-                "quiz_data": quiz_data
-            }
+            if not file_is_temporary:
+                quiz_to_save = {
+                    "quiz_name": request.json["name"],
+                    "user": {
+                        "uid": session["user"]["uid"],
+                        "email": session["user"]["email"]
+                    },
+                    "time_created": str(time.time()),
+                    "quiz_data": quiz_data
+                }
+            else:
+                quiz_to_save = {
+                    "quiz_name": request.json["name"],
+                    "time_created": str(time.time()),
+                    "quiz_data": quiz_data
+                }
             firebase_db.upload_quiz(filename, quiz_to_save, collection)
             return filename
         else:

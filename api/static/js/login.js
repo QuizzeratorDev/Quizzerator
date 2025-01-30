@@ -15,7 +15,32 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
+async function onPageLoad() {
+    let session_user = JSON.parse(await fetch('/authenticator', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"mode": "getsessioninfo"})
+      })
+      .then(response => response.text())
+      .catch(error => {
+        console.error('Error:', error);
+      }))
+    
+    console.log(session_user)
+    if (session_user["email"] !="") {
+        document.querySelector(".signup").hidden = true
+        document.querySelector(".login").hidden = true
+        document.querySelector(".signout").hidden = false
+    }
+    else{
+        document.querySelector(".signup").hidden = false
+        document.querySelector(".login").hidden = false
+        document.querySelector(".signout").hidden = true
+    }
+        
+}
 async function login_user() {
     const auth = getAuth();
     let _email = document.querySelector(".login_emailInput").value
@@ -47,7 +72,8 @@ async function login_user() {
             console.error('Error:', error);
             });
     }
-        
+    post("/", {
+    })
 }
 window.addEventListener("DOMContentLoaded", () => {
 const loginButton = document.getElementById("loginButton");
@@ -56,6 +82,15 @@ loginButton.addEventListener("click", login_user);
 window.addEventListener("DOMContentLoaded", () => {
 const loginButton = document.getElementById("signupButton");
 loginButton.addEventListener("click", signup);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+const loginButton = document.getElementById("signOutButton");
+loginButton.addEventListener("click", signout);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    onPageLoad()
 });
 async function signup(){
     let _email = document.querySelector(".emailInput").value
@@ -74,4 +109,48 @@ async function signup(){
     
     console.log(uuid)
 
+    post("/", {
+    })
+
 }
+
+async function signout(){
+    let uuid = await fetch('/authenticator', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({mode: "signout"})
+    })
+    .then(response => response.text())
+    .catch(error => {
+    console.error('Error:', error);
+    });
+    
+    console.log(uuid)
+
+    post("/", {
+    })
+
+}
+
+function post(path, params, method='POST') {
+    const form = document.createElement('form');
+    form.method = method;
+    form.action = path;
+  
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = key;
+        hiddenField.value = params[key];
+  
+        form.appendChild(hiddenField);
+      }
+    }
+  
+    document.body.appendChild(form);
+    form.submit();
+  }
+  
