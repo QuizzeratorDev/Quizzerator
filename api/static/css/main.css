@@ -172,7 +172,7 @@ input[type="text"]:focus, input[type="search"]:focus {
 
 .search-result:hover {
     transform: perspective(1000px) rotateX(var(--rotateX)) rotateY(var(--rotateY));
-    border: 2px solid var(--accent-primary);
+    border: 2px solid var(--accent-primary);    /* fesaf */
 }
 
 .term-definition-div {
