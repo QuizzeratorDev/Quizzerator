@@ -3,39 +3,187 @@
 <title>Quizzeration</title>
 <head>
     <meta charset="UTF-8">
-    
-    <link rel="stylesheet" type="text/css" href="\static\css\login.css">
-    <script src="\static\js\login.js" type="module"></script>
-    <script type="module">
-        
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #1d4ed8;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-card {
+            background: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            background: linear-gradient(to right, #3b82f6, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-form {
+            margin-bottom: 2rem;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        button.primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        button.primary:hover {
+            background: var(--accent-secondary);
+        }
+
+        button.secondary {
+            background: transparent;
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        button.secondary:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider span {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding: 0 1rem;
+        }
+
+        .signout {
+            text-align: center;
+        }
+
+        .signout button {
+            max-width: 200px;
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .signout button:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
 </head>
+<script src="\static\js\login.js" type="module"></script>
 
-
-<body class="page-body">
-    <div class="main">
-        <div class="signup">
-            <input type="text" class="emailInput">
-            <br>
-            <input type="text" class="passwordInput">
-            <br>
-            <button type="button" id="signupButton">Sign Up</button>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <div class="signup">
+                <h3 class="auth-title">Create Account</h3>
+                <div class="auth-form">
+                    <input type="email" class="emailInput" placeholder="Enter your email">
+                    <input type="password" class="passwordInput" placeholder="Choose a password">
+                    <button type="button" class="primary" id="signupButton">Sign Up</button>
+                </div>
+            </div>
+            
+            <div class="divider">
+                <span>or continue with</span>
+            </div>
+            
+            <div class="login">
+                <h3 class="auth-title">Welcome Back</h3>
+                <div class="auth-form">
+                    <input type="email" class="login_emailInput" placeholder="Enter your email">
+                    <input type="password" class="login_passwordInput" placeholder="Enter your password">
+                    <button type="button" class="secondary" id="loginButton">Sign In</button>
+                </div>
+            </div>
         </div>
-        
-        <div class="login">
-            <input type="text" class="login_emailInput">
-            <br>
-            <input type="text" class="login_passwordInput">
-            <br>
-            <button type="button" id="loginButton">Log in</button>
-        </div>
 
-        <div class="signout"> 
+        <div class="signout">
             <button type="button" id="signOutButton">Sign Out</button>
         </div>
     </div>
-    
-    
-    
-    
 </body>
+</html>
