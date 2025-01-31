@@ -1,66 +1,145 @@
-html {
-    font-family: Segoe UI;
+:root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #1d4ed8;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --border-radius: 12px;
 }
 
-input {
-    border: none;
-    text-align: top;
-    width: 40%;
-    border: 2px solid rgb(218, 218, 218);
-    padding: 5px 5px;
-    outline-color: transparent;
-    transition: all 0.1s ease-out;
-    width: 90%;
-    
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
-input:focus {
-    border: 2px solid rgb(218, 218, 218);
-    transition: all 0.1s ease-in;
-}
-
-input:focus {
-    border: 2px solid cornflowerblue;
-    transition: all 0.2s ease-in;
-}
-
-
-.signup {
-    padding: 20px 20px;
-    border: 5px solid gray;
-    border-radius: 5px;
-    align-items: center;
-}
-
-.login {
-    padding: 20px 20px;
-    border: 5px solid gray;
-    border-radius: 5px;
-    align-items: center;
-}
-
-.main {
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 50%;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.container {
+    width: 100%;
     max-width: 400px;
 }
 
-button {
-    background-color: rgb(255, 255, 255);
-    transition: all 0.5s ease-out;
-    border: 1px solid black;
-    border-radius: 5px;
-    width: 100%;
-    padding: 10px 10px;
-}
-button:hover {
-    background-color: rgb(216, 216, 216);
-    transition: all 0.1s ease-in;
+.auth-card {
+    background: var(--bg-secondary);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
 }
 
-button:active {
-    border: 1px solid rgb(255, 255, 255);
-    transition: all 0.1s ease-in;
+.auth-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    background: linear-gradient(to right, #3b82f6, #2dd4bf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-form {
+    margin-bottom: 2rem;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button.primary {
+    background: var(--accent-primary);
+    color: white;
+}
+
+button.primary:hover {
+    background: var(--accent-secondary);
+}
+
+button.secondary {
+    background: transparent;
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+button.secondary:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.divider {
+    text-align: center;
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 0 1rem;
+}
+
+.signout {
+    text-align: center;
+}
+
+.signout button {
+    max-width: 200px;
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+.signout button:hover {
+    background: rgba(239, 68, 68, 0.1);
 }
