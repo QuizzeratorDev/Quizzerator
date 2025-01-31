@@ -180,7 +180,7 @@
                 <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">Create New Quiz</button>
                 <input type="search" class="search_bar" placeholder="Search for quizzes..." style="margin-bottom: 0.75rem;">
                 <button type="button" onclick="refreshRecs()" class="secondary" style="margin-bottom: 0.75rem;">Search</button>
-                <div class="search-results">
+                <div class="search-results" style="display: grid; gap: 1rem;">
                     <style>
                         .search-results {
                             display: grid;
@@ -193,13 +193,14 @@
                             padding: 1.5rem;
                             border: 1px solid rgba(255, 255, 255, 0.1);
                             cursor: pointer;
-                            transition: transform 0.3s;
+                            transition: all 0.3s;
                             transform-style: preserve-3d;
                             perspective: 1000px;
                         }
 
                         .search-result:hover {
                             transform: perspective(1000px) rotateX(var(--rotateX)) rotateY(var(--rotateY));
+                            border: 2px solid var(--accent-primary);
                         }
                     </style>
                     <script>
