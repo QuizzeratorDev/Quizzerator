@@ -4,13 +4,14 @@ from firebase_admin import firestore, json
 from flask import jsonify
 from rapidfuzz import fuzz
 
-import os,json
+import os
+import json
 
 db = 0
 def setup():
     
     #cred_dict = json.loads(os.environ.get('FIREBASE_CREDENTIALS'))
-    cred_dict=r"C:\Users\Theo Liang\Desktop\Coding\Flask\quizzerator-firebase-adminsdk-60izn-86c8037eca.json"
+    cred_dict="../quizzerator-firebase-adminsdk-60izn-86c8037eca.json"
 
 
     print(cred_dict)

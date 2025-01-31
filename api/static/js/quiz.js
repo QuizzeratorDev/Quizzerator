@@ -22,21 +22,33 @@ function getKeyByValue(object, value) {
 }
 
 async function registerMarkQuestion(buttonPressed) {
-  let div = buttonPressed.parentElement
-  let answer = div.querySelector(".answerInput").value
-  let question = div.querySelector("meta[name='question-meta']").dataset.question
-  //let result = markQuestion(question, answer)
+    let questionCard = buttonPressed.closest('.question-card');
+    let div = buttonPressed.parentElement;
+    let answer = div.querySelector(".answerInput").value;
+    let question = questionCard.querySelector("meta[name='question-meta']").dataset.question;
 
-  result = await markQuestion(question, answer)
+    result = await markQuestion(question, answer);
 
-  div.querySelector(".answerStatus").innerHTML = result["Output"]
-  div.querySelector(".correctAnswer").hidden = true
-  if (result["Output"] == "Incorrect") {
-    div.querySelector(".correctAnswer").hidden = false
-    div.querySelector(".correctAnswer").innerHTML = " Correct Answer is: ".concat(result["Answer"])
-  }
-  
-  
+    let answerStatus = questionCard.querySelector(".answerStatus");
+    let correctAnswer = questionCard.querySelector(".correctAnswer");
+    
+    // Remove previous styling
+    questionCard.classList.remove('correct', 'incorrect');
+    answerStatus.classList.remove('correct', 'incorrect');
+    
+    if (result["Output"] === "Correct") {
+        questionCard.classList.add('correct');
+        answerStatus.classList.add('correct');
+        correctAnswer.hidden = true;
+    } else {
+        questionCard.classList.add('incorrect');
+        answerStatus.classList.add('incorrect');
+        correctAnswer.hidden = false;
+        correctAnswer.innerHTML = "Correct Answer: " + result["Answer"];
+    }
+    
+    answerStatus.innerHTML = result["Output"];
+    answerStatus.hidden = false;
 }
 
 function returnToIndex() {
