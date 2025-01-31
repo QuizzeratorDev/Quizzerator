@@ -27,24 +27,6 @@
                 <input type="search" class="search_bar" placeholder="Search for quizzes..." style="margin-bottom: 0.75rem;">
                 <button type="button" onclick="refreshRecs()" class="secondary" style="margin-bottom: 0.75rem;">Search</button>
                 <div class="search-results" style="display: grid; gap: 1rem;">
-                    <script>
-                        document.addEventListener('mousemove', e => {
-                            document.querySelectorAll('.search-result').forEach(card => {
-                                const rect = card.getBoundingClientRect();
-                                const x = e.clientX - rect.left;
-                                const y = e.clientY - rect.top;
-                                
-                                const centerX = rect.width / 2;
-                                const centerY = rect.height / 2;
-                                
-                                const rotateX = (y - centerY) / 7;
-                                const rotateY = (centerX - x) / 7;
-                                
-                                card.style.setProperty('--rotateX', `${rotateX}deg`);
-                                card.style.setProperty('--rotateY', `${rotateY}deg`);
-                            });
-                        });
-                    </script>
                 </div>
             </div>
 

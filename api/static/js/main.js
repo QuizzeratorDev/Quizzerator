@@ -349,7 +349,7 @@ async function refreshRecs() {
     var quizInfo = document.createElement("p")
     console.log(rec_)
     quizName.innerHTML = `${rec_["data"]["quiz_name"]}`;
-    quizCreator.innerHTML = `${rec_["data"]["user"]["email"].replace(/(?<=.{4}).*(?=@)/g, '****')}`
+    quizCreator.innerHTML = `${rec_["data"]["user"]["display_name"]}`
     quizInfo.innerHTML = `${Object.keys(rec_["data"]["quiz_data"]).length} terms`
 
     quizName.className= "search-result-name"

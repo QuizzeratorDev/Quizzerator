@@ -40,6 +40,16 @@ body {
     margin-bottom: 2rem;
 }
 
+.user-info {
+    background: var(--bg-secondary);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
+}
+
+
+
 .auth-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -54,8 +64,7 @@ body {
     margin-bottom: 2rem;
 }
 
-input[type="email"],
-input[type="password"] {
+.signupInput {
     width: 100%;
     padding: 0.75rem 1rem;
     background: rgba(255, 255, 255, 0.05);
@@ -67,12 +76,12 @@ input[type="password"] {
     transition: all 0.2s;
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
+.signupInput:focus {
     outline: none;
     border-color: var(--accent-primary);
     background: rgba(255, 255, 255, 0.1);
 }
+
 
 button {
     width: 100%;

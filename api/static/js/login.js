@@ -30,14 +30,14 @@ async function onPageLoad() {
     
     console.log(session_user)
     if (session_user["email"] !="") {
-        document.querySelector(".signup").hidden = true
-        document.querySelector(".login").hidden = true
-        document.querySelector(".signout").hidden = false
+        document.querySelector(".auth-card").hidden = true
+        document.querySelector(".user-info").hidden = false
+        document.querySelector(".display-name").innerHTML = `Logged in as ${session_user["display_name"]}`
     }
     else{
-        document.querySelector(".signup").hidden = false
-        document.querySelector(".login").hidden = false
-        document.querySelector(".signout").hidden = true
+        document.querySelector(".auth-card").hidden = false
+        document.querySelector(".user-info").hidden = true
+        
     }
         
 }
@@ -56,8 +56,6 @@ async function login_user() {
         const errorMessage = error.message;
         return "Could not sign in"
     });
-
-    console.log(user_info)
 
     if (user_info != "Could not sign in"){
         fetch('/authenticator', {
@@ -95,12 +93,13 @@ window.addEventListener("DOMContentLoaded", () => {
 async function signup(){
     let _email = document.querySelector(".emailInput").value
     let _password = document.querySelector(".passwordInput").value
+    let _username = document.querySelector(".usernameInput").value
     let uuid = await fetch('/authenticator', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({mode: "signup", email: _email, password: _password})
+    body: JSON.stringify({mode: "signup", username: _username, email: _email, password: _password})
     })
     .then(response => response.text())
     .catch(error => {

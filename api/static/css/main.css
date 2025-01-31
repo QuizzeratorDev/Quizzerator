@@ -81,7 +81,10 @@ button {
 
 button:hover {
     background: var(--accent-secondary);
-    transform: translateY(-1px);
+}
+
+button:active  {
+    transform: translateY(-2px);
 }
 
 button.secondary {
@@ -163,17 +166,20 @@ input[type="text"]:focus, input[type="search"]:focus {
     background: var(--bg-secondary);
     border-radius: var(--border-radius);
     padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    transition: all 0.3s;
-    transform-style: preserve-3d;
-    perspective: 1000px;
 }
 
 .search-result:hover {
-    transform: perspective(1000px) rotateX(var(--rotateX)) rotateY(var(--rotateY));
     border: 2px solid var(--accent-primary);
+    transition: all 0.2s;
 }
+
+.search-result:active  {
+    transform: translateX(5px);
+    transition: all 0.2s;
+}
+
 
 .term-definition-div {
     display: flex;

@@ -34,7 +34,8 @@ def uploader():
                     "quiz_name": request.json["name"],
                     "user": {
                         "uid": session["user"]["uid"],
-                        "email": session["user"]["email"]
+                        "email": session["user"]["email"],
+                        "display_name": session["user"]["display_name"]
                     },
                     "time_created": str(time.time()),
                     "quiz_data": quiz_data
