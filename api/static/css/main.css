@@ -31,7 +31,7 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
-    overflow: hidden; /* Hide scrollbars */
+    overflow: hidden;
 }
 
 .container {
@@ -52,6 +52,11 @@ body {
     border-bottom-right-radius: var(--border-radius);
 }
 
+.topnav-left {
+    display: flex;
+    align-items: center;
+}
+
 .page-title h3 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -62,19 +67,27 @@ body {
 
 .master {
     display: grid;
-    grid-template-columns: 300px 1fr;
     gap: 2rem;
 }
 
 .sidebar {
     background: var(--bg-secondary);
     padding: 1.5rem;
-    border-radius: var(--border-radius);
     height: 80%;
+    overflow: hidden scroll;
+    padding-top: 3.5rem;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transition: left 0.3s ease, background 0.3s ease;
+    z-index: 999;
 }
 
 .main {
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
     padding: 2rem;
     border-radius: var(--border-radius);
     height: 80%;
@@ -139,7 +152,7 @@ input[type="text"]:focus, input[type="search"]:focus {
 }
 
 .quiz-settings {
-    display: flex;
+    display: grid;
     gap: 1rem;
     margin-bottom: 2rem;
 }
@@ -152,7 +165,6 @@ input[type="text"]:focus, input[type="search"]:focus {
     height: 70%;
     display: grid;
     gap: 1rem;
-    overflow: hidden scroll;
 }
 
 
@@ -232,4 +244,67 @@ input[type="text"]:focus, input[type="search"]:focus {
 
 .removebutton:hover {
     background: rgba(239, 68, 68, 0.1);
+}
+
+.burger-menu {
+    position: static;
+    margin-right: 1rem;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.burger-icon {
+    width: 30px;
+    height: 20px;
+    position: relative;
+}
+
+.burger-icon span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: var(--accent-primary);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.burger-icon span:nth-child(1) { top: 0; }
+.burger-icon span:nth-child(2) { top: 8px; }
+.burger-icon span:nth-child(3) { top: 16px; }
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+    z-index: 999;
+} 
+
+.burger-icon.active {
+    right: -165px;
+    transition: right 10s all;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.burger-icon.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.burger-icon.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-icon.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
 }

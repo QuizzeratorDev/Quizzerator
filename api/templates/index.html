@@ -13,38 +13,45 @@
 <meta name="url-params" data-url_quiz_name="{{url_quiz_name}}">
 <body onload="onPageLoad()">
     <style>
-        /**
-        * Reinstate scrolling for non-JS clients
-        */
         .simplebar-content-wrapper {
-          scrollbar-width: auto;
-          -ms-overflow-style: auto;
+            scrollbar-width: auto;
+            -ms-overflow-style: auto;
         }
     
         .simplebar-content-wrapper::-webkit-scrollbar,
         .simplebar-hide-scrollbar::-webkit-scrollbar {
-          display: initial;
-          width: initial;
-          height: initial;
+            display: initial;
+            width: initial;
+            height: initial;
         }
-      </style>
+    </style>
     <div class="container">
         <nav class="topnav">
-            <div class="page-title">
-                <h3>Quizzeration</h3>
+            <div class="topnav-left">
+                <div class="burger-menu">
+                    <div class="burger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            
+                <div class="page-title">
+                    <h3>Quizzeration</h3>
+                </div>
             </div>
+            
             <div class="userinfo">
                 <button onclick="redirect_to_login_page()">{{profilemessage}}</button>
             </div>
         </nav>
 
         <div class="master">
-            <div class="sidebar">
+            <div class="sidebar" style="background: var(--bg-secondary);">
                 <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">Create New Quiz</button>
                 <input type="search" class="search_bar" placeholder="Search for quizzes..." style="margin-bottom: 0.75rem;">
                 <button type="button" onclick="refreshRecs()" class="secondary" style="margin-bottom: 0.75rem;">Search</button>
                 <div class="search-results"></div>
-                
             </div>
 
             <div class="main">
@@ -69,5 +76,22 @@
     </div>
     
     <script src='https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js'></script><script src="\static\js\main.js"></script>
+
+    <script>
+        document.querySelector('.burger-menu').addEventListener('click', function() {
+            this.querySelector('.burger-icon').classList.toggle('active');
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const burgerMenu = document.querySelector('.burger-menu');
+    
+            if (!sidebar.contains(event.target) && !burgerMenu.contains(event.target) && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                burgerMenu.querySelector('.burger-icon').classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
