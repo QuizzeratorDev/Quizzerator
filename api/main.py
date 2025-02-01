@@ -9,15 +9,22 @@ import routes.index as index
 import routes.quiz_searcher as quiz_searcher
 import routes.authenticator as authenticator
 import routes.login_page as login_page
+import routes.live_quiz as live_quiz
 import scheduler_tasks.clear_database as clear_database
 import firebase_db as firebase_db
 from apscheduler.schedulers.background import BackgroundScheduler
+from flask_socketio import SocketIO, emit, send, join_room, leave_room, rooms
+
+import subprocess
+
 
 firebase_db.setup()
 
 app = Flask(__name__)
 app.secret_key = "6BtdCaEka6xjV4DVNxZ3pZB8mXJ70sig"
 scheduler = BackgroundScheduler()
+socketio = SocketIO(app,debug=True,cors_allowed_origins='*')
+
 
 @app.route('/', endpoint="index", methods=["GET", "POST"])
 def index_():
@@ -46,6 +53,47 @@ def authenticateuser():
 @app.route("/login", methods=["GET", "POST"])
 def loginpage():
     return login_page.display_login_page()
+
+@app.route("/live_quiz", methods=["GET", "POST"])
+def live_quiz_connect():
+    return live_quiz.live_quiz_connect()
+
+
+
+@socketio.on("client_data")
+def test_message(data):
+    print("Received" + str(data))
+    emit('server_data', {'data': "123"})
+
+
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    print(request.sid)
+    print(dict(socketio.server.manager.rooms["/"]["room123"]))
+    #ADD ALL SIDS TO FIRESTORE
+    #SID: USERNAME, DATA = {}
+    #Get username from session["display_name"]
+    #When client disconnects, socketio automatically removes them from the room
+    emit("toast_messages", {"data": username + ' has entered the room'}, to=room)
+    
+@socketio.on('create')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    
+    #print(socketio.server.manager.rooms["/"]["room123"])
+    emit("toast_messages", {"data": username + ' has entered the room'}, to=room)
+    
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    emit("toast_messages", {"data": username + ' has left the room.'}, to=room)
 
 def clear_database_task():
     clear_database.clear()

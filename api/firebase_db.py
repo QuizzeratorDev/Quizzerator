@@ -45,6 +45,13 @@ def download_quiz(name,collection):
         question_data = doc.to_dict()
         return question_data
 
+def update_quiz(name,new_key, new_value, collection):
+    global db
+    doc_ref = db.collection(collection).document(name)
+    doc = doc_ref.get()
+    if doc.exists:
+        doc_ref.update({new_key: new_value})
+
 def delete_quiz(name, collection):
     global db
     doc_ref = db.collection(collection).document(name)
