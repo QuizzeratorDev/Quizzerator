@@ -16,6 +16,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask_socketio import SocketIO, emit, send, join_room, leave_room, rooms
 
 import subprocess
+from flask import session
 
 
 firebase_db.setup()
@@ -71,13 +72,41 @@ def on_join(data):
     username = data['username']
     room = data['room']
     join_room(room)
-    print(request.sid)
-    print(dict(socketio.server.manager.rooms["/"]["room123"]))
+
+    session_user = session["user"]["display_name"]
+    #print(request.sid)
+    #print(dict(socketio.server.manager.rooms["/"]["room123"]).keys()) #THIS GETS ALL SIDS IN ROOM
+
+    #TODO:
     #ADD ALL SIDS TO FIRESTORE
     #SID: USERNAME, DATA = {}
     #Get username from session["display_name"]
     #When client disconnects, socketio automatically removes them from the room
-    emit("toast_messages", {"data": username + ' has entered the room'}, to=room)
+    #Create firestore array for all rooms, and check whether room exists before joining
+    new_data = {
+        "display_name": session_user,
+        "sid": request.sid,
+        }
+    if not room in firebase_db.get_all_keys("liveRooms"):
+        firebase_db.upload_quiz(room, {"users": [new_data]}, "liveRooms")
+    else:
+        current_users = firebase_db.download_quiz(room, "liveRooms")["users"]
+
+        #ERASES all users not in flask-socketio room
+        server_room = dict(socketio.server.manager.rooms["/"]["room123"]).keys()
+        for user_num in range(len(current_users)-1, -1, -1):
+            user = current_users[user_num]
+            if not user["sid"] in server_room:
+                current_users.remove(user)
+        current_users.append(new_data)
+
+
+        firebase_db.update_quiz(room, "users", current_users, "liveRooms")
+    
+    all_users = firebase_db.download_quiz(room, "liveRooms")
+    print(all_users)
+
+    emit("toast_messages", {"data": session_user + ' has entered the room. All current users' + str(all_users)}, to=room)
     
 @socketio.on('create')
 def on_join(data):

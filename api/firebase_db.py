@@ -52,6 +52,16 @@ def update_quiz(name,new_key, new_value, collection):
     if doc.exists:
         doc_ref.update({new_key: new_value})
 
+def append_to_document(name,new_key, new_value, collection):
+    global db
+    doc_ref = db.collection(collection).document(name)
+    doc = doc_ref.get()
+    if doc.exists:
+        current_users = doc.to_dict()[new_key]
+        current_users.append(new_value)
+        print(current_users)
+        doc_ref.update({new_key: current_users})
+
 def delete_quiz(name, collection):
     global db
     doc_ref = db.collection(collection).document(name)
@@ -120,3 +130,11 @@ def get_all_documents(collection):
             "data": item["quiz_data"]
         }
     return output
+
+def get_all_keys(collection):
+    docs = db.collection(collection).stream()
+    result = []
+    i = 0
+    for doc in docs:
+        result.append(doc.id)
+    return result
