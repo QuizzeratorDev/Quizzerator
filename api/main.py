@@ -17,6 +17,7 @@ from flask_socketio import SocketIO, emit, send, join_room, leave_room, rooms
 
 import subprocess
 from flask import session
+import uuid
 
 
 firebase_db.setup()
@@ -69,53 +70,64 @@ def test_message(data):
 
 @socketio.on('join')
 def on_join(data):
-    username = data['username']
     room = data['room']
     join_room(room)
 
     session_user = session["user"]["display_name"]
     #print(request.sid)
     #print(dict(socketio.server.manager.rooms["/"]["room123"]).keys()) #THIS GETS ALL SIDS IN ROOM
-
-    #TODO:
-    #ADD ALL SIDS TO FIRESTORE
-    #SID: USERNAME, DATA = {}
-    #Get username from session["display_name"]
-    #When client disconnects, socketio automatically removes them from the room
-    #Create firestore array for all rooms, and check whether room exists before joining
     new_data = {
         "display_name": session_user,
         "sid": request.sid,
         }
-    if not room in firebase_db.get_all_keys("liveRooms"):
-        firebase_db.upload_quiz(room, {"users": [new_data]}, "liveRooms")
-    else:
-        current_users = firebase_db.download_quiz(room, "liveRooms")["users"]
+    room_db = firebase_db.download_quiz(room, "liveRooms")
+    if room in firebase_db.get_all_keys("liveRooms"):
+        current_users = room_db["users"]
 
         #ERASES all users not in flask-socketio room
-        server_room = dict(socketio.server.manager.rooms["/"]["room123"]).keys()
-        for user_num in range(len(current_users)-1, -1, -1):
-            user = current_users[user_num]
-            if not user["sid"] in server_room:
-                current_users.remove(user)
-        current_users.append(new_data)
+        if room in dict(socketio.server.manager.rooms["/"]):
+            server_room = dict(socketio.server.manager.rooms["/"][room]).keys()
+            for user_num in range(len(current_users)-1, -1, -1):
+                user = current_users[user_num]
+                if not user["sid"] in server_room:
+                    current_users.remove(user)
+                if user["sid"] == request.sid:
+                    current_users.remove(user)
+            current_users.append(new_data)
 
+            firebase_db.update_quiz(room, "users", current_users, "liveRooms")
+            all_users = current_users
+            #all_users = firebase_db.download_quiz(room, "liveRooms")
+            emit("room_data", {"data": all_users}, to=room)
+            emit("toast_messages", {"data": session_user + ' has entered the room.'}, to=room)
 
-        firebase_db.update_quiz(room, "users", current_users, "liveRooms")
-    
-    all_users = firebase_db.download_quiz(room, "liveRooms")
-    print(all_users)
-
-    emit("toast_messages", {"data": session_user + ' has entered the room. All current users' + str(all_users)}, to=room)
-    
+@socketio.on("get_room_info")
+def on_get_info(data):
+    room = data["room"]
+    all_users = firebase_db.download_quiz(room, "liveRooms")["users"]
+    for user_num in range(len(all_users)-1, -1, -1):
+        
+        user = all_users[user_num]
+        server_room = dict(socketio.server.manager.rooms["/"][room]).keys()
+        if not user["sid"] in server_room:
+            all_users.remove(user)
+    firebase_db.update_quiz(room, "users", all_users, "liveRooms")
+    emit("room_data", {"data": all_users})
 @socketio.on('create')
 def on_join(data):
-    username = data['username']
-    room = data['room']
-    join_room(room)
+    
+    session_user = session["user"]["display_name"]
+    new_data = {
+        "display_name": session_user,
+        "sid": request.sid,
+    }
+    room_id = str(uuid.uuid1())[:7]
+    join_room(room_id)
+    firebase_db.upload_quiz(room_id, {"host": new_data, "users": []}, "liveRooms")
     
     #print(socketio.server.manager.rooms["/"]["room123"])
-    emit("toast_messages", {"data": username + ' has entered the room'}, to=room)
+    emit("room_creation_data", {"data": room_id})
+    emit("toast_messages", {"data": "Room created"}, to=room_id)
     
 @socketio.on('leave')
 def on_leave(data):

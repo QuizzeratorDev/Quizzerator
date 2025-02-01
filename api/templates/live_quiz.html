@@ -9,6 +9,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <body>
-    <button onclick="sendData()">Send Data</button>
+    <button onclick="createRoom()">Create Room</button>
+    <p class="room-id-display"></p> 
+    <br>
+    <label>Enter Room ID:</label>
+    <input class="quiz-id-input">
+    <button onclick="joinRoom()">Join Room</button>
+
+    
     <script src="\static\js\live_quiz.js"></script>
+    <div class="user-list">
+
+    </div>
 </body>
