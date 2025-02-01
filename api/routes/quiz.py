@@ -11,8 +11,8 @@ def generate_quiz():
         terms = list(entries.keys())
 
         #Turns entries dictionary {term: definition} into terms dictionary {question number: term}
-        for question_num in range(len(terms)):
-            output[str(question_num)] = terms[question_num]
+        for question_num in terms:
+            output[str(question_num)] = entries[question_num][0]
     return render_template("quiz.html", \
                                terms_dic=output,
                                quiz_name = quizname,

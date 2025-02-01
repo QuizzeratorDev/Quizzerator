@@ -39,7 +39,7 @@
 
         {% for question_num, question in terms_dic.items() %}
         <div id="question{{question_num}}" class="question-card">
-            <meta name="question-meta" data-question="{{question}}">
+            <meta name="question-meta" data-question="{{question}}" data-question_num="{{question_num}}">
             <p><strong>Question {{question_num}}:</strong> {{question}}</p>
             <div class="answer-section">
                 <input class="answerInput" id="answerInput{{question_num}}" type="text" placeholder="Type your answer...">

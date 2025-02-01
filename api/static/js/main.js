@@ -8,21 +8,26 @@ var recommendations = []
 
 var currentQuizID = -1
 
+////var search_results = document.querySelector(".search-results")
 
-
-
-
-
+//new SimpleBar(search_results, {
+  //autoHide: true,
+//});
 
 
 
 // ON PAGE LOAD //
 async function onPageLoad() {
+  
   let url_quiz_name = document.querySelector("meta[name='url-params']").dataset.url_quiz_name
   if (url_quiz_name != "*") {
     getData(url_quiz_name)
     
   }
+
+  
+
+
   refreshRecs()
 
   let session_user = JSON.parse(await fetch('/authenticator', {
@@ -79,7 +84,7 @@ function addEntry(term_text="", def_text="") {
   
   termInput.oninput = function() {
     this.style.height = "auto";
-    this.style.height = (this.scrollHeight-10) +'px';
+    this.style.height = (this.scrollHeight+2) +'px';
     
   }
   //Creates a definition input with:
@@ -91,7 +96,7 @@ function addEntry(term_text="", def_text="") {
   defInput.rows="1"
   defInput.oninput =function() {
     this.style.height = "auto"; 
-    this.style.height = (this.scrollHeight-10) +'px';
+    this.style.height = (this.scrollHeight+2) +'px';
   }
 
   //Creates a button to remove the entry, with onclick calling removeEntry and referencing the button's id, with:
@@ -102,11 +107,17 @@ function addEntry(term_text="", def_text="") {
   removeButton.className = "removebutton";
   removeButton.setAttribute('onclick','registerRemoveEntry(this)')
 
+  var reorderButton = document.createElement("button")
+  reorderButton.type="button"
+  reorderButton.innerHTML = "^"
+  removeButton.className = "reorderButton";
+
   //Adds 1 to the ID counter
   id_count++;
 
   //Adds a div to the termParent
   termParent.appendChild(entry_div);
+
 
   //Adds termInput, defInput and removeButton to div
   entry_div.appendChild(termInput);
@@ -127,7 +138,7 @@ function loadEntries(entries) {
   for (let entry of Object.keys(entries)) {
     //Iterates through keys (terms) of entries dictionary
     //Adds an entry with term text and definition
-    addEntry(entry, entries[entry])
+    addEntry(entries[entry][0], entries[entry][1])
   }
 }
 
@@ -164,14 +175,14 @@ function getEntries() {
     let div = document.getElementById("entry_div" + String(i));
     let term = div.querySelector(".term").value;
     let def = div.querySelector(".definition").value;
-    output[term] = def;
+    output[i] = [term, def];
     
   }
   return output
 }
 
 async function loadQuizData(data){
-  let email = data["user"]["email"]
+  let quiz_creator_name = data["user"]["display_name"]
   let quiz_creator_uid = data["user"]["uid"]
 
 
@@ -194,7 +205,8 @@ async function loadQuizData(data){
     perms = "Can edit"
     document.querySelector(".save").hidden = false;
   }
-  document.querySelector(".quiz_email").innerHTML = email
+  document.querySelector(".quiz_email").innerHTML = `Created by ${quiz_creator_name}`
+  console.log(perms)
   document.querySelector(".quiz_perms").innerHTML = perms
 }
 
@@ -382,3 +394,7 @@ function redirect_to_login_page() {
   post("/login", {
   })
 }
+
+
+
+

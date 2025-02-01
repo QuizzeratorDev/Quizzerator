@@ -7,10 +7,27 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="\static\js\main.js"></script>
+
 <meta name="url-params" data-url_quiz_name="{{url_quiz_name}}">
 <body onload="onPageLoad()">
+    <style>
+        /**
+        * Reinstate scrolling for non-JS clients
+        */
+        .simplebar-content-wrapper {
+          scrollbar-width: auto;
+          -ms-overflow-style: auto;
+        }
+    
+        .simplebar-content-wrapper::-webkit-scrollbar,
+        .simplebar-hide-scrollbar::-webkit-scrollbar {
+          display: initial;
+          width: initial;
+          height: initial;
+        }
+      </style>
     <div class="container">
         <nav class="topnav">
             <div class="page-title">
@@ -26,8 +43,8 @@
                 <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">Create New Quiz</button>
                 <input type="search" class="search_bar" placeholder="Search for quizzes..." style="margin-bottom: 0.75rem;">
                 <button type="button" onclick="refreshRecs()" class="secondary" style="margin-bottom: 0.75rem;">Search</button>
-                <div class="search-results" style="display: grid; gap: 1rem;">
-                </div>
+                <div class="search-results"></div>
+                
             </div>
 
             <div class="main">
@@ -39,8 +56,8 @@
                 </div>
 
                 <div class="quiz-settings">
-                    <button type="button" onclick="saveQuiz()" id="teste">Save Quiz</button>
-                    <button type="button" onclick="playQuiz()" id="playquiz" class="secondary">Start Quiz</button>
+                    <button type="button" onclick="saveQuiz()" id="teste" class="save">Save Quiz</button>
+                    <button type="button" onclick="playQuiz()" id="playquiz" class="secondary" class="start">Start Quiz</button>
                 </div>
                 
                 <div class="termParent">
@@ -50,5 +67,7 @@
             </div>
         </div>
     </div>
+    
+    <script src='https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js'></script><script src="\static\js\main.js"></script>
 </body>
 </html>

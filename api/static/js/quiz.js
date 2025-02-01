@@ -25,7 +25,7 @@ async function registerMarkQuestion(buttonPressed) {
     let questionCard = buttonPressed.closest('.question-card');
     let div = buttonPressed.parentElement;
     let answer = div.querySelector(".answerInput").value;
-    let question = questionCard.querySelector("meta[name='question-meta']").dataset.question;
+    let question = questionCard.querySelector("meta[name='question-meta']").dataset.question_num;
 
     result = await markQuestion(question, answer);
 

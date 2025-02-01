@@ -10,6 +10,16 @@
     --border-radius: 12px;
 }
 
+
+
+textarea {
+    resize: none;
+    overflow: hidden;
+    text-align: center;
+    font-size: 14px;
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -21,6 +31,7 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
+    overflow: hidden; /* Hide scrollbars */
 }
 
 .container {
@@ -59,13 +70,14 @@ body {
     background: var(--bg-secondary);
     padding: 1.5rem;
     border-radius: var(--border-radius);
-    height: fit-content;
+    height: 80%;
 }
 
 .main {
     background: var(--bg-secondary);
     padding: 2rem;
     border-radius: var(--border-radius);
+    height: 80%;
 }
 
 button {
@@ -106,12 +118,14 @@ input[type="text"], input[type="search"] {
     color: var(--text-primary);
     margin-bottom: 1rem;
     font-size: 0.95rem;
+    transition: all 0.2s;
 }
 
 input[type="text"]:focus, input[type="search"]:focus {
     outline: none;
     border-color: var(--accent-primary);
     background: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s;
 }
 
 .quiz-title {
@@ -135,7 +149,10 @@ input[type="text"]:focus, input[type="search"]:focus {
 }
 
 .search-results {
-    margin-top: 1rem;
+    height: 70%;
+    display: grid;
+    gap: 1rem;
+    overflow: hidden scroll;
 }
 
 .add-entry {
@@ -155,11 +172,6 @@ input[type="text"]:focus, input[type="search"]:focus {
     .master {
         grid-template-columns: 1fr;
     }
-}
-
-.search-results {
-    display: grid;
-    gap: 1rem;
 }
 
 .search-result {
