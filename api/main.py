@@ -159,7 +159,7 @@ def on_get_info(data):
             firebase_db.update_quiz(room, "users", all_users, "liveRooms")
 
             #Emits room data to all users
-            emit("room_data", {"data": all_users})
+            emit("room_data", {"data": all_users}, to=room)
 
 
 

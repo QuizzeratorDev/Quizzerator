@@ -8,7 +8,6 @@ var totalUsers = 0;
 var answersEnded = false;
 
 $(document).ready(function(){ 
-    //createRoom();
 
     // Get quiz data from meta tags
     let quizDataMeta = document.querySelector("meta[name='host-quiz-data']");
@@ -53,7 +52,6 @@ $(document).ready(function(){
 });
 
 function createRoom() {
-    document.querySelector(".active-room").hidden = false
     socket.emit("create", {});
     setInterval(function() {
         if (currentRoomID != null) {
