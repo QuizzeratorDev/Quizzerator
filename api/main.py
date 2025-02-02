@@ -161,7 +161,7 @@ def on_get_info(data):
             emit("room_data", {"data": all_users})
 @socketio.on('create')
 def on_join(data):
-    
+    number_of_questions_ = len(session["host_live_quiz_data"]["quiz_data"].keys())
     session_user = session["user"]["display_name"]
     new_data = {
         "display_name": session_user,
@@ -201,21 +201,27 @@ def on_send_question():
     is_host = session["live_quiz_data"]["host"]
     if is_host:
         live_quiz_data = session["host_live_quiz_data"]
+        
         question_num = live_quiz_data["question_num"]
         quiz_data = live_quiz_data["quiz_data"]
         print(quiz_data)
-        current_question, answer = quiz_data[str(question_num)]
         
-        firebase_db.update_quiz(room, "question_" + str(question_num), {
-            "start_timestamp": time.time(),
-            "answers": []
-        }, "liveRooms")
-        
-        emit("receive_question", {"data": {
-            "question_num": question_num,
-            "question": current_question
+        quiz_len = live_quiz_data["quiz_len"]
 
-        }}, to=room)
+        if question_num < quiz_len:
+
+            current_question, answer = quiz_data[str(question_num)]
+            
+            firebase_db.update_quiz(room, "question_" + str(question_num), {
+                "start_timestamp": time.time(),
+                "answers": []
+            }, "liveRooms")
+            
+            emit("receive_question", {"data": {
+                "question_num": question_num,
+                "question": current_question
+
+            }}, to=room)
 
 @socketio.on("start_quiz")
 def on_start_quiz():

@@ -9,6 +9,7 @@ def host_quiz_connect():
             "quiz_data": data,
             "quiz_name": quizname,
             "question_num": 0,
+            "quiz_len": len(data.keys())
         }
     return render_template("host_quiz.html", \
                                quiz_data=data,
