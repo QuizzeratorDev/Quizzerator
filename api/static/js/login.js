@@ -16,6 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 async function onPageLoad() {
+    document.querySelector(".password-status").innerHTML = ""
     let session_user = JSON.parse(await fetch('/authenticator', {
         method: 'POST',
         headers: {
@@ -58,7 +59,7 @@ async function login_user() {
     });
 
     if (user_info != "Could not sign in"){
-        fetch('/authenticator', {
+        await fetch('/authenticator', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -69,9 +70,12 @@ async function login_user() {
             .catch(error => {
             console.error('Error:', error);
             });
+        window.location.replace("/");
     }
-    post("/", {
-    })
+    else {
+        document.querySelector(".password-status").innerHTML = "Incorrect Email or Password!"
+    }
+    
 }
 window.addEventListener("DOMContentLoaded", () => {
 const loginButton = document.getElementById("loginButton");
@@ -88,9 +92,24 @@ loginButton.addEventListener("click", signout);
 });
 
 window.addEventListener("DOMContentLoaded", () => {
+const emailInput = document.querySelector(".login_emailInput");
+emailInput.addEventListener("input", function () {
+    document.querySelector(".password-status").innerHTML = ""
+});
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    const passwordInput = document.querySelector(".login_passwordInput");
+    passwordInput.addEventListener("input", function() {
+        document.querySelector(".password-status").innerHTML = ""
+    });
+    });
+
+window.addEventListener("DOMContentLoaded", () => {
     onPageLoad()
 });
 async function signup(){
+    const auth = getAuth();
     let _email = document.querySelector(".emailInput").value
     let _password = document.querySelector(".passwordInput").value
     let _username = document.querySelector(".usernameInput").value
@@ -107,9 +126,33 @@ async function signup(){
     });
     
     console.log(uuid)
-
-    post("/", {
+    let user_info = await signInWithEmailAndPassword(auth, _email, _password)
+    .then((userCredential) => {
+        // Signed in 
+        return userCredential
     })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        return "Could not sign in"
+    });
+
+    if (user_info != "Could not sign in"){
+        await fetch('/authenticator', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({mode: "signin", userinfo: user_info})
+            })
+            .then(response => response.text())
+            .catch(error => {
+            console.error('Error:', error);
+            });
+        window.location.replace("/");
+        
+    }
+    
 
 }
 

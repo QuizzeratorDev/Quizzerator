@@ -18,14 +18,14 @@
                 <div class="auth-form">
                     <input type="text" class="usernameInput signupInput" placeholder="Choose a username" autocomplete="new-password">
                     <input type="email" class="emailInput signupInput" placeholder="Enter your email" autocomplete="new-password">
-                    <input type="password" id="passwordInput" class="signupInput" placeholder="Choose a password" autocomplete="new-password">
+                    <input type="password" id="passwordInput" class="passwordInput signupInput" placeholder="Choose a password" autocomplete="new-password">
 
                     <ul class="password-requirements">
                         <li id="lengthCheck" class="invalid">❌ At least 8 characters</li>
                         <li id="upperCheck" class="invalid">❌ At least 1 uppercase letter</li>
                         <li id="lowerCheck" class="invalid">❌ At least 1 lowercase letter</li>
                         <li id="numberCheck" class="invalid">❌ At least 1 number</li>
-                        <li id="specialCheck" class="invalid">❌ At least 1 special character (!@#$%^&*)</li>
+                        <li id="specialCheck" class="invalid">❌ At least 1 special character (!@#$%^&*_-)</li>
                     </ul>
 
                     <div style="padding-top: 1rem;">
@@ -43,7 +43,9 @@
                 <div class="auth-form">
                     <input type="email" class="login_emailInput signupInput" placeholder="Enter your email" autocomplete="username">
                     <input type="password" class="login_passwordInput signupInput" placeholder="Enter your password" autocomplete="current-password">
+                    
                     <button type="button" class="secondary" id="loginButton">Sign In</button>
+                    <label class="password-status"></label>
                 </div>
             </div>
         </div>
@@ -70,7 +72,7 @@
                 const upperValid = /[A-Z]/.test(password);
                 const lowerValid = /[a-z]/.test(password);
                 const numberValid = /[0-9]/.test(password);
-                const specialValid = /[!@#$%^&*]/.test(password);
+                const specialValid = /[!@#$%^&*_-]/.test(password);
 
                 updateRequirement(lengthCheck, lengthValid);
                 updateRequirement(upperCheck, upperValid);
