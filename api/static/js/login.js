@@ -16,6 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 async function onPageLoad() {
+    document.querySelector(".password-status").innerHTML = ""
     let session_user = JSON.parse(await fetch('/authenticator', {
         method: 'POST',
         headers: {
@@ -91,13 +92,17 @@ loginButton.addEventListener("click", signout);
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-const loginButton = document.getElementById("login_emailInput");
-loginButton.addEventListener("oninput", document.querySelector(".password-status").innerHTML = "");
+const emailInput = document.querySelector(".login_emailInput");
+emailInput.addEventListener("input", function () {
+    document.querySelector(".password-status").innerHTML = ""
+});
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-    const loginButton = document.getElementById("login_passwordInput");
-    loginButton.addEventListener("oninput", document.querySelector(".password-status").innerHTML = "");
+    const passwordInput = document.querySelector(".login_passwordInput");
+    passwordInput.addEventListener("input", function() {
+        document.querySelector(".password-status").innerHTML = ""
+    });
     });
 
 window.addEventListener("DOMContentLoaded", () => {
