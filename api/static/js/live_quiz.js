@@ -27,6 +27,10 @@ $(document).ready(function(){
     socket.on('receive_message_from_host', function(msg) {
         updateMessageDisplay(msg.data)
     });
+
+    socket.on('receive_question', function(msg) {
+        updateQuestion(msg.data)
+    });
     
 });
     
@@ -70,3 +74,18 @@ function createUserElement(user) {
     
 }
 
+
+function updateQuestion(question) {
+    let questionDiv = document.querySelector(".live-quiz-question")
+    questionDiv.hidden = false
+    let questionDisplay = document.querySelector(".question-display")
+    questionDisplay.innerHTML = question
+
+
+}
+
+function submitAnswer() {
+    let answerInput = document.querySelector(".answer-input")
+    let answer_ = answerInput.value
+    socket.emit("submit_answer", {answer: answer_})
+}

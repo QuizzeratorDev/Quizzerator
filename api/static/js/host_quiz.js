@@ -1,10 +1,16 @@
 var socket = io()
 
 var currentRoomID = null
+var quizName = null
+var quizData = null
 
 $(document).ready(function(){ 
 
-    
+    createRoom()
+
+    let quizDataMeta = document.querySelector("meta[name='quiz-data']")
+    quizName = quizDataMeta.dataset.quiz_name
+    quizData = quizDataMeta.dataset.quiz_data
 
     userParent = document.querySelector(".user-list")
     console.log("initialised document")
@@ -37,7 +43,7 @@ function createRoom() {
 
 function updateRoomIDDisplay(room_id) {
     let roomIDDisplay = document.querySelector(".room-id-display")
-    roomIDDisplay.innerHTML = room_id
+    roomIDDisplay.innerHTML = `ID: ${room_id}`
     currentRoomID = room_id
 }
 
@@ -70,7 +76,9 @@ function createUserElement(user) {
     
 }
 
-
+function sendQuestion() {
+    socket.emit("host_send_question")
+}
 
 function sendMessage() {
     let message_ = document.querySelector(".message-input").value

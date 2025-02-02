@@ -62,6 +62,27 @@ def append_to_document(name,new_key, new_value, collection):
         print(current_users)
         doc_ref.update({new_key: current_users})
 
+#This is essentially a double-layered version of "append_to_document"
+#Takes document ID, then a key of the document, then a sub_key (value), then appends new_el to that sub_key
+#For instance, document ID "room109" with key "question 5" with sub_key "answers" as an array, which need to be appended
+def append_to_value_of_key_in_document(name, key, value, new_el, collection):
+    global db
+    doc_ref = db.collection(collection).document(name)
+    doc = doc_ref.get()
+    if doc.exists:
+        #ie. this is everything in key "question 5"
+        old_key_value = doc.to_dict()[key]
+
+        #This is all the old answers
+        current_arr = old_key_value[value]
+
+        #Appends new el to answers
+        current_arr.append(new_el)
+
+        #Updates question 5 with new array
+        old_key_value[value] = current_arr
+        doc_ref.update({key: old_key_value})
+
 def delete_quiz(name, collection):
     global db
     doc_ref = db.collection(collection).document(name)

@@ -251,6 +251,14 @@ function loadQuizUsingFilenameInput() {
   window.history.pushState({}, "", `/?quiz=${currentQuizID}`)
 }
 
+async function hostQuiz() {
+  let quiz_name = document.getElementById("name").value
+  let entries = getEntries()
+  post("/host_quiz", {
+    "quiz_data": JSON.stringify(entries),
+    "name": quiz_name,
+  })
+}
 
 
 
