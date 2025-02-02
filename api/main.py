@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # run.py
 
-from flask import Flask, render_template,request, redirect, Blueprint
+from flask import Flask, render_template,request, redirect, Blueprint, send_from_directory
 import api.routes.quiz as quiz
 import api.routes.uploader as uploader
 import api.routes.quiz_master as quiz_master
@@ -24,9 +24,9 @@ import time
 
 firebase_db.setup()
 
-blueprint = Blueprint('blueprint', __name__)
+blueprint = Blueprint('blueprint', __name__, template_folder='../api/templates', static_folder='../api/static')
 scheduler = BackgroundScheduler()
-socketio = SocketIO(blueprint,debug=True,cors_allowed_origins='*')
+socketio = SocketIO(debug=True, cors_allowed_origins='*')
 
 
 @blueprint.route('/', endpoint="index", methods=["GET", "POST"])
@@ -67,7 +67,14 @@ def on_host_quiz():
     return host_quiz.host_quiz_connect()
 
 
+#! YAYYYYY
+@blueprint.route('/api/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(blueprint.static_folder, filename)
 
+@blueprint.route('/static/<path:filename>')
+def serve_static1(filename): #!THIS IS FOR LOCAL TESTING NAHHHHHGHHHH GOING ON PROD HAHAGHAHAGGHAHAHHAHGAG
+    return send_from_directory(blueprint.static_folder, filename)
 
 
 @socketio.on("client_data")
