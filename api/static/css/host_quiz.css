@@ -263,3 +263,13 @@ button:focus {
     background: rgba(59, 130, 246, 0.3);
     color: var(--text-primary);
 }
+
+
+
+.user-answer-display {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}

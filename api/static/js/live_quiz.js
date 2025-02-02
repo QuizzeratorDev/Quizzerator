@@ -19,6 +19,9 @@ $(document).ready(function(){
     document.querySelector(".question-submit").hidden = true;
     document.querySelector(".live-quiz-question").hidden = true;
 
+    let endQuizMessage = document.querySelector(".end-quiz-message")
+    endQuizMessage.hidden = true
+
     userParent = document.querySelector(".user-list");
     console.log("initialised document");
 
@@ -44,6 +47,10 @@ $(document).ready(function(){
 
     socket.on('start_quiz', function(msg) {
         startLiveQuiz();
+    });
+
+    socket.on('end_quiz', function(msg) {
+        endQuiz(msg.data);
     });
 });
 
@@ -128,6 +135,29 @@ function startLiveQuiz() {
     let answer_display = document.querySelector(".answer-reveal");
     answer_display.hidden = true;
 
+    let endQuizMessage = document.querySelector(".end-quiz-message")
+    endQuizMessage.hidden = true
+
     document.querySelector(".question-submit").hidden = true;
     document.querySelector(".live-quiz-question").hidden = false;
+}
+
+function endQuiz(data) {
+    let question_display = document.querySelector(".live-quiz-question");
+    question_display.hidden = true;
+
+    let answer_display = document.querySelector(".answer-reveal");
+    answer_display.hidden = true;
+
+    document.querySelector(".question-submit").hidden = true;
+    document.querySelector(".live-quiz-question").hidden = true; 
+
+    let endQuizMessage = document.querySelector(".end-quiz-message")
+    endQuizMessage.hidden = false
+    endQuizMessage.innerHTML = "Quiz has ended"
+
+    console.log(data)
+
+
+    
 }

@@ -159,6 +159,10 @@ def on_get_info(data):
 
             #Emits room data to all users
             emit("room_data", {"data": all_users})
+
+
+
+
 @socketio.on('create')
 def on_join(data):
     number_of_questions_ = len(session["host_live_quiz_data"]["quiz_data"].keys())
@@ -204,7 +208,6 @@ def on_send_question():
         
         question_num = live_quiz_data["question_num"]
         quiz_data = live_quiz_data["quiz_data"]
-        print(quiz_data)
         
         quiz_len = live_quiz_data["quiz_len"]
 
@@ -222,6 +225,10 @@ def on_send_question():
                 "question": current_question
 
             }}, to=room)
+            
+        else:
+            quiz_end_data = firebase_db.download_quiz(room, "liveRooms")
+            emit("end_quiz", {"data": quiz_end_data}, to=room)
 
 @socketio.on("start_quiz")
 def on_start_quiz():
@@ -229,22 +236,32 @@ def on_start_quiz():
     is_host = session["live_quiz_data"]["host"]
     if is_host:
         emit("start_quiz", to=room)
+        num_of_users = len(firebase_db.download_quiz(room, "liveRooms")["users"])
 
 @socketio.on("submit_answer")
 def on_receive_answer(data):
     room = session["live_quiz_data"]["room_id"]
+    display_name = session["user"]["display_name"]
     answer = data["answer"]
     sid = request.sid
     to_add = {
         "timestamp": time.time(),
         "sid":sid, 
+        "display_name": display_name,
         "answer": answer
     }
 
     question_num = data["question_num"]
 
+    host_sid = firebase_db.download_quiz(room, "liveRooms")["host"]["sid"]
+
     #Adds timestamp and SID, as an answer, to question data in room db
     firebase_db.append_to_value_of_key_in_document(room, "question_" + str(question_num), "answers", to_add, "liveRooms")
+    room_db = firebase_db.download_quiz(room, "liveRooms")
+    number_of_answers = len(room_db["question_" + str(question_num)]["answers"])
+
+    emit("host_get_answers", {"data": display_name, "number_of_answers": number_of_answers}, to=host_sid)
+        
 
 @socketio.on("host_end_answers")
 def on_end_answers():

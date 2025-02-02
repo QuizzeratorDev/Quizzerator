@@ -14,30 +14,43 @@
             <button onclick="createRoom()">Create Room</button>
             <p><span class="room-id-display"></span></p>
         </div>
-        
-        <div class="current-question-display">
-            <div class="question-header">
-                <h3>Current Question</h3>
-                <span class="question-number"></span>
+
+        <div class="active-room">
+            <div class="current-question-display">
+                <div class="question-header">
+                    <h3>Current Question</h3>
+                    <span class="question-number"></span>
+                </div>
+                <p class="question-text">No question sent yet</p>
             </div>
-            <p class="question-text">No question sent yet</p>
-        </div>
+    
+            <div class="room-management">
+                <input class="message-input" placeholder="Enter message for participants...">
+                <button class="send-message" onclick="sendMessage()">Send Message</button>
+                <button class="start-quiz" onclick="startLiveQuiz()">Start Live Quiz</button>
+            </div>
+    
+            <div class="room-info">
+                <p class="message-display"></p>
+                <div class="user-list"></div>
+            </div>
+    
+            <div class="question-management">
+                <button class="send-question" onclick="sendQuestion()">Send Question</button>
+                <button class="end-answers" onclick="endAnswers()">End Answers</button>
+            </div>
 
-        <div class="room-management">
-            <input class="message-input" placeholder="Enter message for participants...">
-            <button class="send-message" onclick="sendMessage()">Send Message</button>
-            <button class="start-quiz" onclick="startLiveQuiz()">Start Live Quiz</button>
-        </div>
+            <div class="user-answer-display">
+                <p class="user-answer-display-message">The following users have answered:</p>
+                <div class="user-answers"></div>
+            </div>
 
-        <div class="room-info">
-            <p class="message-display"></p>
-            <div class="user-list"></div>
+            <div class="quiz-results">
+                
+            </div>
         </div>
-
-        <div class="question-management">
-            <button class="send-question" onclick="sendQuestion()">Send Question</button>
-            <button class="end-answers" onclick="endAnswers()">End Answers</button>
-        </div>
+        
+        
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

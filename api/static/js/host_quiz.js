@@ -4,6 +4,7 @@ var quizName = null;
 var quizData = null;
 var userParent = null;
 var currentQuestionData = null;
+var totalUsers = 0;
 
 $(document).ready(function(){ 
     createRoom();
@@ -15,15 +16,17 @@ $(document).ready(function(){
 
     userParent = document.querySelector(".user-list");
     console.log("initialised document");
+
+    document.querySelector(".quiz-results").hidden = true
+
+    document.querySelector(".user-answer-display").hidden = true
     
 
     socket.on('room_data', function(msg) {
-        console.log("Received room data:", msg);
         updateRoomList(msg.data);
     });
 
     socket.on('room_creation_data', function(msg) {
-        console.log("Received room creation data:", msg);
         updateRoomIDDisplay(msg.data);
     });
 
@@ -34,9 +37,18 @@ $(document).ready(function(){
     socket.on('receive_question', function(msg) {
         updateCurrentQuestion(msg.data);
     });
+
+    socket.on('end_quiz', function(msg) {
+        endHostQuiz(msg.data);
+    });
+
+    socket.on('host_get_answers', function(msg) {
+        updateUserAnswerDisplay(msg.data, msg.number_of_answers);
+    });
 });
 
 function createRoom() {
+    document.querySelector(".active-room").hidden = false
     socket.emit("create", {});
     setInterval(function() {
         if (currentRoomID != null) {
@@ -49,6 +61,9 @@ function startLiveQuiz() {
     socket.emit("start_quiz");
     document.querySelector('.start-quiz').disabled = true;
     document.querySelector('.start-quiz').textContent = 'Quiz Started';
+    document.querySelector(".quiz-results").hidden = true;
+    document.querySelector(".user-answer-display").hidden = false;
+    document.querySelector(".user-answer-display-message").innerHTML = `Waiting for Question Send!`
 }
 
 function updateCurrentQuestion(questionData) {
@@ -57,12 +72,13 @@ function updateCurrentQuestion(questionData) {
     const questionText = document.querySelector('.question-text');
     
     if (questionData && questionData.question) {
-        questionNumber.textContent = `Question ${questionData.question_num}`;
+        questionNumber.textContent = `Question ${questionData.question_num+1}`;
         questionText.textContent = questionData.question;
     } else {
         questionNumber.textContent = 'No Question';
         questionText.textContent = 'No question sent yet';
     }
+    document.querySelector(".user-answer-display-message").innerHTML = `0 of ${totalUsers} have answered:`
 }
 
 function updateRoomIDDisplay(room_id) {
@@ -77,8 +93,10 @@ function updateRoomListForAllUsers() {
 }
 
 function updateRoomList(room_users) {
+    totalUsers = 0
     userParent.innerHTML = "";
     for (let user of room_users.values()) {
+        totalUsers++;
         createUserElement(user["display_name"]);
     }
 }
@@ -96,6 +114,13 @@ function createUserElement(user) {
     userParent.appendChild(newUserDiv);
 }
 
+function updateUserAnswerDisplay(user, num_users) {
+    let newUserName = document.createElement("p");
+    newUserName.innerHTML = user;
+    document.querySelector(".user-answers").appendChild(newUserName);
+    document.querySelector(".user-answer-display-message").innerHTML = `${num_users} of ${totalUsers} have answered:`
+}
+
 function sendQuestion() {
     socket.emit("host_send_question");
     
@@ -110,6 +135,8 @@ function sendQuestion() {
     setTimeout(() => {
         sendQuestionButton.disabled = false;
     }, 2000);
+
+    document.querySelector(".user-answers").innerHTML = ""
 }
 
 function endAnswers() {
@@ -127,4 +154,15 @@ function sendMessage() {
         socket.emit("host_send_message", {message: message});
         messageInput.value = '';
     }
+}
+
+function endHostQuiz(data) {
+    document.querySelector(".create-room").hidden = false
+    document.querySelector(".active-room").hidden = true
+    document.querySelector(".user-answer-display").hidden = true;
+    let quiz_results = document.querySelector(".quiz-results")
+    quiz_results.hidden = false
+    console.log(data)
+
+
 }
