@@ -5,11 +5,26 @@ var userParent = null
 
 var currentRoomID = null
 
+var currentQuestion = 0
+
 
 
 $(document).ready(function(){ 
 
-    
+    let join_room = document.querySelector(".join-room")
+    join_room.hidden = false
+
+    let room_info = document.querySelector(".room-info")
+    room_info.hidden = false
+
+    let question_display = document.querySelector(".live-quiz-question")
+    question_display.hidden = true
+
+    let answer_display = document.querySelector(".answer-reveal")
+    answer_display.hidden = true
+
+    document.querySelector(".question-submit").hidden = true
+    document.querySelector(".live-quiz-question").hidden = true
 
     userParent = document.querySelector(".user-list")
     console.log("initialised document")
@@ -32,6 +47,14 @@ $(document).ready(function(){
         updateQuestion(msg.data)
     });
     
+    socket.on('reveal_answer', function(msg) {
+        updateAnswerReveal(msg.data["valid"], msg.data["answer"])
+    });
+
+    socket.on('start_quiz', function(msg) {
+        startLiveQuiz()
+    });
+    
 });
     
 
@@ -49,6 +72,7 @@ function updateRoomList(room_users) {
     }
     
 }
+
 
 
 
@@ -79,13 +103,51 @@ function updateQuestion(question) {
     let questionDiv = document.querySelector(".live-quiz-question")
     questionDiv.hidden = false
     let questionDisplay = document.querySelector(".question-display")
-    questionDisplay.innerHTML = question
+    questionDisplay.innerHTML = question["question"]
+    currentQuestion = question["question_num"]
+    let answer_display = document.querySelector(".answer-reveal")
+    answer_display.hidden = true
 
+    document.querySelector(".question-submit").hidden = true
+    
 
 }
 
 function submitAnswer() {
     let answerInput = document.querySelector(".answer-input")
     let answer_ = answerInput.value
-    socket.emit("submit_answer", {answer: answer_})
+    socket.emit("submit_answer", {answer: answer_, question_num: currentQuestion})
+    
+    document.querySelector(".question-submit").hidden = false
+    document.querySelector(".live-quiz-question").hidden = true
+
+}
+
+function updateAnswerReveal(valid, actual_answer) {
+    
+    let answerReveal = document.querySelector(".answer-reveal")
+    answerReveal.hidden = false
+    if (valid) {
+        answerReveal.innerHTML = "CORRECT"
+    }
+    else {
+        answerReveal.innerHTML = `INCORRECT! The answer was ${actual_answer}`
+    }
+}
+
+function startLiveQuiz() {
+    let join_room = document.querySelector(".join-room")
+    join_room.hidden = true
+
+    let room_info = document.querySelector(".room-info")
+    room_info.hidden = true
+
+    let question_display = document.querySelector(".live-quiz-question")
+    question_display.hidden = false
+
+    let answer_display = document.querySelector(".answer-reveal")
+    answer_display.hidden = true
+
+    document.querySelector(".question-submit").hidden = true
+    document.querySelector(".live-quiz-question").hidden = false
 }

@@ -203,9 +203,10 @@ def on_send_question():
         live_quiz_data = session["host_live_quiz_data"]
         question_num = live_quiz_data["question_num"]
         quiz_data = live_quiz_data["quiz_data"]
-        current_question = quiz_data[question_num]
+        print(quiz_data)
+        current_question, answer = quiz_data[str(question_num)]
         
-        firebase_db.update_quiz(room, "question " + question_num, {
+        firebase_db.update_quiz(room, "question_" + str(question_num), {
             "start_timestamp": time.time(),
             "answers": []
         }, "liveRooms")
@@ -215,32 +216,65 @@ def on_send_question():
             "question": current_question
 
         }}, to=room)
-        session["host_live_quiz_data"]["question_num"] += 1
+
+@socketio.on("start_quiz")
+def on_start_quiz():
+    room = session["live_quiz_data"]["room_id"]
+    is_host = session["live_quiz_data"]["host"]
+    if is_host:
+        emit("start_quiz", to=room)
 
 @socketio.on("submit_answer")
 def on_receive_answer(data):
     room = session["live_quiz_data"]["room_id"]
+    answer = data["answer"]
     sid = request.sid
     to_add = {
         "timestamp": time.time(),
         "sid":sid, 
+        "answer": answer
     }
 
     question_num = data["question_num"]
 
     #Adds timestamp and SID, as an answer, to question data in room db
-    firebase_db.append_to_value_of_key_in_document(room, "question " + question_num, "answers", to_add, "liveRooms")
+    firebase_db.append_to_value_of_key_in_document(room, "question_" + str(question_num), "answers", to_add, "liveRooms")
 
-@socketio.on("end_answers")
+@socketio.on("host_end_answers")
 def on_end_answers():
     room = session["live_quiz_data"]["room_id"]
     is_host = session["live_quiz_data"]["host"]
     if is_host:
         live_quiz_data = session["host_live_quiz_data"]
-        question_num = live_quiz_data["question_num"]
-        all_answers = firebase_db.download_quiz(room,"liveRooms")
+        live_quiz_room_data = firebase_db.download_quiz(room,"liveRooms")
 
+
+        question_num = live_quiz_data["question_num"]
+        question_data = live_quiz_room_data["question_" + str(question_num)]
         
+        actual_question_data = live_quiz_data["quiz_data"][str(question_num)]
+        
+        
+        
+        answers = question_data["answers"]
+        output = []
+        for answer in answers:
+            print(actual_question_data[1])
+            output.append({
+                "answer": answer["answer"],
+                "sid": answer["sid"],
+                "timestamp": answer["timestamp"],
+                "valid": answer["answer"]  == actual_question_data[1]
+            })
+            emit("reveal_answer", {"data": {
+                "valid": answer["answer"]  == actual_question_data[1],
+                "answer": actual_question_data[1],
+            }}, to=answer["sid"])
+        #emit("reveal_all_answers", {"data": {
+        #    "answers": output
+
+        #}}, to=room)
+        session["host_live_quiz_data"]["question_num"] += 1
 
 def clear_database_task():
     clear_database.clear()

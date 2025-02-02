@@ -8,7 +8,7 @@ $(document).ready(function(){
 
     createRoom()
 
-    let quizDataMeta = document.querySelector("meta[name='quiz-data']")
+    let quizDataMeta = document.querySelector("meta[name='host-quiz-data']")
     quizName = quizDataMeta.dataset.quiz_name
     quizData = quizDataMeta.dataset.quiz_data
 
@@ -39,6 +39,10 @@ function createRoom() {
         }
         
     }, 5000);
+}
+
+function startLiveQuiz() {
+    socket.emit("start_quiz")
 }
 
 function updateRoomIDDisplay(room_id) {
@@ -79,6 +83,11 @@ function createUserElement(user) {
 function sendQuestion() {
     socket.emit("host_send_question")
 }
+
+function endAnswers() {
+    socket.emit("host_end_answers")
+}
+
 
 function sendMessage() {
     let message_ = document.querySelector(".message-input").value
