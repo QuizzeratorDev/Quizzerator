@@ -7,8 +7,12 @@ def authenticate():
         email = request.json["email"]
         password = request.json["password"]
         username = request.json["username"]
-        user = auth.create_user(email=email, password=password, display_name=username)
-        return jsonify({"message": "User created successfully", "uid": user.uid})
+        try:
+            user = auth.create_user(email=email, password=password, display_name=username)
+            return jsonify({"message": "User created successfully", "uid": user.uid})
+        except:
+            return jsonify({"message": "User already exists"})
+        
     if request.json["mode"] == "signin":
         userinfo = request.json["userinfo"]
         session["user"] = {
