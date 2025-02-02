@@ -10,12 +10,31 @@
 </head>
 <body>
     <div class="container">
-        <div class="create-room">
-            <button onclick="createRoom()">Create Room</button>
-            <p><span class="room-id-display"></span></p>
+        <p><span class="room-id-display"></span></p>
+        <div class="inactive-room">
+            <div class="create-room">
+                <button onclick="createRoom()">Create Room</button>
+                
+                
+            </div>
+            <div class="room-management">
+                <input class="message-input" placeholder="Enter message for participants...">
+                <button class="send-message" onclick="sendMessage()">Send Message</button>
+                <button class="start-quiz" onclick="startLiveQuiz()">Start Live Quiz</button>
+            </div>
         </div>
-
+        
+        <div class="room-info">
+            <p class="message-display"></p>
+            <div class="user-list"></div>
+        </div>
         <div class="active-room">
+            
+    
+            
+    
+            
+
             <div class="current-question-display">
                 <div class="question-header">
                     <h3>Current Question</h3>
@@ -24,19 +43,8 @@
                 <p class="question-text">No question sent yet</p>
             </div>
     
-            <div class="room-management">
-                <input class="message-input" placeholder="Enter message for participants...">
-                <button class="send-message" onclick="sendMessage()">Send Message</button>
-                <button class="start-quiz" onclick="startLiveQuiz()">Start Live Quiz</button>
-            </div>
-    
-            <div class="room-info">
-                <p class="message-display"></p>
-                <div class="user-list"></div>
-            </div>
-    
             <div class="question-management">
-                <button class="send-question" onclick="sendQuestion()">Send Question</button>
+                <button class="send-question" onclick="nextQuestion()">Next Question</button>
                 <button class="end-answers" onclick="endAnswers()">End Answers</button>
             </div>
 
@@ -45,11 +53,11 @@
                 <div class="user-answers"></div>
             </div>
 
-            <div class="quiz-results">
-                
-            </div>
+            
         </div>
-        
+        <div class="quiz-results">
+                
+        </div>
         
     </div>
 

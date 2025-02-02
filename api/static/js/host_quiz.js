@@ -5,6 +5,7 @@ var quizData = null;
 var userParent = null;
 var currentQuestionData = null;
 var totalUsers = 0;
+var answersEnded = false;
 
 $(document).ready(function(){ 
     createRoom();
@@ -18,6 +19,10 @@ $(document).ready(function(){
     console.log("initialised document");
 
     document.querySelector(".quiz-results").hidden = true
+
+    document.querySelector(".active-room").hidden = true
+    document.querySelector(".inactive-room").hidden = false
+
 
     document.querySelector(".user-answer-display").hidden = true
     
@@ -63,7 +68,13 @@ function startLiveQuiz() {
     document.querySelector('.start-quiz').textContent = 'Quiz Started';
     document.querySelector(".quiz-results").hidden = true;
     document.querySelector(".user-answer-display").hidden = false;
+    document.querySelector(".question-management").hidden = false;
+
+    document.querySelector(".active-room").hidden = false
+    document.querySelector(".inactive-room").hidden = true
+    
     document.querySelector(".user-answer-display-message").innerHTML = `Waiting for Question Send!`
+    nextQuestion()
 }
 
 function updateCurrentQuestion(questionData) {
@@ -121,20 +132,16 @@ function updateUserAnswerDisplay(user, num_users) {
     document.querySelector(".user-answer-display-message").innerHTML = `${num_users} of ${totalUsers} have answered:`
 }
 
-function sendQuestion() {
+function nextQuestion() {
     socket.emit("host_send_question");
+
+    document.querySelector(".send-question").hidden = true;
     
     // Reset the end answers button
     const endAnswersButton = document.querySelector('.end-answers');
     endAnswersButton.disabled = false;
     endAnswersButton.textContent = 'End Answers';
-    
-    // Add visual feedback for send question button
-    const sendQuestionButton = document.querySelector('.send-question');
-    sendQuestionButton.disabled = true;
-    setTimeout(() => {
-        sendQuestionButton.disabled = false;
-    }, 2000);
+
 
     document.querySelector(".user-answers").innerHTML = ""
 }
@@ -144,6 +151,9 @@ function endAnswers() {
     const endAnswersButton = document.querySelector('.end-answers');
     endAnswersButton.disabled = true;
     endAnswersButton.textContent = 'Answers Ended';
+    answersEnded = true;
+
+    document.querySelector(".send-question").hidden = false;
 }
 
 function sendMessage() {
@@ -164,5 +174,25 @@ function endHostQuiz(data) {
     quiz_results.hidden = false
     console.log(data)
 
+    leaderboard = {}
+    points_ = []
 
+    for (user of data["users"]) {
+        leaderboard[user["points"]] = user["display_name"]
+        points_.push(user["points"])
+    }
+
+    points_.sort(function(a, b) {
+        return b - a;
+      });
+
+    let i = 1
+    for (points of points_) {
+        user = leaderboard[points]
+        let newUserName = document.createElement("p");
+        newUserName.innerHTML = `${i}. ${user} - ${points} points`;
+        document.querySelector(".quiz-results").appendChild(newUserName);
+        i++
+    }
 }
+

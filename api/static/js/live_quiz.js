@@ -13,7 +13,7 @@ $(document).ready(function(){
     let question_display = document.querySelector(".live-quiz-question");
     question_display.hidden = true;
 
-    let answer_display = document.querySelector(".answer-reveal");
+    let answer_display = document.querySelector(".answer-reveal-div");
     answer_display.hidden = true;
 
     document.querySelector(".question-submit").hidden = true;
@@ -42,7 +42,7 @@ $(document).ready(function(){
     });
     
     socket.on('reveal_answer', function(msg) {
-        updateAnswerReveal(msg.data["valid"], msg.data["answer"]);
+        updateAnswerReveal(msg.data["valid"], msg.data["answer"] ,msg.data["points_gained"], msg.data["current_points"]);
     });
 
     socket.on('start_quiz', function(msg) {
@@ -92,7 +92,7 @@ function updateQuestion(question) {
     let questionDisplay = document.querySelector(".question-display");
     questionDisplay.innerHTML = question["question"];
     currentQuestion = question["question_num"];
-    let answer_display = document.querySelector(".answer-reveal");
+    let answer_display = document.querySelector(".answer-reveal-div");
     answer_display.hidden = true;
     document.querySelector(".question-submit").hidden = true;
 }
@@ -106,20 +106,24 @@ function submitAnswer() {
     document.querySelector(".live-quiz-question").hidden = true;
 }
 
-function updateAnswerReveal(valid, actual_answer) {
+function updateAnswerReveal(valid, actual_answer, points_gained, current_points) {
+    let answerRevealDiv = document.querySelector(".answer-reveal-div")
+
     let answerReveal = document.querySelector(".answer-reveal");
-    answerReveal.hidden = false;
+    let pointsDisplay = document.querySelector(".points-display")
+    answerRevealDiv.hidden = false;
     
     // Remove any existing animation classes
-    answerReveal.classList.remove('answer-correct', 'answer-incorrect');
+    answerRevealDiv.classList.remove('answer-correct', 'answer-incorrect');
     
     if (valid) {
         answerReveal.innerHTML = "CORRECT";
-        answerReveal.classList.add('answer-correct');
+        answerRevealDiv.classList.add('answer-correct');
     } else {
         answerReveal.innerHTML = `INCORRECT! The answer was ${actual_answer}`;
-        answerReveal.classList.add('answer-incorrect');
+        answerRevealDiv.classList.add('answer-incorrect');
     }
+    pointsDisplay.innerHTML = `You gained ${points_gained}. You now have ${current_points} points.`
 }
 
 function startLiveQuiz() {
@@ -132,7 +136,7 @@ function startLiveQuiz() {
     let question_display = document.querySelector(".live-quiz-question");
     question_display.hidden = false;
 
-    let answer_display = document.querySelector(".answer-reveal");
+    let answer_display = document.querySelector(".answer-reveal-div");
     answer_display.hidden = true;
 
     let endQuizMessage = document.querySelector(".end-quiz-message")
@@ -146,7 +150,7 @@ function endQuiz(data) {
     let question_display = document.querySelector(".live-quiz-question");
     question_display.hidden = true;
 
-    let answer_display = document.querySelector(".answer-reveal");
+    let answer_display = document.querySelector(".answer-reveal-div");
     answer_display.hidden = true;
 
     document.querySelector(".question-submit").hidden = true;

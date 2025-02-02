@@ -100,6 +100,7 @@ def on_join(data):
     new_data = {
         "display_name": session_user,
         "sid": request.sid,
+        "points": 0,
         }
 
     #Downloads existing room database
@@ -280,19 +281,48 @@ def on_end_answers():
         
         
         answers = question_data["answers"]
-        output = []
         for answer in answers:
             print(actual_question_data[1])
-            output.append({
-                "answer": answer["answer"],
-                "sid": answer["sid"],
-                "timestamp": answer["timestamp"],
-                "valid": answer["answer"]  == actual_question_data[1]
-            })
+            is_correct = answer["answer"]  == actual_question_data[1]
+            answer_sid = answer["sid"]
+
+            original_timestamp = question_data["start_timestamp"]
+            timestamp = answer["timestamp"]
+
+            difference = round(timestamp, 1) - round(original_timestamp, 1)
+            #ie. 1.2 seconds
+
+            
+            points_difference = difference * 100
+            #ie. 120
+
+            if points_difference > 500:
+                points_difference = 500
+
+            points_difference = round(points_difference/4)
+            points = 0
+
+            if is_correct:
+                points = 1000 - points_difference
+            
+            current_points = 0
+            users = live_quiz_room_data["users"]
+            for user in users:
+                if user["sid"] == answer_sid:
+                    user["points"] += points
+                    current_points = user["points"]
+                    break
+            
             emit("reveal_answer", {"data": {
-                "valid": answer["answer"]  == actual_question_data[1],
+                "valid": is_correct,
                 "answer": actual_question_data[1],
-            }}, to=answer["sid"])
+                "points_gained": points,
+                "current_points": current_points,
+            }}, to=answer_sid)
+
+            
+            firebase_db.update_quiz(room, "users", users, "liveRooms")
+
         #emit("reveal_all_answers", {"data": {
         #    "answers": output
 
