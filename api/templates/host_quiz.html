@@ -1,40 +1,47 @@
+<!DOCTYPE html>
 <html lang="en">
-<title>Quizzeration</title>
 <head>
+    <title>Quizzeration - Host</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
     <meta name="host-quiz-data" data-quiz_data="{{quiz_data}}" data-quiz_name="{{quiz_name}}">
+    <link rel="stylesheet" href="/static/css/host_quiz.css">
 </head>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-
 <body>
-
-    <div class="create-room">
-        <button onclick="createRoom()">Create Room</button>
-        <p class="room-id-display"></p> 
-        <br>
-    </div>
-    
-    <div class="room-management">
-        <input class="message-input">
-        <button class="send-message" onclick="sendMessage()">Send Message</button>
-        <button class="start-quiz" onclick="startLiveQuiz()">Start Live Quiz</button>
-    </div>
-
-    <div class="room-info">
-        <p class="message-display"></p>
+    <div class="container">
+        <div class="create-room">
+            <button onclick="createRoom()">Create Room</button>
+            <p><span class="room-id-display"></span></p>
+        </div>
         
-        <div class="user-list">
-    
+        <div class="current-question-display">
+            <div class="question-header">
+                <h3>Current Question</h3>
+                <span class="question-number"></span>
+            </div>
+            <p class="question-text">No question sent yet</p>
+        </div>
+
+        <div class="room-management">
+            <input class="message-input" placeholder="Enter message for participants...">
+            <button class="send-message" onclick="sendMessage()">Send Message</button>
+            <button class="start-quiz" onclick="startLiveQuiz()">Start Live Quiz</button>
+        </div>
+
+        <div class="room-info">
+            <p class="message-display"></p>
+            <div class="user-list"></div>
+        </div>
+
+        <div class="question-management">
+            <button class="send-question" onclick="sendQuestion()">Send Question</button>
+            <button class="end-answers" onclick="endAnswers()">End Answers</button>
         </div>
     </div>
 
-    <div class="question-management">
-        <button class="send-question" onclick="sendQuestion()">Send Question</button>
-        <button class="end-answers" onclick="endAnswers()">End Answers</button>
-    </div>
-    <script src="\static\js\host_quiz.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="/static/js/host_quiz.js"></script>
 </body>
+</html>

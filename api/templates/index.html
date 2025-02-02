@@ -49,6 +49,9 @@
         <div class="master">
             <div class="sidebar" style="background: var(--bg-secondary);">
                 <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">Create New Quiz</button>
+                <a href="/live_quiz">
+                    <button type="button" style="margin-bottom: 0.75rem;">Join Live Quiz</button>
+                </a>
                 <input type="search" class="search_bar" placeholder="Search for quizzes..." style="margin-bottom: 0.75rem;">
                 <button type="button" onclick="refreshRecs()" class="secondary" style="margin-bottom: 0.75rem;">Search</button>
                 <div class="search-results"></div>
@@ -65,7 +68,7 @@
                 <div class="quiz-settings">
                     <button type="button" onclick="saveQuiz()" id="teste" class="save">Save Quiz</button>
                     <button type="button" onclick="playQuiz()" id="playquiz" class="secondary" class="start">Start Quiz</button>
-                    <button type="button" onclick="hostQuiz()" id="hostquiz" class="host">Host Quiz</button>
+                    <button type="button" onclick="hostQuiz()" id="hostquiz" class="host">Host This Quiz</button>
                 </div>
                 
                 <div class="termParent">

@@ -10,16 +10,6 @@
     --border-radius: 12px;
 }
 
-
-
-textarea {
-    resize: none;
-    overflow: hidden;
-    text-align: center;
-    font-size: 14px;
-}
-
-
 * {
     margin: 0;
     padding: 0;
@@ -65,32 +55,43 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-.master {
-    display: grid;
-    gap: 2rem;
-}
-
-.sidebar {
+/* Quiz Room Join Styles */
+.join-room {
     background: var(--bg-secondary);
-    padding: 1.5rem;
-    height: 80%;
-    overflow: hidden scroll;
-    padding-top: 3.5rem;
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100vh;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    transition: left 0.3s ease, background 0.3s ease;
-    z-index: 999;
-}
-
-.main {
-    background: var(--bg-primary);
     padding: 2rem;
     border-radius: var(--border-radius);
-    height: 80%;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.join-room label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.quiz-id-input {
+    max-width: 300px;
+    margin: 0 auto 1rem;
 }
 
 button {
@@ -108,35 +109,117 @@ button:hover {
     background: var(--accent-secondary);
 }
 
-button:active  {
+button:active {
     transform: translateY(-2px);
 }
 
-button.secondary {
-    background: transparent;
-    border: 1px solid var(--accent-primary);
-    color: var(--accent-primary);
+/* Room Info Styles */
+.room-info {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
 }
 
-button.secondary:hover {
-    background: rgba(59, 130, 246, 0.1);
-}
-
-input[type="text"], input[type="search"] {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: var(--text-primary);
+.message-display {
+    font-size: 1.1rem;
     margin-bottom: 1rem;
-    font-size: 0.95rem;
-    transition: all 0.2s;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
 }
 
-input[type="text"]:focus, input[type="search"]:focus {
-    outline: none;
-    border-color: var(--accent-primary);
-    background: rgba(255, 255, 255, 0.1);
-    transition: all 0.2s;
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.user-list div {
+    background: rgba(59, 130, 246, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.user-list p {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+/* Live Quiz Question Styles */
+.live-quiz-question {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.question-display {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.answer-input {
+    max-width: 400px;
+    margin: 0 auto 1rem;
+}
+
+/* Question Submit Styles */
+.question-submit {
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.question-submit-info {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Answer Reveal Styles */
+.answer-reveal {
+    text-align: center;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.answer-correct {
+    background: var(--bg-secondary);
+    border: 2px solid var(--success);
+    color: var(--success);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    animation: glowGreen 2s infinite;
+}
+
+.answer-incorrect {
+    background: var(--bg-secondary);
+    border: 2px solid var(--danger);
+    color: var(--danger);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    animation: glowRed 2s infinite;
+}
+
+/* Glow Animations */
+@keyframes glowGreen {
+    0% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(34, 197, 94, 0.5); }
+    100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+}
+
+@keyframes glowRed {
+    0% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.5); }
+    100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+}
+
+[hidden] {
+    display: none !important;
 }

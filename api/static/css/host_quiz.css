@@ -1,0 +1,265 @@
+:root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #1d4ed8;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --border-radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem;
+    line-height: 1.5;
+}
+
+/* Current Question Display */
+.current-question-display {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.question-header h3 {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.question-number {
+    background: var(--accent-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.question-text {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+}
+
+/* Create Room Section */
+.create-room {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-id-display {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(to right, #3b82f6, #2dd4bf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Room Management Section */
+.room-management {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.message-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Button Styles */
+button {
+    background: var(--accent-primary);
+    color: var(--text-primary);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+button:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.start-quiz {
+    background: var(--success);
+}
+
+.start-quiz:hover {
+    background: #1a9647;
+}
+
+/* Room Info Section */
+.room-info {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message-display {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.user-list div {
+    background: rgba(59, 130, 246, 0.1);
+    padding: 0.75rem 1.25rem;
+    border-radius: 20px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.2s ease;
+}
+
+.user-list div:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.user-list p {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+/* Question Management Section */
+.question-management {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    gap: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.send-question {
+    background: var(--accent-primary);
+}
+
+.end-answers {
+    background: var(--danger);
+}
+
+.end-answers:hover {
+    background: #dc2626;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .room-management {
+        flex-direction: column;
+    }
+    
+    .message-input {
+        width: 100%;
+    }
+    
+    .question-management {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-list div {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Additional Interactive States */
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.message-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.room-id-display::selection,
+.message-display::selection,
+.user-list p::selection {
+    background: rgba(59, 130, 246, 0.3);
+    color: var(--text-primary);
+}
