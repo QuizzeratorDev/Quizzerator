@@ -10,8 +10,8 @@ import json
 db = 0
 def setup():
     
-    cred_dict = json.loads(os.environ.get('FIREBASE_CREDENTIALS'))
-    #cred_dict="../quizzerator-firebase-adminsdk-60izn-86c8037eca.json"
+    #cred_dict = json.loads(os.environ.get('FIREBASE_CREDENTIALS'))
+    cred_dict="../quizzerator-firebase-adminsdk-60izn-86c8037eca.json"
 
 
     print(cred_dict)
