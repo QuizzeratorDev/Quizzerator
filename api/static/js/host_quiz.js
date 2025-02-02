@@ -8,7 +8,7 @@ var totalUsers = 0;
 var answersEnded = false;
 
 $(document).ready(function(){ 
-    createRoom();
+    //createRoom();
 
     // Get quiz data from meta tags
     let quizDataMeta = document.querySelector("meta[name='host-quiz-data']");
@@ -167,32 +167,50 @@ function sendMessage() {
 }
 
 function endHostQuiz(data) {
-    document.querySelector(".create-room").hidden = false
-    document.querySelector(".active-room").hidden = true
+    document.querySelector(".create-room").hidden = false;
+    document.querySelector(".active-room").hidden = true;
     document.querySelector(".user-answer-display").hidden = true;
-    let quiz_results = document.querySelector(".quiz-results")
-    quiz_results.hidden = false
-    console.log(data)
+    let quiz_results = document.querySelector(".quiz-results");
+    quiz_results.hidden = false;
+    quiz_results.innerHTML = ''; // Clear previous results
 
-    leaderboard = {}
-    points_ = []
+    // Create table
+    const table = document.createElement('table');
+    table.className = 'leaderboard-table';
+    
+    // Add header
+    const thead = document.createElement('thead');
+    thead.innerHTML = `
+        <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Score</th>
+        </tr>
+    `;
+    table.appendChild(thead);
 
-    for (user of data["users"]) {
-        leaderboard[user["points"]] = user["display_name"]
-        points_.push(user["points"])
-    }
+    // Sort users by points
+    const sortedUsers = data.users.sort((a, b) => b.points - a.points);
 
-    points_.sort(function(a, b) {
-        return b - a;
-      });
+    // Create tbody
+    const tbody = document.createElement('tbody');
+    sortedUsers.forEach((user, index) => {
+        const tr = document.createElement('tr');
+        tr.className = 'leaderboard-row';
+        
+        // Add medal classes
+        if (index === 0) tr.classList.add('gold');
+        if (index === 1) tr.classList.add('silver');
+        if (index === 2) tr.classList.add('bronze');
 
-    let i = 1
-    for (points of points_) {
-        user = leaderboard[points]
-        let newUserName = document.createElement("p");
-        newUserName.innerHTML = `${i}. ${user} - ${points} points`;
-        document.querySelector(".quiz-results").appendChild(newUserName);
-        i++
-    }
+        tr.innerHTML = `
+            <td class="rank">#${index + 1}</td>
+            <td>${user.display_name}</td>
+            <td class="points">${user.points}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    quiz_results.appendChild(table);
 }
-
