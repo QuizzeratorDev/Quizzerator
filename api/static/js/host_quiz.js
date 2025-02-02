@@ -1,11 +1,6 @@
-
 var socket = io()
 
-var userParent = null
-
 var currentRoomID = null
-
-
 
 $(document).ready(function(){ 
 
@@ -29,14 +24,27 @@ $(document).ready(function(){
     });
     
 });
-    
 
-function joinRoom() {
-    roomID = document.querySelector(".quiz-id-input").value
-    currentRoomID = roomID
-    socket.emit("join", {room: roomID})
+function createRoom() {
+    socket.emit("create", {})
+    setInterval(function() {
+        if (currentRoomID != null) {
+            updateRoomListForAllUsers()
+        }
+        
+    }, 5000);
 }
 
+function updateRoomIDDisplay(room_id) {
+    let roomIDDisplay = document.querySelector(".room-id-display")
+    roomIDDisplay.innerHTML = room_id
+    currentRoomID = room_id
+}
+
+function updateRoomListForAllUsers() {
+    socket.emit("get_room_info", {
+    })
+}
 
 function updateRoomList(room_users) {
     userParent.innerHTML = ""
@@ -46,17 +54,9 @@ function updateRoomList(room_users) {
     
 }
 
-
-
 function updateMessageDisplay(message) {
     let message_display = document.querySelector(".message-display")
     message_display.innerHTML = message
-}
-
-function updateRoomIDDisplay(room_id) {
-    let roomIDDisplay = document.querySelector(".room-id-display")
-    roomIDDisplay.innerHTML = room_id
-    currentRoomID = room_id
 }
 
 function createUserElement(user) {
@@ -70,3 +70,9 @@ function createUserElement(user) {
     
 }
 
+
+
+function sendMessage() {
+    let message_ = document.querySelector(".message-input").value
+    socket.emit("host_send_message", {message: message_})
+}

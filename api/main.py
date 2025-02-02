@@ -10,6 +10,7 @@ import routes.quiz_searcher as quiz_searcher
 import routes.authenticator as authenticator
 import routes.login_page as login_page
 import routes.live_quiz as live_quiz
+import routes.host_quiz as host_quiz
 import scheduler_tasks.clear_database as clear_database
 import firebase_db as firebase_db
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -61,6 +62,13 @@ def live_quiz_connect():
     return live_quiz.live_quiz_connect()
 
 
+@app.route("/host_quiz", methods=["GET", "POST"])
+def on_host_quiz():
+    return host_quiz.host_quiz_connect()
+
+
+
+
 
 @socketio.on("client_data")
 def test_message(data):
@@ -72,7 +80,10 @@ def test_message(data):
 def on_join(data):
     room = data['room']
     join_room(room)
-
+    session["live_quiz_data"] = {
+        "room_id": room,
+        "host": False
+    }
     session_user = session["user"]["display_name"]
     #print(request.sid)
     #print(dict(socketio.server.manager.rooms["/"]["room123"]).keys()) #THIS GETS ALL SIDS IN ROOM
@@ -103,16 +114,18 @@ def on_join(data):
 
 @socketio.on("get_room_info")
 def on_get_info(data):
-    room = data["room"]
-    all_users = firebase_db.download_quiz(room, "liveRooms")["users"]
-    for user_num in range(len(all_users)-1, -1, -1):
-        
-        user = all_users[user_num]
-        server_room = dict(socketio.server.manager.rooms["/"][room]).keys()
-        if not user["sid"] in server_room:
-            all_users.remove(user)
-    firebase_db.update_quiz(room, "users", all_users, "liveRooms")
-    emit("room_data", {"data": all_users})
+    if "live_quiz_data" in session:
+        room = session["live_quiz_data"]["room_id"]
+        all_users = firebase_db.download_quiz(room, "liveRooms")["users"]
+        if firebase_db.download_quiz(room, "liveRooms") != None:
+            for user_num in range(len(all_users)-1, -1, -1):
+                
+                user = all_users[user_num]
+                server_room = dict(socketio.server.manager.rooms["/"][room]).keys()
+                if not user["sid"] in server_room:
+                    all_users.remove(user)
+            firebase_db.update_quiz(room, "users", all_users, "liveRooms")
+            emit("room_data", {"data": all_users})
 @socketio.on('create')
 def on_join(data):
     
@@ -121,7 +134,12 @@ def on_join(data):
         "display_name": session_user,
         "sid": request.sid,
     }
+    
     room_id = str(uuid.uuid1())[:7]
+    session["live_quiz_data"] = {
+        "room_id": room_id,
+        "host": True
+    }
     join_room(room_id)
     firebase_db.upload_quiz(room_id, {"host": new_data, "users": []}, "liveRooms")
     
@@ -135,6 +153,14 @@ def on_leave(data):
     room = data['room']
     leave_room(room)
     emit("toast_messages", {"data": username + ' has left the room.'}, to=room)
+
+
+@socketio.on("host_send_message")
+def on_send_message(data):
+    message = data["message"]
+    room = session["live_quiz_data"]["room_id"]
+    if session["live_quiz_data"]["host"]:
+        emit("receive_message_from_host", {"data": message}, to=room)
 
 def clear_database_task():
     clear_database.clear()
