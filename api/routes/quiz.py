@@ -1,6 +1,6 @@
 from flask import redirect,request,render_template, url_for
 import json
-import functions.utils as utils
+import api.functions.utils as utils
 def generate_quiz():
     output = {}
     if request.method == "POST":

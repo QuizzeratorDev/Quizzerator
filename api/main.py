@@ -1,18 +1,18 @@
 #!/usr/bin/python
 # run.py
 
-from flask import Flask, render_template,request, redirect
-import routes.quiz as quiz
-import routes.uploader as uploader
-import routes.quiz_master as quiz_master
-import routes.index as index
-import routes.quiz_searcher as quiz_searcher
-import routes.authenticator as authenticator
-import routes.login_page as login_page
-import routes.live_quiz as live_quiz
-import routes.host_quiz as host_quiz
-import scheduler_tasks.clear_database as clear_database
-import firebase_db as firebase_db
+from flask import Flask, render_template,request, redirect, Blueprint
+import api.routes.quiz as quiz
+import api.routes.uploader as uploader
+import api.routes.quiz_master as quiz_master
+import api.routes.index as index
+import api.routes.quiz_searcher as quiz_searcher
+import api.routes.authenticator as authenticator
+import api.routes.login_page as login_page
+import api.routes.live_quiz as live_quiz
+import api.routes.host_quiz as host_quiz
+import api.scheduler_tasks.clear_database as clear_database
+import api.firebase_db as firebase_db
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_socketio import SocketIO, emit, send, join_room, leave_room, rooms
 
@@ -24,46 +24,45 @@ import time
 
 firebase_db.setup()
 
-app = Flask(__name__)
-app.secret_key = "6BtdCaEka6xjV4DVNxZ3pZB8mXJ70sig"
+blueprint = Blueprint('blueprint', __name__)
 scheduler = BackgroundScheduler()
-socketio = SocketIO(app,debug=True,cors_allowed_origins='*')
+socketio = SocketIO(blueprint,debug=True,cors_allowed_origins='*')
 
 
-@app.route('/', endpoint="index", methods=["GET", "POST"])
+@blueprint.route('/', endpoint="index", methods=["GET", "POST"])
 def index_():
     return index.load_index()
 
-@app.route("/uploader", methods = ["GET", "POST"])
+@blueprint.route("/uploader", methods = ["GET", "POST"])
 def upload_file():
     return uploader.uploader()
 
-@app.route("/quiz", methods=["POST"])
+@blueprint.route("/quiz", methods=["POST"])
 def gen_quiz():
     return quiz.generate_quiz()
 
-@app.route("/quiz_master", methods=["GET", "POST"])
+@blueprint.route("/quiz_master", methods=["GET", "POST"])
 def mark_question():
     return quiz_master.mark_question()
 
-@app.route("/quiz_searcher", methods=["GET", "POST"])
+@blueprint.route("/quiz_searcher", methods=["GET", "POST"])
 def quiz_search():
     return quiz_searcher.search()
 
-@app.route("/authenticator", methods=["GET", "POST"])
+@blueprint.route("/authenticator", methods=["GET", "POST"])
 def authenticateuser():
     return authenticator.authenticate()
 
-@app.route("/login", methods=["GET", "POST"])
+@blueprint.route("/login", methods=["GET", "POST"])
 def loginpage():
     return login_page.display_login_page()
 
-@app.route("/live_quiz", methods=["GET", "POST"])
+@blueprint.route("/live_quiz", methods=["GET", "POST"])
 def live_quiz_connect():
     return live_quiz.live_quiz_connect()
 
 
-@app.route("/host_quiz", methods=["GET", "POST"])
+@blueprint.route("/host_quiz", methods=["GET", "POST"])
 def on_host_quiz():
     return host_quiz.host_quiz_connect()
 
@@ -331,9 +330,3 @@ def on_end_answers():
 
 def clear_database_task():
     clear_database.clear()
-
-if __name__ == "__main__":
-    
-    scheduler.add_job(clear_database_task, 'interval', seconds=15)
-    scheduler.start()
-    app.run(host='0.0.0.0', port=8080)
