@@ -123,9 +123,15 @@ button:active {
 
 .message-display {
     font-size: 1.1rem;
-    margin-bottom: 1rem;
     color: var(--text-secondary);
+}
+
+.message-display-container {
     background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .user-list {

@@ -3,6 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore, json
 from flask import jsonify
 from rapidfuzz import fuzz
+import platform
 
 import os
 import json
@@ -10,11 +11,12 @@ import json
 db = 0
 def setup():
     
-    cred_dict = json.loads(os.environ.get('FIREBASE_CREDENTIALS'))
-    #cred_dict="../quizzerator-firebase-adminsdk-60izn-86c8037eca.json"
+    if platform.system() == "Darwin":  # macOS
+        cred_dict = "quizzerator-firebase-sasha.json"
+    else:
+        cred_dict = json.loads(os.environ.get('FIREBASE_CREDENTIALS', '{}'))
 
-
-    print(cred_dict)
+    print(f"Firebase Credentials Loaded!")
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
     global db
@@ -29,6 +31,7 @@ def setup():
     #doc_ref.set(data)
 
     #print("Document ID:", doc_ref.id)
+    print("Setup Complete!")
 
 def upload_quiz(name, data,collection):
     global db
