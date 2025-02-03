@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="/api/static/css/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=menu"/>
 </head>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -30,15 +31,17 @@
             <div class="topnav-left">
                 <div class="burger-menu">
                     <div class="burger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span class="material-symbols-outlined">
+                            menu
+                        </span>
                     </div>
                 </div>
-            
-                <div class="page-title">
-                    <h3>Quizzerator</h3>
-                </div>
+                
+                <a href="/">
+                    <div class="page-title">
+                        <h3>Quizzerator</h3>
+                    </div>
+                </a>
             </div>
             
             <div class="userinfo">
@@ -48,7 +51,9 @@
 
         <div class="master">
             <div class="sidebar" style="background: var(--bg-secondary);">
-                <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">Create New Quiz</button>
+                <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">
+                    Create New Quiz
+                </button>
                 <a href="/live_quiz">
                     <button type="button" style="margin-bottom: 0.75rem;">Join Live Quiz</button>
                 </a>
@@ -71,8 +76,7 @@
                     <button type="button" onclick="hostQuiz()" id="hostquiz" class="host">Host This Quiz</button>
                 </div>
                 
-                <div class="termParent">
-                </div>
+                <div class="termParent"></div>
 
                 <button class="add-entry" type="button" onclick="addEntry()">+ Add New Term</button>
             </div>

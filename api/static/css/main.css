@@ -194,6 +194,7 @@ input[type="text"]:focus, input[type="search"]:focus {
     padding: 1.5rem;
     border: 2px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
+    max-height: fit-content;
 }
 
 .search-result:hover {
@@ -253,13 +254,8 @@ input[type="text"]:focus, input[type="search"]:focus {
     cursor: pointer;
 }
 
-.burger-icon {
-    width: 30px;
-    height: 20px;
-    position: relative;
-}
 
-.burger-icon span {
+/* .burger-icon span {
     display: block;
     position: absolute;
     height: 3px;
@@ -274,7 +270,7 @@ input[type="text"]:focus, input[type="search"]:focus {
 
 .burger-icon span:nth-child(1) { top: 0; }
 .burger-icon span:nth-child(2) { top: 8px; }
-.burger-icon span:nth-child(3) { top: 16px; }
+.burger-icon span:nth-child(3) { top: 16px; } */
 
 .sidebar {
     position: fixed;
@@ -286,7 +282,17 @@ input[type="text"]:focus, input[type="search"]:focus {
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     transition: left 0.3s ease;
     z-index: 999;
+    animation-delay: 10s;
 } 
+
+.burger-icon {
+    width: 30px;
+    height: 20px;
+    right: 0px;
+    position: relative;
+    animation-delay: 10s;
+}
+
 
 .burger-icon.active {
     right: -165px;
@@ -297,7 +303,7 @@ input[type="text"]:focus, input[type="search"]:focus {
     left: 0;
 }
 
-.burger-icon.active span:nth-child(1) {
+/* .burger-icon.active span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
 
@@ -307,4 +313,4 @@ input[type="text"]:focus, input[type="search"]:focus {
 
 .burger-icon.active span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -7px);
-}
+} */
