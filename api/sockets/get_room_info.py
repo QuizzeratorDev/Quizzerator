@@ -19,9 +19,12 @@ def _on_get_room_info(data, socket_rooms):
     
     if db == None:
         return
+    if not "users" in db:
+        return
     all_users = db["users"]
     #ERASES all users not in flask-socketio room
-    for user in all_users.keys():
+    for i in range(len(all_users.keys())-1, -1, -1):
+        user = list(all_users.keys())[i]
             #ERASES all users not in flask-socketio room (user is an sid)
         if not user in dict(socket_rooms[room]).keys():
             all_users.pop(user)

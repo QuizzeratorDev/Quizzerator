@@ -56,7 +56,7 @@ def _on_join(data, socket_rooms):
 
 
         #Updates room db with current users
-        firebase_db.update_data_subkey(room, "users", new_key, current_users)
+        firebase_db.update_data(room, "users", current_users)
         all_users = current_users
         #all_users = firebase_db.download_quiz(room, "liveRooms")
 
@@ -64,7 +64,9 @@ def _on_join(data, socket_rooms):
         emit("room_data", {"data": all_users}, to=room)
         emit("toast_messages", {"data": session_user + ' has entered the room.'}, to=room)
     else:
-        firebase_db.update_data_subkey(room, "users", new_key, new_data)
+        firebase_db.update_data(room, "users", {
+            new_key: new_data
+        })
         all_users = {
             new_key: new_data
         }
