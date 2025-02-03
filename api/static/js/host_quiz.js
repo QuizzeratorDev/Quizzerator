@@ -104,7 +104,7 @@ function updateRoomListForAllUsers() {
 function updateRoomList(room_users) {
     totalUsers = 0
     userParent.innerHTML = "";
-    for (let user of room_users.values()) {
+    for (let user of Object.values(room_users)) {
         totalUsers++;
         createUserElement(user["display_name"]);
     }
@@ -188,7 +188,9 @@ function endHostQuiz(data) {
     table.appendChild(thead);
 
     // Sort users by points
-    const sortedUsers = data.users.sort((a, b) => b.points - a.points);
+    // Key of user is the SID, value of user is Display Name + Points
+    const user_list = Object.values(data.users)
+    const sortedUsers = user_list.sort((a, b) => b.points - a.points);
 
     // Create tbody
     const tbody = document.createElement('tbody');

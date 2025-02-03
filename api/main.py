@@ -77,6 +77,14 @@ def serve_static1(filename): #!THIS IS FOR LOCAL TESTING NAHHHHHGHHHH GOING ON P
     return send_from_directory(blueprint.static_folder, filename)
 
 
+
+
+
+
+
+
+
+
 @socketio.on("client_data")
 def test_message(data):
     print("Received" + str(data))
@@ -101,71 +109,88 @@ def on_join(data):
     #print(request.sid)
     #print(dict(socketio.server.manager.rooms["/"]["room123"]).keys()) #THIS GETS ALL SIDS IN ROOM
 
-
+    new_key = request.sid
     #This is the data about to be added to room database
     new_data = {
         "display_name": session_user,
-        "sid": request.sid,
         "points": 0,
-        }
+    }
 
     #Downloads existing room database
-    room_db = firebase_db.download_quiz(room, "liveRooms")
-    if room in firebase_db.get_all_keys("liveRooms"):
+    room_db = firebase_db.download_data(room)
+    operating_room = room in dict(socketio.server.manager.rooms["/"])
+    if not operating_room:
+        return
+    valid_room = room in firebase_db.get_all_data_keys()
+    if not valid_room:
+        return
+    
+    if "users" in room_db.keys():
         current_users = room_db["users"]
 
         #Checks if database room is actually an operating room
-        if room in dict(socketio.server.manager.rooms["/"]):
 
-            #Gets session id of every user in operating (socketio) room
-            server_room = dict(socketio.server.manager.rooms["/"][room]).keys()
-
-
-            for user_num in range(len(current_users)-1, -1, -1):
-                user = current_users[user_num]
-                #ERASES all users not in flask-socketio room
-                if not user["sid"] in server_room:
-                    current_users.remove(user)
-                
-                #ERASES all users with the same session id, prevents someone from joining twice in same tab
-                if user["sid"] == request.sid:
-                    current_users.remove(user)
-            current_users.append(new_data)
+        #Gets session id of every user in operating (socketio) room
+        server_room = dict(socketio.server.manager.rooms["/"][room]).keys()
 
 
-            #Updates room db with current users
-            firebase_db.update_quiz(room, "users", current_users, "liveRooms")
-            all_users = current_users
+        for user in current_users.keys():
+            #ERASES all users not in flask-socketio room (user is an sid)
+            if not user in server_room:
+                current_users.pop(user)
+            
+            #ERASES all users with the same session id, prevents someone from joining twice in same tab
+            if user == request.sid:
+                current_users.pop(user)
+        current_users[new_key] = new_data
+
+
+        #Updates room db with current users
+        firebase_db.update_data_subkey(room, "users", new_key, current_users)
+        all_users = current_users
+        #all_users = firebase_db.download_quiz(room, "liveRooms")
+
+        #Sends room data to all users
+        emit("room_data", {"data": all_users}, to=room)
+        emit("toast_messages", {"data": session_user + ' has entered the room.'}, to=room)
+    else:
+        firebase_db.update_data_subkey(room, "users", new_key, new_data)
+        all_users = {
+            new_key: new_data
+        }
             #all_users = firebase_db.download_quiz(room, "liveRooms")
 
-            #Sends room data to all users
-            emit("room_data", {"data": all_users}, to=room)
-            emit("toast_messages", {"data": session_user + ' has entered the room.'}, to=room)
-
+        #Sends room data to all users
+        emit("room_data", {"data": all_users}, to=room)
+        emit("toast_messages", {"data": session_user + ' has entered the room.'}, to=room)
+        
 @socketio.on("get_room_info")
 def on_get_info(data):
     #Checks if user is actually playing a live quiz
-    if "live_quiz_data" in session:
-
+    if not "live_quiz_data" in session:
+        return
         #Gets room id from session variable
-        room = session["live_quiz_data"]["room_id"]
+    room = session["live_quiz_data"]["room_id"]
 
-        #Gets all users currently in room
-        all_users = firebase_db.download_quiz(room, "liveRooms")["users"]
+    #Gets all users currently in room
+    db = firebase_db.download_data(room)
+    
 
-        #Checks if room exists in firestore
-        if firebase_db.download_quiz(room, "liveRooms") != None:
-            #ERASES all users not in flask-socketio room
-            for user_num in range(len(all_users)-1, -1, -1):
-                
-                user = all_users[user_num]
-                server_room = dict(socketio.server.manager.rooms["/"][room]).keys()
-                if not user["sid"] in server_room:
-                    all_users.remove(user)
-            firebase_db.update_quiz(room, "users", all_users, "liveRooms")
+    #Checks if room exists in firestore
+    
+    if db == None:
+        return
+    all_users = db["users"]
+    #ERASES all users not in flask-socketio room
+    for user in all_users.keys():
+            #ERASES all users not in flask-socketio room (user is an sid)
+        if not user in dict(socketio.server.manager.rooms["/"][room]).keys():
+            all_users.pop(user)
+    
+    firebase_db.update_data(room, "users", all_users)
 
-            #Emits room data to all users
-            emit("room_data", {"data": all_users}, to=room)
+    #Emits room data to all users
+    emit("room_data", {"data": all_users}, to=room)
 
 
 
@@ -185,7 +210,7 @@ def on_join(data):
         "host": True
     }
     join_room(room_id)
-    firebase_db.upload_quiz(room_id, {"host": new_data, "users": []}, "liveRooms")
+    firebase_db.upload_data(room_id, {"host": new_data, "users": []})
     
     #print(socketio.server.manager.rooms["/"]["room123"])
     emit("room_creation_data", {"data": room_id})
@@ -222,10 +247,10 @@ def on_send_question():
 
             current_question, answer = quiz_data[str(question_num)]
             
-            firebase_db.update_quiz(room, "question_" + str(question_num), {
+            firebase_db.update_data(room, "question_" + str(question_num), {
                 "start_timestamp": time.time(),
-                "answers": []
-            }, "liveRooms")
+                
+            })
             
             emit("receive_question", {"data": {
                 "question_num": question_num,
@@ -234,7 +259,7 @@ def on_send_question():
             }}, to=room)
             
         else:
-            quiz_end_data = firebase_db.download_quiz(room, "liveRooms")
+            quiz_end_data = firebase_db.download_data(room)
             emit("end_quiz", {"data": quiz_end_data}, to=room)
 
 @socketio.on("start_quiz")
@@ -243,7 +268,7 @@ def on_start_quiz():
     is_host = session["live_quiz_data"]["host"]
     if is_host:
         emit("start_quiz", to=room)
-        num_of_users = len(firebase_db.download_quiz(room, "liveRooms")["users"])
+        num_of_users = len(firebase_db.download_data(room)["users"])
 
 @socketio.on("submit_answer")
 def on_receive_answer(data):
@@ -251,7 +276,8 @@ def on_receive_answer(data):
     display_name = session["user"]["display_name"]
     answer = data["answer"]
     sid = request.sid
-    to_add = {
+    new_key = sid
+    new_data = {
         "timestamp": time.time(),
         "sid":sid, 
         "display_name": display_name,
@@ -260,12 +286,13 @@ def on_receive_answer(data):
 
     question_num = data["question_num"]
 
-    host_sid = firebase_db.download_quiz(room, "liveRooms")["host"]["sid"]
+    host_sid = firebase_db.download_data(room)["host"]["sid"]
 
     #Adds timestamp and SID, as an answer, to question data in room db
-    firebase_db.append_to_value_of_key_in_document(room, "question_" + str(question_num), "answers", to_add, "liveRooms")
-    room_db = firebase_db.download_quiz(room, "liveRooms")
-    number_of_answers = len(room_db["question_" + str(question_num)]["answers"])
+    
+    firebase_db.update_data_subsubkey(room, "question_" + str(question_num), "answers", new_key, new_data)
+    room_db = firebase_db.download_data(room)
+    number_of_answers = len(room_db["question_" + str(question_num)]["answers"].keys())
 
     emit("host_get_answers", {"data": display_name, "number_of_answers": number_of_answers}, to=host_sid)
         
@@ -276,7 +303,7 @@ def on_end_answers():
     is_host = session["live_quiz_data"]["host"]
     if is_host:
         live_quiz_data = session["host_live_quiz_data"]
-        live_quiz_room_data = firebase_db.download_quiz(room,"liveRooms")
+        live_quiz_room_data = firebase_db.download_data(room)
 
 
         question_num = live_quiz_data["question_num"]
@@ -287,10 +314,9 @@ def on_end_answers():
         
         
         answers = question_data["answers"]
-        for answer in answers:
-            print(actual_question_data[1])
+        for answer_sid in answers.keys():
+            answer = answers[answer_sid]
             is_correct = answer["answer"]  == actual_question_data[1]
-            answer_sid = answer["sid"]
 
             original_timestamp = question_data["start_timestamp"]
             timestamp = answer["timestamp"]
@@ -313,8 +339,9 @@ def on_end_answers():
             
             current_points = 0
             users = live_quiz_room_data["users"]
-            for user in users:
-                if user["sid"] == answer_sid:
+            for user_sid in users.keys():
+                if user_sid == answer_sid:
+                    user = users[user_sid]
                     user["points"] += points
                     current_points = user["points"]
                     break
@@ -327,7 +354,7 @@ def on_end_answers():
             }}, to=answer_sid)
 
             
-            firebase_db.update_quiz(room, "users", users, "liveRooms")
+        firebase_db.update_data(room, "users", users)
 
         #emit("reveal_all_answers", {"data": {
         #    "answers": output

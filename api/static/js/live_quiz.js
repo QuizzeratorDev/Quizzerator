@@ -62,7 +62,8 @@ function joinRoom() {
 
 function updateRoomList(room_users) {
     userParent.innerHTML = "";
-    for (let user of room_users.values()) {
+    console.log(room_users)
+    for (let user of Object.values(room_users)) {
         createUserElement(user["display_name"]);
     }
 }
