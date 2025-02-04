@@ -13,25 +13,12 @@
 
 <meta name="url-params" data-url_quiz_name="{{url_quiz_name}}">
 <body onload="onPageLoad()">
-    <style>
-        .simplebar-content-wrapper {
-            scrollbar-width: auto;
-            -ms-overflow-style: auto;
-        }
-    
-        .simplebar-content-wrapper::-webkit-scrollbar,
-        .simplebar-hide-scrollbar::-webkit-scrollbar {
-            display: initial;
-            width: initial;
-            height: initial;
-        }
-    </style>
     <div class="container">
         <nav class="topnav">
             <div class="topnav-left">
                 <div class="burger-menu">
                     <div class="burger-icon">
-                        <span class="material-symbols-outlined">
+                        <span class="material-symbols-outlined menu-button" onclick="changeMenuIcon()">
                             menu
                         </span>
                     </div>
@@ -50,7 +37,7 @@
         </nav>
 
         <div class="master">
-            <div class="sidebar" style="background: var(--bg-secondary);">
+            <div class="sidebar">
                 <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">
                     Create New Quiz
                 </button>

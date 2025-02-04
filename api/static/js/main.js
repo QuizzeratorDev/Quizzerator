@@ -25,8 +25,6 @@ async function onPageLoad() {
     
   }
 
-  
-
 
   refreshRecs()
 
@@ -403,6 +401,12 @@ function redirect_to_login_page() {
   })
 }
 
-
-
-
+function changeMenuIcon() {
+  icon = document.querySelector(".menu-button")
+  if (icon.innerHTML == "menu") {
+    icon.innerHTML = "close";
+  };
+  if (icon.innerHTML == "close") {
+    icon.innerHTML = "menu";
+  };
+}
