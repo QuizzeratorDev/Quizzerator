@@ -74,18 +74,13 @@
 
     <script>
         document.querySelector('.burger-menu').addEventListener('click', function() {
-            this.querySelector('.burger-icon').classList.toggle('active');
-            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.master').classList.toggle('active');
         });
 
         document.addEventListener('click', function(event) {
-            const sidebar = document.querySelector('.sidebar');
+            const master = document.querySelector('.master');
             const burgerMenu = document.querySelector('.burger-menu');
     
-            if (!sidebar.contains(event.target) && !burgerMenu.contains(event.target) && sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-                burgerMenu.querySelector('.burger-icon').classList.remove('active');
-            }
         });
     </script>
 </body>

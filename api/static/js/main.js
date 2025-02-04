@@ -108,7 +108,7 @@ function addEntry(term_text="", def_text="") {
   var reorderButton = document.createElement("button")
   reorderButton.type="button"
   reorderButton.innerHTML = "^"
-  removeButton.className = "reorderButton";
+  reorderButton.className = "reorderButton";
 
   //Adds 1 to the ID counter
   id_count++;

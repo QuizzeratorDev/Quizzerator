@@ -11,6 +11,15 @@
 }
 
 
+*::-webkit-scrollbar {
+    background-color: transparent;
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--bg-secondary);
+    border-radius: 5px;
+}
 
 textarea {
     resize: none;
@@ -67,34 +76,46 @@ body {
 
 .master {
     display: grid;
+    grid-template-columns: 30% 70%;
     gap: 2rem;
 }
 
+.master.active {
+    grid-template-columns: 0% 100%;
+}
+
 .sidebar {
-    position: fixed;
-    overflow-y: scroll;
+    
     top: 0;
-    left: -500px;
-    width: 500px;
-    height: 100vh;
+    height: 70%;
     padding: 1.5rem;
-    padding-top: 3.5rem;
     background: #fff;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     transition: left 0.3s ease;
+    border-right: 5px solid var(--bg-secondary);
     z-index: 999;
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
 } 
 
-.sidebar.active {
-    left: 0;
+.search-results {
+    height: 80%;
+    display: grid;
+    gap: 1rem;
+    overflow-y: scroll;
+    padding-right: 1rem;
 }
+
 
 .main {
     background: var(--bg-primary);
-    padding: 2rem;
+    padding-top: 2rem;
+    padding-left: 2rem;
     border-radius: var(--border-radius);
-    height: 80%;
+    height: 70%;
+    width: 90%;
+    display: grid;
+    gap: 2%;
+    grid-template-rows: 10% 5% 7% 63% 7%;
 }
 
 button {
@@ -147,18 +168,15 @@ input[type="text"]:focus, input[type="search"]:focus {
 
 .quiz-title {
     font-size: 1.5rem;
-    margin-bottom: 1.5rem;
 }
 
 .quiz-info-div {
     color: var(--text-secondary);
-    margin-bottom: 1.5rem;
 }
 
 .quiz-settings {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
 }
 
 .settings-button {
@@ -166,14 +184,11 @@ input[type="text"]:focus, input[type="search"]:focus {
 }
 
 .termParent {
-    margin-bottom: 2rem;
+    overflow-y: scroll;
+    height: 100%;
+    padding-right: 1rem;
 }
 
-.search-results {
-    height: 70%;
-    display: grid;
-    gap: 1rem;
-}
 
 
 
@@ -222,6 +237,8 @@ input[type="text"]:focus, input[type="search"]:focus {
     gap: 1rem;
     margin-bottom: 1rem;
     align-items: flex-start;
+    height: 50px;
+    
 }
 
 .input-box {
@@ -233,6 +250,7 @@ input[type="text"]:focus, input[type="search"]:focus {
     color: var(--text-primary);
     font-size: 0.95rem;
     resize: none;
+    height: 50px;
     transition: all 0.2s;
 }
 
@@ -243,13 +261,14 @@ input[type="text"]:focus, input[type="search"]:focus {
 }
 
 .removebutton {
-    padding: 0.5rem;
     border: 1px solid var(--danger);
     background: transparent;
     color: var(--danger);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    height: 100%;
+    text-align: center;
 }
 
 .removebutton:hover {
