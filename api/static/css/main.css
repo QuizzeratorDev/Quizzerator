@@ -1,5 +1,5 @@
 :root {
-    --bg-primary: #0f172a;
+    --bg-primary: rgb(4, 10, 25);
     --bg-secondary: #1e293b;
     --text-primary: #e2e8f0;
     --text-secondary: #94a3b8;
@@ -156,9 +156,13 @@ input[type="text"]:focus, input[type="search"]:focus {
 }
 
 .quiz-settings {
-    display: grid;
+    display: flex;
     gap: 1rem;
     margin-bottom: 2rem;
+}
+
+.settings-button {
+    width: 50%;
 }
 
 .termParent {
@@ -170,6 +174,7 @@ input[type="text"]:focus, input[type="search"]:focus {
     display: grid;
     gap: 1rem;
 }
+
 
 
 
