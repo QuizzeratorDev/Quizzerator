@@ -12,7 +12,7 @@ def generate_quiz():
 
         #Turns entries dictionary {term: definition} into terms dictionary {question number: term}
         for question_num in terms:
-            output[str(question_num)] = entries[question_num][0]
+            output[str(int(question_num)+1)] = entries[question_num][0]
     return render_template("quiz.html", \
                                terms_dic=output,
                                quiz_name = quizname,

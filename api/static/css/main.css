@@ -267,7 +267,6 @@ input[type="text"]:focus, input[type="search"]:focus {
     color: var(--text-primary);
     font-size: 0.95rem;
     resize: none;
-    height: 50px;
     transition: all 0.2s;
 }
 
