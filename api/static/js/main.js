@@ -82,7 +82,7 @@ function addEntry(term_text="", def_text="") {
   
   termInput.oninput = function() {
     this.style.height = "auto";
-    this.style.height = (this.scrollHeight+2) +'px';
+    this.style.height = (this.scrollHeight+7) +'px';
     
   }
   //Creates a definition input with:
@@ -94,7 +94,7 @@ function addEntry(term_text="", def_text="") {
   defInput.rows="1"
   defInput.oninput =function() {
     this.style.height = "auto"; 
-    this.style.height = (this.scrollHeight+2) +'px';
+    this.style.height = (this.scrollHeight+7) +'px';
   }
 
   //Creates a button to remove the entry, with onclick calling removeEntry and referencing the button's id, with:

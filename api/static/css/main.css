@@ -203,6 +203,7 @@ input[type="text"]:focus, input[type="search"]:focus {
     overflow-y: scroll;
     height: 100%;
     padding-right: 1rem;
+    display: grid;
 }
 
 
@@ -253,7 +254,7 @@ input[type="text"]:focus, input[type="search"]:focus {
     gap: 1rem;
     margin-bottom: 1rem;
     align-items: flex-start;
-    height: 50px;
+    
     
 }
 
