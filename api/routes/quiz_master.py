@@ -8,10 +8,10 @@ def mark_question():
         question = request.args.get("question")
         answer = request.args.get("answer")
         quiz_data = firebase_db.download_quiz(filename, "tempCollection")["quiz_data"]
-        if quiz_data[str(question)][1] == answer:
+        if quiz_data[str(int(question)-1)][1] == answer:
             return json.dumps({'Output': 'Correct'})
         else:
-            return json.dumps({'Output': 'Incorrect', "Answer" : quiz_data[str(question)][1]})
+            return json.dumps({'Output': 'Incorrect', "Answer" : quiz_data[str(int(question)-1)][1]})
     if request.method == "POST":
         filename = request.json["filename"]
         print("Deleting quiz: " + filename)
