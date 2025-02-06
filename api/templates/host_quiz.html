@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quizzerator - Host</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <meta name="host-quiz-data" data-quiz_data="{{quiz_data}}" data-quiz_name="{{quiz_name}}">
+    <link rel="stylesheet" href="/api/static/css/host_quiz.css">
+</head>
+<body>
+    <div class="container">
+        <p><span class="room-id-display"></span></p>
+        <div class="inactive-room">
+            <div class="create-room">
+                <button onclick="createRoom()">Create Room</button>
+            </div>
+            <div class="room-management">
+                <input class="message-input" placeholder="Enter message for participants...">
+                <button class="send-message" onclick="sendMessage()">Send Message</button>
+                <button class="start-quiz" onclick="startLiveQuiz()">Start Live Quiz</button>
+            </div>
+        </div>
+        
+        <div class="message-display-container">
+            <p class="message-display"></p>
+        </div>
+
+        <div class="room-info">
+            <div class="user-list"></div>
+        </div>
+        <div class="active-room">
+            <div class="current-question-display">
+                <div class="question-header">
+                    <h3>Current Question</h3>
+                    <span class="question-number"></span>
+                </div>
+                <p class="question-text">No question sent yet</p>
+            </div>
+    
+            <div class="question-management">
+                <button class="send-question" onclick="nextQuestion()">Next Question</button>
+                <button class="end-answers" onclick="endAnswers()">End Answers</button>
+            </div>
+
+            <div class="user-answer-display">
+                <p class="user-answer-display-message">The following users have answered:</p>
+                <div class="user-answers"></div>
+            </div>
+        </div>
+        <div class="quiz-results"></div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="/api/static/js/host_quiz.js"></script>
+</body>
+</html>

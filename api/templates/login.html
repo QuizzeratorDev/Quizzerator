@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="/api/static/css/login.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="user-info">
+            <h3 class="display-name">undefined</h3>
+        </div>
+        <div class="auth-card">
+            <div class="signup">
+                <h3 class="auth-title">Create Account</h3>
+                <div class="auth-form">
+                    <input type="text" class="usernameInput signupInput" placeholder="Choose a username" autocomplete="new-password">
+                    <input type="email" class="emailInput signupInput" placeholder="Enter your email" autocomplete="new-password">
+                    <input type="password" id="passwordInput" class="passwordInput signupInput" placeholder="Choose a password" autocomplete="new-password">
+
+                    <ul class="password-requirements">
+                        <li id="lengthCheck" class="invalid">❌ At least 8 characters</li>
+                        <li id="upperCheck" class="invalid">❌ At least 1 uppercase letter</li>
+                        <li id="lowerCheck" class="invalid">❌ At least 1 lowercase letter</li>
+                        <li id="numberCheck" class="invalid">❌ At least 1 number</li>
+                        <li id="specialCheck" class="invalid">❌ At least 1 special character (!@#$%^&*_-)</li>
+                    </ul>
+
+                    <div style="padding-top: 1rem;">
+                        <button type="button" class="primary disabled-button" id="signupButton" disabled>Sign Up</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <div class="login">
+                <h3 class="auth-title">Welcome Back</h3>
+                <div class="auth-form">
+                    <input type="email" class="login_emailInput signupInput" placeholder="Enter your email" autocomplete="username">
+                    <input type="password" class="login_passwordInput signupInput" placeholder="Enter your password" autocomplete="current-password">
+                    
+                    <button type="button" class="secondary" id="loginButton">Sign In</button>
+                    <label class="password-status"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="signout">
+            <button type="button" id="signOutButton">Sign Out</button>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const passwordInput = document.getElementById("passwordInput");
+            const signupButton = document.getElementById("signupButton");
+
+            passwordInput.addEventListener("input", function() {
+                const password = this.value;
+                const lengthCheck = document.getElementById("lengthCheck");
+                const upperCheck = document.getElementById("upperCheck");
+                const lowerCheck = document.getElementById("lowerCheck");
+                const numberCheck = document.getElementById("numberCheck");
+                const specialCheck = document.getElementById("specialCheck");
+
+                const lengthValid = password.length >= 8;
+                const upperValid = /[A-Z]/.test(password);
+                const lowerValid = /[a-z]/.test(password);
+                const numberValid = /[0-9]/.test(password);
+                const specialValid = /[!@#$%^&*_-]/.test(password);
+
+                updateRequirement(lengthCheck, lengthValid);
+                updateRequirement(upperCheck, upperValid);
+                updateRequirement(lowerCheck, lowerValid);
+                updateRequirement(numberCheck, numberValid);
+                updateRequirement(specialCheck, specialValid);
+
+                if (lengthValid && upperValid && lowerValid && numberValid && specialValid) {
+                    signupButton.disabled = false;
+                    signupButton.classList.remove("disabled-button");
+                } else {
+                    signupButton.disabled = true;
+                    signupButton.classList.add("disabled-button");
+                }
+            });
+
+            function updateRequirement(element, isValid) {
+                if (isValid) {
+                    element.classList.add("valid");
+                    element.classList.remove("invalid");
+                    element.innerHTML = "✅ " + element.textContent.slice(2);
+                } else {
+                    element.classList.add("invalid");
+                    element.classList.remove("valid");
+                    element.innerHTML = "❌ " + element.textContent.slice(2);
+                }
+            }
+        };
+    </script>
+    <script src="/api/static/js/login.js" type="module"></script>
+</body>
+</html>

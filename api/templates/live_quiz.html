@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quizzerator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="/api/static/css/live_quiz.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="topnav">
+            <div class="topnav-left">            
+                <a href="/">
+                    <div class="page-title">
+                        <h3>Quizzerator</h3>
+                    </div>
+                </a>
+            </div>
+        </nav>
+
+        <div class="join-room">
+            <label>Enter Room ID:</label>
+            <input class="quiz-id-input">
+            <button onclick="joinRoom()">Join Room</button>
+        </div>
+
+        <div class="message-display-container">
+            <p class="message-display"></p>
+        </div>
+
+        <div class="room-info">
+            <div class="user-list"></div>
+        </div>
+
+        <div class="live-quiz-question">
+            <p class="question-display"></p>
+            <input class="answer-input">
+            <button class="submit-answer" onclick="submitAnswer()">Submit Answer</button>
+        </div>
+
+        <div class="question-submit">
+            <p class="question-submit-info">Submitted! Waiting for host to end responses</p>
+        </div>
+
+        <div class="answer-reveal-div">
+            <p class="answer-reveal"></p>
+            <p class="points-display"></p>
+        </div>
+        <div class="end-quiz-message"></div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="/api/static/js/live_quiz.js"></script>
+</body>
+</html>

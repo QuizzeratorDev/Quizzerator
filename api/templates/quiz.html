@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Quizzerator</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel='stylesheet' href="/api/static/css/quiz.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<script src="/api/static/js/quiz.js"></script>
+<meta name="quiz-data" data-quiz_name="{{quiz_name}}" data-quiz_dic="{{terms_dic}}" data-quiz_filename="{{file_name}}" data-original_filename="{{original_filename}}">
+<body>
+    <div class="container">
+        <div class="quiz-header">
+            <h1>{{quiz_name}}</h1>
+            <button class="back" onclick="returnToIndex()">← Back to Quizzes</button>
+        </div>
+
+        {% for question_num, question in terms_dic.items() %}
+        <div id="question{{question_num}}" class="question-card">
+            <meta name="question-meta" data-question="{{question}}" data-question_num="{{question_num}}">
+            <p><strong>Question {{question_num}}:</strong> {{question}}</p>
+            <div class="answer-section">
+                <input class="answerInput" id="answerInput{{question_num}}" type="text" placeholder="Type your answer...">
+                <button type="button" onclick="registerMarkQuestion(this)" id="markQuestion{{question_num}}">Check Answer</button>
+            </div>
+            <div class="feedback">
+                <label class="answerStatus"></label>
+                <label class="correctAnswer"></label>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
