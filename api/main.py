@@ -32,7 +32,7 @@ import subprocess
 from flask import session
 import uuid
 import time
-import dotenv
+
 
 firebase_db.setup()
 

@@ -18,7 +18,6 @@ def _on_create(data):
         "host": True
     }
     join_room(room_id)
-    print(room_id)
     firebase_db.upload_data(room_id, {"host": new_data, "users": []})
     
     #print(socketio.server.manager.rooms["/"]["room123"])
