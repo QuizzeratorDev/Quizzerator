@@ -4,7 +4,7 @@ from firebase_admin import firestore, json, db
 from flask import jsonify
 from rapidfuzz import fuzz
 import platform
-
+import rapidjson
 import os
 import json
 
@@ -16,9 +16,11 @@ fire_store = 0
 db_ref = 0
 def setup():
     
-    
-    cred_dict = json.loads(os.environ.get('FIREBASE_CREDENTIALS', '{}'))
-
+    if platform.system() == "Darwin":  # macOS
+        cred_dict = "quizzerator-firebase-sasha.json"
+    else:
+        cred_dict = rapidjson.loads(str(os.getenv('FIREBASE_CREDENTIALS_DICT')))
+    print(cred_dict)
     print(f"Firebase Credentials Loaded!")
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred, {
@@ -50,10 +52,8 @@ def download_data(name):
         return ref
 
 def upload_data(name, data):
-    print("Uploading data " + str(data))
     global db_ref
     db_ref.child(name).set(data)
-    print("Finished uploading data: " + str(data))
 
 
 #This is essentially a double-layered version of "append_to_document", but in realtime database

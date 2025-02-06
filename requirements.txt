@@ -5,3 +5,4 @@ flask_apscheduler
 rapidfuzz==2.4.3
 flask-socketio==5.5.1
 beautifulsoup4==4.13.3
+python-rapidjson
