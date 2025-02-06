@@ -20,9 +20,9 @@ def setup():
         cred_dict = "quizzerator-firebase-sasha.json"
     else:
         cred_dict = rapidjson.loads(str(os.getenv('FIREBASE_CREDENTIALS_DICT')))
-    print(cred_dict)
-    print(f"Firebase Credentials Loaded!")
+    
     cred = credentials.Certificate(cred_dict)
+    print(f"Firebase Credentials Loaded!")
     firebase_admin.initialize_app(cred, {
         'databaseURL': "https://quizzerator-default-rtdb.europe-west1.firebasedatabase.app/"
     })
