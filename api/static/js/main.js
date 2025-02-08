@@ -62,7 +62,7 @@ function newQuiz() {
 
 
 // ENTRY MANIPULATION //
-function addEntry(term_text="", def_text="") {
+function addEntry(term_text="", def_text="", focus=false) {
   const termParent = document.querySelector(".termParent");
 
   var entry_div = document.createElement("div");
@@ -78,11 +78,17 @@ function addEntry(term_text="", def_text="") {
   termInput.autosize = true;
   termInput.value = term_text;
   termInput.rows="1"
+  termInput.onclick = function() {
+    this.style.height = ""
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight+2) +'px';
+  }
   //This automatically resizes the input
   
   termInput.oninput = function() {
+    this.style.height = ""
     this.style.height = "auto";
-    this.style.height = (this.scrollHeight+7) +'px';
+    this.style.height = (this.scrollHeight+2) +'px';
     
   }
   //Creates a definition input with:
@@ -92,9 +98,16 @@ function addEntry(term_text="", def_text="") {
   defInput.autosize = true;
   defInput.value = def_text;
   defInput.rows="1"
-  defInput.oninput =function() {
+  defInput.height = (defInput.scrollHeight+2) +'px';
+  defInput.onclick =function() {
+    this.style.height = ""
     this.style.height = "auto"; 
-    this.style.height = (this.scrollHeight+7) +'px';
+    this.style.height = (this.scrollHeight+2) +'px';
+  }
+  defInput.oninput =function() {
+    this.style.height = ""
+    this.style.height = "auto"; 
+    this.style.height = (this.scrollHeight+2) +'px';
   }
 
   //Creates a button to remove the entry, with onclick calling removeEntry and referencing the button's id, with:
@@ -116,11 +129,15 @@ function addEntry(term_text="", def_text="") {
   //Adds a div to the termParent
   termParent.appendChild(entry_div);
 
-
+  
   //Adds termInput, defInput and removeButton to div
   entry_div.appendChild(termInput);
   entry_div.appendChild(defInput);
   entry_div.appendChild(removeButton);
+  if (focus) {
+    termInput.focus();
+  }
+  
 }
 
 function registerRemoveEntry(buttonPressed) {
@@ -129,6 +146,10 @@ function registerRemoveEntry(buttonPressed) {
   let removeid = String(div.id).substring(9)
   removeEntry(removeid)
   
+}
+
+function registerAddEntry() {
+  addEntry("", "", true)
 }
 
 function loadEntries(entries) {

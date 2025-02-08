@@ -101,6 +101,7 @@ function updateQuestion(question) {
 function submitAnswer() {
     let answerInput = document.querySelector(".answer-input");
     let answer_ = answerInput.value;
+    answerInput.value =""
     socket.emit("submit_answer", {answer: answer_, question_num: currentQuestion});
     
     document.querySelector(".question-submit").hidden = false;

@@ -8,6 +8,7 @@
     --danger: #ef4444;
     --success: #22c55e;
     --border-radius: 12px;
+    
 }
 
 
@@ -26,6 +27,7 @@ textarea {
     overflow: hidden;
     text-align: center;
     font-size: 14px;
+    
 }
 
 
@@ -41,12 +43,18 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     overflow: hidden;
+    max-width: 100%;
+    max-height: 100%;
+    
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 1rem;
+    max-height: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 .topnav {
@@ -55,15 +63,20 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
+    height: 7%;
 }
 
 .topnav-left {
     display: flex;
     align-items: center;
+}
+.user-button {
+    font-size: 10px;
+    padding: 10px 10px;
 }
 
 .page-title h3 {
@@ -76,26 +89,29 @@ body {
 
 .master {
     display: grid;
-    grid-template-columns: 30% 70%;
-    gap: 2rem;
-    height: 120vh;
-    transition: all 0.5s;
     
+    gap: 2rem;
+    max-height: 93vh;
+    transition: all 0.5s;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
 }
+
+
 
 .master.active {
     grid-template-columns: 0% 100%;
     grid-column-start: 2;
-    transition: all 0.5s;
-    transition-delay: 0.25s;
+    
 }
 
 .sidebar {
     width: 100%;
     top: 0;
     opacity: 100;
-    max-height: 70%;
-    padding: 1.5rem;
+    max-height: 80vh;
+    padding: 1.0rem;
     background: #fff;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     transition: left 0.3s ease;
@@ -104,34 +120,77 @@ body {
     overflow: hidden;
     white-space: normal;
     
-    transition: all 0.25s;
-    transition-delay: 0.5s;
+    
 } 
 
 .sidebar.active {
     opacity: 0;
-    transition: all 0.25s;
+    
+}
+
+@media (orientation: landscape) {
+    .master {
+        grid-template-columns: 30% 70%;
+    }
+    .sidebar.active {
+        transition: all 0.25s;
+    }
+
+    .master.active {
+        transition: all 0.5s;
+        transition-delay: 0.25s;
+    }
+    .sidebar {
+        transition: all 0.25s;
+        transition-delay: 0.5s;
+    }
+}
+  
+  @media (orientation: portrait) {
+    .master {
+        grid-template-rows: 100% 0%;
+    }
+    .sidebar.active {
+        transition: 0;
+    }
+    .master.active {
+        transition: 0;
+        transition-delay: 0;
+        gap: 0rem;
+        
+    }
+    .sidebar {
+        transition: 0;
+        position: relative;
+        
+    }
 }
 
 .search-results {
-    height: 80%;
+    height:60vh;
     display: grid;
     gap: 1rem;
     overflow-y: scroll;
     padding-right: 1rem;
+    padding-bottom: 30vh;
 }
 
 
 .main {
     background: var(--bg-primary);
-    padding-top: 2rem;
-    padding-left: 2rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
     border-radius: var(--border-radius);
-    max-height: 70%;
-    width: 90%;
-    display: grid;
-    gap: 2%;
-    grid-template-rows: 10% 5% 7% 63% 7%;
+    max-height: 70vh;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    gap: 0.5rem;
+}
+
+.main.hidden {
+    visibility: hidden;
 }
 
 button {
@@ -188,20 +247,33 @@ input[type="text"]:focus, input[type="search"]:focus {
 
 .quiz-info-div {
     color: var(--text-secondary);
+    font-size: 16px;
+    
 }
 
 .quiz-settings {
     display: flex;
     gap: 1rem;
+    padding-bottom: 1rem;
+   
 }
 
 .settings-button {
     width: 50%;
+    font-size: 13px;
 }
 
 .termParent {
     overflow-y: scroll;
     padding-right: 1rem;
+    padding-top:1rem;
+    padding-left:1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--bg-secondary);
+    
+    border-radius: var(--border-radius);
 }
 
 
@@ -250,15 +322,40 @@ input[type="text"]:focus, input[type="search"]:focus {
 .term-definition-div {
     width: 100%;
     display: flex;
-    gap: 1rem;
+    
+    gap: 2%;
     margin-bottom: 1rem;
     align-items: flex-start;
     
     
 }
+@media (orientation: landscape) {
+    .term-definition-div {
+        flex-direction: row;
+    }
+    .removebutton {
+        width: auto;
+    }
+    .termParent {
+        gap: 0.2rem;
+    }
+}
+  
+@media (orientation: portrait) {
+    .term-definition-div {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .removebutton {
+        width: 100%;
+    }
+    .termParent {
+        gap: 2rem;
+    }
+}
 
 .input-box {
-    flex: 1;
+    
     padding: 0.75rem 1rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -267,6 +364,8 @@ input[type="text"]:focus, input[type="search"]:focus {
     font-size: 0.95rem;
     resize: none;
     transition: all 0.2s;
+    font-size: 15px;
+    width: 100%;
 }
 
 .input-box:focus {
@@ -282,7 +381,7 @@ input[type="text"]:focus, input[type="search"]:focus {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
-    height: 50px;
+    height:40px;
     text-align: center;
 }
 

@@ -28,6 +28,7 @@
         }
     </style>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/api/static/js/quiz.js"></script>
 <meta name="quiz-data" data-quiz_name="{{quiz_name}}" data-quiz_dic="{{terms_dic}}" data-quiz_filename="{{file_name}}" data-original_filename="{{original_filename}}">
 <body>
@@ -43,7 +44,7 @@
             <p><strong>Question {{question_num}}:</strong> {{question}}</p>
             <div class="answer-section">
                 <input class="answerInput" id="answerInput{{question_num}}" type="text" placeholder="Type your answer...">
-                <button type="button" onclick="registerMarkQuestion(this)" id="markQuestion{{question_num}}">Check Answer</button>
+                <button class="submitAnswer" type="button" onclick="registerMarkQuestion(this)" id="markQuestion{{question_num}}">Check Answer</button>
             </div>
             <div class="feedback">
                 <label class="answerStatus"></label>

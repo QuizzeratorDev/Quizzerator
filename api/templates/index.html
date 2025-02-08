@@ -32,7 +32,7 @@
             </div>
             
             <div class="userinfo">
-                <button onclick="redirect_to_login_page()">{{profilemessage}}</button>
+                <button class="user-button" onclick="redirect_to_login_page()">{{profilemessage}}</button>
             </div>
         </nav>
 
@@ -60,12 +60,12 @@
                 <div class="quiz-settings">
                     <button type="button" onclick="saveQuiz()" id="teste" class="save settings-button secondary">Save Quiz</button>
                     <button type="button" onclick="playQuiz()" id="playquiz" class="start settings-button">Start Quiz</button>
-                    <button type="button" onclick="hostQuiz()" id="hostquiz" class="host settings-button">Host This Quiz</button>
+                    <button type="button" onclick="hostQuiz()" id="hostquiz" class="host settings-button">Host Quiz</button>
                 </div>
                 
                 <div class="termParent"></div>
 
-                <button class="add-entry" type="button" onclick="addEntry()">+ Add New Term</button>
+                <button class="add-entry" type="button" onclick="registerAddEntry()">+ Add New Term</button>
             </div>
         </div>
     </div>
@@ -76,6 +76,15 @@
         document.querySelector('.burger-icon').addEventListener('click', function() {
             document.querySelector('.master').classList.toggle('active');
             document.querySelector('.sidebar').classList.toggle('active');
+        });
+        document.querySelector('.search-results').addEventListener('click', function() {
+            const portrait = window.matchMedia("(orientation: portrait)").matches;
+            if (portrait) {
+                document.querySelector('.master').classList.toggle('active');
+                document.querySelector('.sidebar').classList.toggle('active');
+                
+            }
+            
         });
     </script>
 </body>

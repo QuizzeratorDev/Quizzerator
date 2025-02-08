@@ -49,7 +49,14 @@
         </div>
         <div class="end-quiz-message"></div>
     </div>
-
+    <script>
+        document.querySelector(".answer-input").addEventListener("keyup", function (event) {
+            if (event.keycode==13) {
+                document.querySelector(".submit-answer").click()
+            }
+        })
+    </script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script src="/api/static/js/live_quiz.js"></script>

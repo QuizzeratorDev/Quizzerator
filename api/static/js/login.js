@@ -33,11 +33,13 @@ async function onPageLoad() {
     if (session_user["email"] !="") {
         document.querySelector(".auth-card").hidden = true
         document.querySelector(".user-info").hidden = false
+        document.querySelector(".signout").hidden = false
         document.querySelector(".display-name").innerHTML = `Logged in as ${session_user["display_name"]}`
     }
     else{
         document.querySelector(".auth-card").hidden = false
         document.querySelector(".user-info").hidden = true
+        document.querySelector(".signout").hidden = true
         
     }
         

@@ -20,7 +20,7 @@
                     <input type="email" class="emailInput signupInput" placeholder="Enter your email" autocomplete="new-password">
                     <input type="password" id="passwordInput" class="passwordInput signupInput" placeholder="Choose a password" autocomplete="new-password">
 
-                    <ul class="password-requirements">
+                    <ul class="password-requirements" style="visibility: hidden; position: absolute;">
                         <li id="lengthCheck" class="invalid">❌ At least 8 characters</li>
                         <li id="upperCheck" class="invalid">❌ At least 1 uppercase letter</li>
                         <li id="lowerCheck" class="invalid">❌ At least 1 lowercase letter</li>
@@ -57,10 +57,12 @@
 
     <script>
         window.onload = function() {
+            document.querySelector('.password-requirements').style="visibility: hidden; position: absolute;"
             const passwordInput = document.getElementById("passwordInput");
             const signupButton = document.getElementById("signupButton");
 
             passwordInput.addEventListener("input", function() {
+                document.querySelector('.password-requirements').style="visibility: visible; position: relative;"
                 const password = this.value;
                 const lengthCheck = document.getElementById("lengthCheck");
                 const upperCheck = document.getElementById("upperCheck");
