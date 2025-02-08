@@ -51,7 +51,7 @@
     </div>
     <script>
         document.querySelector(".answer-input").addEventListener("keyup", function (event) {
-            if (event.keycode==13) {
+            if (event.key === "Enter") {
                 document.querySelector(".submit-answer").click()
             }
         })

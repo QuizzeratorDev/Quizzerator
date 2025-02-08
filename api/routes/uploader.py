@@ -46,10 +46,12 @@ def uploader():
                     "time_created": str(time.time()),
                     "quiz_data": quiz_data
                 }
+            print(filename, quiz_to_save)
             firebase_db.upload_quiz(filename, quiz_to_save, collection)
             return filename
         else:
             return jsonify({"message": "Not permitted to edit"})
+            
     if request.method == "GET":
         filename = request.args.get("filename_to_get")
         file_is_temporary = request.args.get("file_is_temporary") == True

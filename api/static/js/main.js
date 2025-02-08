@@ -219,13 +219,14 @@ async function loadQuizData(data){
   }))
 
   let perms = "Cannot edit - changes will not be saved"
-  document.querySelector(".save").hidden = true;
+  document.querySelector(".save").innerHTML = "Save a Copy";
+  document.querySelector(".save").onclick = function() {saveCopyOfQuiz()}
   if (session_user_id["uid"] == quiz_creator_uid){
     perms = "Can edit"
-    document.querySelector(".save").hidden = false;
+    document.querySelector(".save").innerHTML = "Save Quiz";
+    document.querySelector(".save").onclick = function () {saveQuiz()}
   }
   document.querySelector(".quiz_email").innerHTML = `Created by ${quiz_creator_name}`
-  console.log(perms)
   document.querySelector(".quiz_perms").innerHTML = perms
 }
 
@@ -256,9 +257,19 @@ async function playQuiz(){
     "unique_id": "True",
   })
 }
-function saveQuiz(){
+
+function saveCopyOfQuiz() {
+  currentQuizID = -1
+  console.log("Saving copy")
+  document.getElementById("name").value = `${document.getElementById("name").value} - Copy`;
+  saveQuiz()
+}
+async function saveQuiz(){
   let name = document.getElementById("name").value;
-  sendData(name, currentQuizID)
+  let filename = await sendData(name, currentQuizID)
+  location.replace('/?' + new URLSearchParams({
+    quiz: filename,
+  }).toString())
 }
 function loadQuiz(filename) {
   getData(filename)
