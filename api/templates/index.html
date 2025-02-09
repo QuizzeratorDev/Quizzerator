@@ -36,16 +36,21 @@
             </div>
         </nav>
 
+        <div class="signed-out-message"><p>
+            You are signed out. You will not be able to save quizzes, or join or host live quizzes
+        </p></div>
+
         <div class="master">
             <div class="sidebar">
-                <button type="button" onclick="newQuiz()" style="margin-bottom: 0.75rem;">
+                <button type="button" class="new-quiz" onclick="newQuiz()" style="margin-bottom: 0.75rem;">
                     Create New Quiz
                 </button>
                 <a href="/live_quiz">
-                    <button type="button" style="margin-bottom: 0.75rem;">Join Live Quiz</button>
+                    <button type="button" class="join-live-quiz" style="margin-bottom: 0.75rem;">Join Live Quiz</button>
                 </a>
                 <input type="search" class="search_bar" placeholder="Search for quizzes..." style="margin-bottom: 0.75rem;">
-                <button type="button" onclick="refreshRecs()" class="secondary" style="margin-bottom: 0.75rem;">Search</button>
+                <button type="button" class="search-quizzes secondary" onclick="refreshRecs()"  style="margin-bottom: 0.75rem;">Search</button>
+                <button type="button" class="search-my-quizzes secondary" onclick="refreshRecs('me')" style="margin-bottom: 0.75rem;">Search My Quizzes</button>
                 <div class="search-results"></div>
             </div>
 
@@ -61,6 +66,7 @@
                     <button type="button" onclick="saveQuiz()" id="teste" class="save settings-button secondary">Save Quiz</button>
                     <button type="button" onclick="playQuiz()" id="playquiz" class="start settings-button">Start Quiz</button>
                     <button type="button" onclick="hostQuiz()" id="hostquiz" class="host settings-button">Host Quiz</button>
+                    <button type="button" onclick="deleteQuiz()" id="deletequiz" class="delete settings-button dangerous">Delete Quiz</button>
                 </div>
                 
                 <div class="termParent"></div>
@@ -78,6 +84,15 @@
             document.querySelector('.sidebar').classList.toggle('active');
         });
         document.querySelector('.search-results').addEventListener('click', function() {
+            const portrait = window.matchMedia("(orientation: portrait)").matches;
+            if (portrait) {
+                document.querySelector('.master').classList.toggle('active');
+                document.querySelector('.sidebar').classList.toggle('active');
+                
+            }
+            
+        });
+        document.querySelector('.new-quiz').addEventListener('click', function() {
             const portrait = window.matchMedia("(orientation: portrait)").matches;
             if (portrait) {
                 document.querySelector('.master').classList.toggle('active');

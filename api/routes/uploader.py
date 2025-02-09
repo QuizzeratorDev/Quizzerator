@@ -5,52 +5,63 @@ import uuid
 import json, time
 def uploader():
     if request.method == "POST":
-        quiz_data = request.json["data"]
-        filename = ""
         
-        file_is_temporary = request.json["temporary"] == "True"
-        file_is_new = False
-        if not file_is_temporary:
-            quiz_id = int(request.json["filename"])
-            if quiz_id == -1:
-                filename = str(firebase_db.get_number_of_quizzes())
-                file_is_new = True
-            else:
-                filename = str(quiz_id)
-            collection = "quizCollection"
-        else:
-            filename = str(uuid.uuid1())
-            collection = "tempCollection"
-        
-        #print(term)
-        #utils.save_json(term, filename)
-        permitted = True
-        if not file_is_new and not file_is_temporary:
-            user_who_created_quiz = firebase_db.download_quiz(str(quiz_id),"quizCollection")["user"]
-            permitted = session["user"]["uid"] == user_who_created_quiz["uid"]
-        if permitted:
+        if not "delete_quiz" in request.json:
+            quiz_data = request.json["data"]
+            filename = ""
+            
+            file_is_temporary = request.json["temporary"] == "True"
+            file_is_new = False
             if not file_is_temporary:
-                quiz_to_save = {
-                    "quiz_name": request.json["name"],
-                    "user": {
-                        "uid": session["user"]["uid"],
-                        "email": session["user"]["email"],
-                        "display_name": session["user"]["display_name"]
-                    },
-                    "time_created": str(time.time()),
-                    "quiz_data": quiz_data
-                }
+                quiz_id = int(request.json["filename"])
+                if quiz_id == -1:
+                    filename = str(firebase_db.get_number_of_documents("quizCollection"))
+                    file_is_new = True
+                else:
+                    filename = str(quiz_id)
+                collection = "quizCollection"
             else:
-                quiz_to_save = {
-                    "quiz_name": request.json["name"],
-                    "time_created": str(time.time()),
-                    "quiz_data": quiz_data
-                }
-            print(filename, quiz_to_save)
-            firebase_db.upload_quiz(filename, quiz_to_save, collection)
-            return filename
-        else:
-            return jsonify({"message": "Not permitted to edit"})
+                filename = str(uuid.uuid1())
+                collection = "tempCollection"
+            
+            #print(term)
+            #utils.save_json(term, filename)
+            permitted = True
+            if not file_is_new and not file_is_temporary:
+                user_who_created_quiz = firebase_db.download_data(str(quiz_id),"quizCollection")["user"]
+                permitted = session["user"]["uid"] == user_who_created_quiz["uid"]
+            if permitted:
+                if not file_is_temporary:
+                    quiz_to_save = {
+                        "quiz_name": request.json["name"],
+                        "user": {
+                            "uid": session["user"]["uid"],
+                            "email": session["user"]["email"],
+                            "display_name": session["user"]["display_name"]
+                        },
+                        "time_created": str(time.time()),
+                        "quiz_data": quiz_data
+                    }
+                else:
+                    quiz_to_save = {
+                        "quiz_name": request.json["name"],
+                        "time_created": str(time.time()),
+                        "quiz_data": quiz_data
+                    }
+                print(filename, quiz_to_save)
+                firebase_db.upload_data(filename, quiz_to_save, collection)
+                return filename
+            else:
+                return jsonify({"message": "Not permitted to edit"})
+        elif request.json["delete_quiz"] == True:
+            id_to_delete = request.json["quiz_id"]
+            if id_to_delete == -1:
+                return
+            user_who_created_quiz = firebase_db.download_data(str(id_to_delete),"quizCollection")["user"]
+            permitted = session["user"]["uid"] == user_who_created_quiz["uid"]
+            if permitted:
+                firebase_db.delete_data(id_to_delete, "quizCollection")
+                return jsonify({"message": "Successfully deleted quiz"})
             
     if request.method == "GET":
         filename = request.args.get("filename_to_get")
@@ -61,5 +72,5 @@ def uploader():
             collection = "tempCollection"
         #print(filename)
         #new_json = utils.load_json(filename)
-        quiz_data = firebase_db.download_quiz(filename,collection)
+        quiz_data = firebase_db.download_data(filename,collection)
         return str(json.dumps(quiz_data))

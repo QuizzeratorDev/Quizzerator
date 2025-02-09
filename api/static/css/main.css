@@ -3,8 +3,10 @@
     --bg-secondary: #1e293b;
     --text-primary: #e2e8f0;
     --text-secondary: #94a3b8;
+    --text-disabled: #292d32;
     --accent-primary: #3b82f6;
     --accent-secondary: #1d4ed8;
+    --disabled: #071231;
     --danger: #ef4444;
     --success: #22c55e;
     --border-radius: 12px;
@@ -46,6 +48,13 @@ body {
     max-width: 100%;
     max-height: 100%;
     
+}
+.signed-out-message {
+    padding: 10px 10px;
+    border: 2px solid #6c3737;
+    border-radius: 5px;
+    text-align: center;
+    opacity: 80%;
 }
 
 .container {
@@ -176,6 +185,7 @@ body {
 }
 
 
+
 .main {
     background: var(--bg-primary);
     padding-top: 1rem;
@@ -212,14 +222,36 @@ button:active  {
     transform: translateY(-2px);
 }
 
+button:disabled  {
+    background-color: var(--disabled);
+    opacity: 60%;
+    color: var(--text-disabled);
+}
+
 button.secondary {
     background: transparent;
     border: 1px solid var(--accent-primary);
     color: var(--accent-primary);
 }
+button.secondary:disabled  {
+    background-color: var(--disabled);
+    border: none;
+    color: var(--text-disabled);
+}
 
 button.secondary:hover {
     background: rgba(59, 130, 246, 0.1);
+}
+
+button.dangerous {
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+button.dangerous:hover {
+    background: rgba(246, 59, 81, 0.1);
+    
 }
 
 input[type="text"], input[type="search"] {

@@ -7,12 +7,12 @@ def mark_question():
         filename = str(request.args.get("quiz_name"))
         question = request.args.get("question")
         answer = request.args.get("answer")
-        quiz_data = firebase_db.download_quiz(filename, "tempCollection")["quiz_data"]
-        if quiz_data[str(int(question)-1)][1] == answer:
+        quiz_data = firebase_db.download_data(filename, "tempCollection")["quiz_data"]
+        if quiz_data[int(question)-1][1] == answer:
             return json.dumps({'Output': 'Correct'})
         else:
-            return json.dumps({'Output': 'Incorrect', "Answer" : quiz_data[str(int(question)-1)][1]})
+            return json.dumps({'Output': 'Incorrect', "Answer" : quiz_data[int(question)-1][1]})
     if request.method == "POST":
         filename = request.json["filename"]
         print("Deleting quiz: " + filename)
-        firebase_db.delete_quiz(filename, "tempCollection")
+        firebase_db.delete_data(filename, "tempCollection")

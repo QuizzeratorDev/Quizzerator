@@ -40,8 +40,18 @@ async function onPageLoad() {
     console.error('Error:', error);
   }))
   console.log(session_user)
+
+  document.querySelector(".signed-out-message").hidden = true;
+  document.querySelector(".search-my-quizzes").disabled = false;
+  document.querySelector(".host").disabled = false;
+  document.querySelector(".save").disabled = false;
   if (session_user["email"] == "") {
-    document.querySelector(".new_quiz_button").hidden = true;
+    document.querySelector(".new-quiz").disabled = true;
+    document.querySelector(".signed-out-message").hidden = false;
+    document.querySelector(".search-my-quizzes").disabled = true;
+    document.querySelector(".host").disabled = true;
+    document.querySelector(".save").disabled = true;
+    document.querySelector(".join-live-quiz").disabled = true;
   }
 
 }
@@ -58,6 +68,8 @@ function newQuiz() {
   document.getElementById("name").value = ""
   currentQuizID = -1
   document.querySelector(".save").hidden = false;
+  document.querySelector(".save").innerHTML = "Save Quiz";
+  document.querySelector(".save").onclick = function () {saveQuiz()}
 }
 
 
@@ -221,10 +233,12 @@ async function loadQuizData(data){
   let perms = "Cannot edit - changes will not be saved"
   document.querySelector(".save").innerHTML = "Save a Copy";
   document.querySelector(".save").onclick = function() {saveCopyOfQuiz()}
+  document.querySelector(".delete").hidden = true;
   if (session_user_id["uid"] == quiz_creator_uid){
     perms = "Can edit"
     document.querySelector(".save").innerHTML = "Save Quiz";
     document.querySelector(".save").onclick = function () {saveQuiz()}
+    document.querySelector(".delete").hidden = false;
   }
   document.querySelector(".quiz_email").innerHTML = `Created by ${quiz_creator_name}`
   document.querySelector(".quiz_perms").innerHTML = perms
@@ -258,6 +272,21 @@ async function playQuiz(){
   })
 }
 
+async function deleteQuiz() {
+  await fetch('/uploader', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"delete_quiz": true, "quiz_id": currentQuizID})
+  })
+  .then(response => response.text())
+  .catch(error => {
+    console.error('Error:', error);
+  })
+  location.replace('/')
+}
+
 function saveCopyOfQuiz() {
   currentQuizID = -1
   console.log("Saving copy")
@@ -280,6 +309,8 @@ function loadQuizUsingFilenameInput() {
   getData(filename)
   window.history.pushState({}, "", `/?quiz=${currentQuizID}`)
 }
+
+
 
 async function hostQuiz() {
   let quiz_name = document.getElementById("name").value
@@ -370,11 +401,12 @@ function removeItem(arr, value) {
 
 //SEARCH QUIZZES
 
-async function refreshRecs() {
+async function refreshRecs(searchUser="all") {
   let search_results_div = document.querySelector(".search-results")
   let query = document.querySelector(".search_bar").value
   let newRecommendations = await fetch('/quiz_searcher?' + new URLSearchParams({
       search_query: query,
+      search_user: searchUser,
     }).toString())
     .then(response => response.json())
     .catch(error => {
