@@ -9,7 +9,7 @@ app.register_blueprint(main_blueprint)
 app.secret_key = "6BtdCaEka6xjV4DVNxZ3pZB8mXJ70sig"
 
 # Vercel requires the app to be named 'app'
-app.debug = True
+app.debug = False
 socketio.init_app(app)
 
 if __name__ == '__main__':

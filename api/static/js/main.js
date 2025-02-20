@@ -51,6 +51,8 @@ async function onPageLoad() {
     document.querySelector(".search-my-quizzes").disabled = true;
     document.querySelector(".host").disabled = true;
     document.querySelector(".save").disabled = true;
+    document.querySelector(".delete").disabled = true;
+    document.querySelector(".delete").hidden = true;
     document.querySelector(".join-live-quiz").disabled = true;
   }
 

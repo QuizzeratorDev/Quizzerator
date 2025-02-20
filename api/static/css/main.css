@@ -191,7 +191,7 @@ body {
     padding-top: 1rem;
     padding-left: 1rem;
     border-radius: var(--border-radius);
-    max-height: 80vh;
+    max-height: 70vh;
     width: 95%;
     display: flex;
     flex-direction: column;

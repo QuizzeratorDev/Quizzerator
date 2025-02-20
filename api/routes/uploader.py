@@ -15,10 +15,10 @@ def uploader():
             if not file_is_temporary:
                 quiz_id = int(request.json["filename"])
                 if quiz_id == -1:
-                    filename = str(firebase_db.get_number_of_documents("quizCollection"))
+                    filename = str(uuid.uuid1())
                     file_is_new = True
                 else:
-                    filename = str(quiz_id)
+                    filename = str(uuid.uuid1())
                 collection = "quizCollection"
             else:
                 filename = str(uuid.uuid1())
