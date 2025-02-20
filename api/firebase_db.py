@@ -116,11 +116,7 @@ def search_documents(collection, query, user="", is_list=True):
         return {}
     result = []
     duplicates = []
-    if is_list:
-        _iter = range(len(docs))
-    else:
-        _iter = docs.keys()
-    for doc in _iter:
+    for doc in docs.keys():
         doc_data = docs[doc]
         quiz_name = doc_data["quiz_name"]
         if ((user=="") or (user == doc_data["user"]["uid"])) and ("quiz_data" in doc_data):
@@ -154,11 +150,8 @@ def get_all_documents(collection, user="", is_list=True):
     if not docs:
         return {}
     
-    if is_list:
-        _iter = range(len(docs))
-    else:
-        _iter = docs.keys()
-    for doc in _iter:
+
+    for doc in docs.keys():
         doc_data = docs[doc]
         quiz_name = doc_data["quiz_name"]
         if ((user=="") or (user==doc_data["user"]["uid"])) and ("quiz_data" in doc_data):

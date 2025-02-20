@@ -5,8 +5,8 @@ from dataclasses import dataclass
 from time import sleep
 from random import uniform
 import requests
-from zenrows import ZenRowsClient
 import json
+from zenrows import ZenRowsClient
 
 @dataclass
 class QuizTerm:
@@ -16,7 +16,18 @@ class QuizTerm:
 class QuizletError(Exception):
     """Custom exception for Quizlet-related errors"""
     pass
-
+headers = {
+  'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+  'accept-encoding': 'gzip, deflate, br',
+  'accept-language': 'en-US,en;q=0.9',
+  'cache-control': 'max-age=0',
+  'cookie': 'yourcookie',
+  'sec-fetch-mode': 'navigate',
+  'sec-fetch-site': 'none',
+  'sec-fetch-user': '?1',
+  'upgrade-insecure-requests': '1',
+  'user-agent': 'Mozilla/5.0 (X11; CrOS x86_64 12239.92.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.136 Safari/537.36',
+}
 class Quizlet:
     """A class to scrape and parse Quizlet flashcard sets"""
     
@@ -35,11 +46,8 @@ class Quizlet:
     def __init__(self, quiz_url: str, api_key: str):
         if not quiz_url or not quiz_url.startswith('https://quizlet.com/'):
             raise ValueError("Invalid Quizlet URL provided")
-        if not api_key:
-            raise ValueError("ZenRows API key is required")
-            
-        self.quiz_url = quiz_url
         self.client = ZenRowsClient(api_key)
+        self.quiz_url = quiz_url
         self.logger = self._setup_logger()
         
     def _setup_logger(self) -> logging.Logger:
@@ -59,35 +67,7 @@ class Quizlet:
         terms = soup.find_all('div', class_=class_name)
         self.logger.debug(f"Found {len(terms)} elements with class '{class_name}'")
         if terms:
-            self.logger.debug(f"Sample element with class '{class_name}':")
-            self.logger.debug(terms[0].prettify()[:500])
-        return terms
-
-    def _try_extract_from_script(self, soup: BeautifulSoup) -> List[Dict]:
-        """Try to extract terms from embedded JSON data"""
-        try:
-            scripts = soup.find_all('script')
-            for script in scripts:
-                if script.string and '"termIdToTermsMap"' in script.string:
-                    self.logger.debug("Found script with termIdToTermsMap")
-                    # Extract the JSON data
-                    start = script.string.find('{')
-                    end = script.string.rfind('}') + 1
-                    json_data = script.string[start:end]
-                    data = json.loads(json_data)
-                    
-                    if 'termIdToTermsMap' in data:
-                        terms = []
-                        for term_id, term_data in data['termIdToTermsMap'].items():
-                            if 'word' in term_data and 'definition' in term_data:
-                                terms.append({
-                                    'term': term_data['word'],
-                                    'definition': term_data['definition']
-                                })
-                        return terms
-        except Exception as e:
-            self.logger.debug(f"Failed to extract from script: {e}")
-        return []
+            return terms
 
     def get_quiz(self) -> List[QuizTerm]:
         self.logger.info(f"Fetching quiz from URL: {self.quiz_url}")
@@ -96,7 +76,7 @@ class Quizlet:
             # Enhanced parameters for better JavaScript rendering
             params = {"js_render":"true","wait_for":"div.SetPageTerm-content"}
             
-            response = self.client.get(self.quiz_url, params=params)
+            response = self.client.get(self.quiz_url, params=params, headers=headers)
             response.raise_for_status()
             
             self.logger.debug(f"Response status code: {response.status_code}")
@@ -167,6 +147,7 @@ class Quizlet:
     def get_quiz_dict(self) -> List[Dict[str, str]]:
         return [{"term": term.term, "definition": term.definition} 
                 for term in self.get_quiz()]
+
 if __name__ == "__main__": 
     try:
         scraper = Quizlet("https://quizlet.com/gb/559378704/de-romanis-chapter-4-verbs-flash-cards", "54573b0923c1b2ae75797a28b6b438e0525a8383") # Quizlet set then ZenRows API key
